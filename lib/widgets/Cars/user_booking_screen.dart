@@ -158,7 +158,7 @@ class _UserBookingScreenState extends State<UserBookingScreen> {
                                   fit: BoxFit.fitWidth,
                                   placeholder: (context, ok) => const Image(
                                       image: AssetImage(
-                                          'assets/images/finallogo.png')),
+                                          'assets/app_logo/zymo_logo.jpg')),
                                   //      ),
                                 ),
                               )
@@ -466,7 +466,7 @@ class _UserBookingScreenState extends State<UserBookingScreen> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Card(
-        color: appColor,
+          color: appColor,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
           child: SizedBox(
@@ -476,7 +476,13 @@ class _UserBookingScreenState extends State<UserBookingScreen> {
               child: Column(
                 children: <Widget>[
                   if (!isAdvancePay) ...[
-                    Text('Base Fare', style: TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.w600),),
+                    Text(
+                      'Base Fare',
+                      style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w600),
+                    ),
                     if (carModel.finalDiscount! > carModel.finalPrice!)
                       Text(
                           '$rupeeSign${carModel.finalDiscount!.toStringAsFixed(0)}',
@@ -777,49 +783,53 @@ class _UserBookingScreenState extends State<UserBookingScreen> {
   }
 
   InkWell dateWidget(BuildContext context) {
-  return InkWell(
-    onTap: () => dateofBirthPicker(),
-    child: Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: InputDecorator(
-        decoration: InputDecoration(
-          filled: true,
-          fillColor: Colors.grey[850], // Dark grey background
-          border: const OutlineInputBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(10.0),
+    return InkWell(
+      onTap: () => dateofBirthPicker(),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        child: InputDecorator(
+          decoration: InputDecoration(
+            filled: true,
+            fillColor: Colors.grey[850], // Dark grey background
+            border: const OutlineInputBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(10.0),
+              ),
             ),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: const BorderRadius.all(Radius.circular(10.0)),
-            borderSide: BorderSide(color: Colors.white.withOpacity(0.5)), // Semi-transparent white border
-          ),
-          focusedBorder: const OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-            borderSide: BorderSide(color: Colors.white), // Solid white border on focus
-          ),
-          labelText: 'Date Of Birth',
-          labelStyle: const TextStyle(color: Colors.white70), // Dark grey label text
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Text(
-              _dob == null ? 'Select a date' : dateFormatter.format(_dob!),
-              style: const TextStyle(color: Colors.white), // Typed text color white
+            enabledBorder: OutlineInputBorder(
+              borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+              borderSide: BorderSide(
+                  color: Colors.white
+                      .withOpacity(0.5)), // Semi-transparent white border
             ),
-            Icon(
-              Icons.arrow_drop_down,
-              color: Colors.white70, // Dropdown icon color white
+            focusedBorder: const OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10.0)),
+              borderSide: BorderSide(
+                  color: Colors.white), // Solid white border on focus
             ),
-          ],
+            labelText: 'Date Of Birth',
+            labelStyle:
+                const TextStyle(color: Colors.white70), // Dark grey label text
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Text(
+                _dob == null ? 'Select a date' : dateFormatter.format(_dob!),
+                style: const TextStyle(
+                    color: Colors.white), // Typed text color white
+              ),
+              Icon(
+                Icons.arrow_drop_down,
+                color: Colors.white70, // Dropdown icon color white
+              ),
+            ],
+          ),
         ),
       ),
-    ),
-  );
-}
-
+    );
+  }
 
   void proceedToPromoPage(
       DriveModel model,
@@ -1272,7 +1282,8 @@ class TextFieldBooking extends StatelessWidget {
             : TextCapitalization.words,
         decoration: InputDecoration(
           filled: true,
-          fillColor: Colors.grey[850], // Dark grey background for the text field
+          fillColor:
+              Colors.grey[850], // Dark grey background for the text field
           border: const OutlineInputBorder(
             borderRadius: BorderRadius.all(
               Radius.circular(10.0),
@@ -1280,16 +1291,20 @@ class TextFieldBooking extends StatelessWidget {
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: const BorderRadius.all(Radius.circular(10.0)),
-            borderSide: BorderSide(color: Colors.white.withOpacity(0.5)), // White border
+            borderSide: BorderSide(
+                color: Colors.white.withOpacity(0.5)), // White border
           ),
           focusedBorder: const OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(10.0)),
-            borderSide: BorderSide(color: Colors.white), // Solid white border when focused
+            borderSide: BorderSide(
+                color: Colors.white), // Solid white border when focused
           ),
           labelText: title,
-          labelStyle: const TextStyle(color: Colors.white70), // Dark grey label text
+          labelStyle:
+              const TextStyle(color: Colors.white70), // Dark grey label text
           hintText: title,
-          hintStyle: const TextStyle(color: Colors.white38), // Light grey hint text
+          hintStyle:
+              const TextStyle(color: Colors.white38), // Light grey hint text
         ),
         style: const TextStyle(color: Colors.white), // Typed text color white
         cursorColor: Colors.white, // Cursor color white
@@ -1302,4 +1317,3 @@ class TextFieldBooking extends StatelessWidget {
     );
   }
 }
-

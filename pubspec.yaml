@@ -46,23 +46,30 @@ dependencies:
   fluttertoast: ^8.2.5
   google_maps_flutter: ^2.5.0
   uuid: ^4.4.0
+  flutter_launcher_icons: ^0.14.3
+  flutter_native_splash: ^2.4.4
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-# flutter_icons:
-# #   android: true
-#   ios: true
-#   image_path: "dev_assets/logo_final.jpeg"
-#   adaptive_icon_background: "#000000"
-#   adaptive_icon_foreground: "dev_assets/logo_final.jpeg"
-#   adaptive_icon_padding: true
-# flutter_native_splash:
-#   android: true
-#   ios: true
-#   image: "dev_assets/logo_final.jpeg"
-#   color: "#9b08fe"
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/app_logo/zymo_logo/zymo_logo.jpg"
+  adaptive_icon_background: "#000000"
+  adaptive_icon_foreground: "assets/app_logo/zymo_logo/zymo_logo.jpg"
+  adaptive_icon_padding: true
+
+flutter_native_splash:
+  color: "#000000"
+  image: assets/app_logo/zymo_logo/zymo_logo.jpg
+  branding: assets/app_logo/zymo_logo/zymo_logo.jpg
+  color_dark: "#000000"
+  image_dark: assets/app_logo/zymo_logo/zymo_logo.jpg
+  branding_dark: assets/app_logo/zymo_logo/zymo_logo.jpg
+  android: true
+  ios: true
 
 flutter:
   uses-material-design: true
@@ -76,6 +83,7 @@ flutter:
     - assets/images/topCars/
     - assets/images/NewCars/
     - dev_assets/
+    - assets/app_logo/zymo_logo/
 
   fonts:
     - family: Garamond

@@ -177,22 +177,23 @@ Widget openInMapsButton(String? address) {
       },
       child: Text('Open in Maps'));
 }
-  carImage(String? _imageUrl, {double? width}) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: _imageUrl == null
-          ? Icon(FontAwesomeIcons.carRear, size: .45.sw)
-          : CachedNetworkImage(
-              imageUrl: _imageUrl,
-              height: .45.sw,
-              width: width ?? .8.sw,
-              fit: BoxFit.fitWidth,
-              placeholder: (context, ok) =>
-                  const Image(image: AssetImage('assets/images/finallogo.png')),
-              //      ),
-            ),
-    );
-  }
+
+carImage(String? _imageUrl, {double? width}) {
+  return Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: _imageUrl == null
+        ? Icon(FontAwesomeIcons.carRear, size: .45.sw)
+        : CachedNetworkImage(
+            imageUrl: _imageUrl,
+            height: .45.sw,
+            width: width ?? .8.sw,
+            fit: BoxFit.fitWidth,
+            placeholder: (context, ok) =>
+                const Image(image: AssetImage('assets/app_logo/zymo_logo.jpg')),
+            //      ),
+          ),
+  );
+}
 
 class CarDetailsWidget extends StatelessWidget {
   const CarDetailsWidget({
@@ -222,8 +223,8 @@ class CarDetailsWidget extends StatelessWidget {
                   color: appColor,
                   borderRadius: BorderRadius.circular(15),
                 ),
-                child: Center(
-                  child: carImage(carModel?.imageUrl, width: .4.sw)),
+                child:
+                    Center(child: carImage(carModel?.imageUrl, width: .4.sw)),
               ),
             ),
             Text(
@@ -317,7 +318,8 @@ class FAQTile extends StatelessWidget {
               iconColor: Colors.white,
               title: Text(
                 body!,
-                style: TextStyle(fontWeight: FontWeight.w700,color: Colors.white),
+                style:
+                    TextStyle(fontWeight: FontWeight.w700, color: Colors.white),
               ),
             ),
           )
@@ -353,11 +355,14 @@ class TripDurationWidget extends StatelessWidget {
                 children: [
                   const Text(
                     'Trip Duration',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold,color: Colors.white),
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
                   ),
                   Text(
                     duration!,
-                    style: const TextStyle(fontSize: 20,color: Colors.white),
+                    style: const TextStyle(fontSize: 20, color: Colors.white),
                   ),
                 ],
               ),
@@ -433,7 +438,10 @@ class VoucherIndicator extends StatelessWidget {
           child: CircleAvatar(
               backgroundImage: AssetImage('dev_assets/new_logo.jpeg')),
         ),
-        title: const Text('Select a voucher',style: TextStyle(color: Colors.white),),
+        title: const Text(
+          'Select a voucher',
+          style: TextStyle(color: Colors.white),
+        ),
         trailing: InkWell(
           onTap: isApplied ? null : function,
           child: Text(
@@ -581,8 +589,11 @@ class CancellationRateWidget extends StatelessWidget {
                 ? Padding(
                     padding: const EdgeInsets.all(18.0),
                     child: Center(
-                        child: Text(
-                            '${snapshot.data!['cancellationText'].replaceAll('. ', '\n\n')}',style: TextStyle(color: Colors.white),),),
+                      child: Text(
+                        '${snapshot.data!['cancellationText'].replaceAll('. ', '\n\n')}',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
                   )
                 : Padding(
                     padding: const EdgeInsets.all(3.0),
@@ -595,18 +606,31 @@ class CancellationRateWidget extends StatelessWidget {
                             style: TextStyle(color: Colors.white),
                           ),
                           ListTile(
-                            title: Text("Before 24 Hours of Trip",
-                                style: TextStyle(color: Colors.white),),
-                            subtitle: Text(snapshot.data!['before24Hours'],style: TextStyle(color: Colors.white),),
+                            title: Text(
+                              "Before 24 Hours of Trip",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            subtitle: Text(
+                              snapshot.data!['before24Hours'],
+                              style: TextStyle(color: Colors.white),
+                            ),
                           ),
                           ListTile(
-                            title: Text("Within 48 Hours of Trip",
-                                style: TextStyle(color: Colors.white),),
-                            subtitle: Text(snapshot.data!['before48Hours'],style: TextStyle(color: Colors.white),),
+                            title: Text(
+                              "Within 48 Hours of Trip",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            subtitle: Text(
+                              snapshot.data!['before48Hours'],
+                              style: TextStyle(color: Colors.white),
+                            ),
                           ),
                           ListTile(
                             title: Text("After Trip Starts", style: titleStyle),
-                            subtitle: Text(snapshot.data!['afterTripStarts'],style: TextStyle(color: Colors.white),),
+                            subtitle: Text(
+                              snapshot.data!['afterTripStarts'],
+                              style: TextStyle(color: Colors.white),
+                            ),
                           ),
                         ]));
           }),
@@ -822,9 +846,12 @@ class DocumentWidget extends StatelessWidget {
           value: link != null,
           //onChanged: (_){},
         ),
-        Text(description!,style: TextStyle(
-          color: Colors.grey,
-        ),)
+        Text(
+          description!,
+          style: TextStyle(
+            color: Colors.grey,
+          ),
+        )
       ]),
       Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -932,11 +959,9 @@ Widget shimmerLoading(BuildContext context) {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     color: Colors.white,
-                    
                   ),
                   width: .4.sw,
                   height: .4.sw,
-                  
                 ),
               ),
             ],
@@ -951,12 +976,12 @@ Widget shimmerLoading(BuildContext context) {
 class DurationTile extends StatelessWidget {
   final String title;
   final String body;
-  final Color textColor;  
+  final Color textColor;
 
   const DurationTile({
     required this.title,
     required this.body,
-    required this.textColor,  
+    required this.textColor,
     Key? key,
   }) : super(key: key);
 
@@ -986,7 +1011,6 @@ class DurationTile extends StatelessWidget {
   }
 }
 
-
 class FilterItem extends StatelessWidget {
   final String? title;
   final bool? isSelected;
@@ -1014,10 +1038,7 @@ class FilterItem extends StatelessWidget {
           child: Text(
             title!,
             textAlign: TextAlign.center,
-            style: TextStyle(
-                color: isSelected!
-                    ? Colors.white
-                    : Colors.black),
+            style: TextStyle(color: isSelected! ? Colors.white : Colors.black),
           ),
         ),
         backgroundColor: isSelected!
