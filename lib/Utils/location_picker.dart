@@ -24,11 +24,8 @@ class LocationPicker extends StatefulWidget {
 }
 
 class _LocationPickerState extends State<LocationPicker> {
-  /// Result returned after user completes selection
   LocationResult? locationResult;
   List<RichSuggestion> suggestions = [];
-
-  /// Overlay to display autocomplete suggestions
 
   Timer? debouncer;
 
@@ -56,13 +53,12 @@ class _LocationPickerState extends State<LocationPicker> {
                   fontSize: 20,
                 ),
               ),
-              SizedBox(height: 0.03.sh), // Add spacing
+              SizedBox(height: 0.03.sh),
 
-              
               TextField(
                 decoration: InputDecoration(
                   fillColor: const Color(0xff323232),
-                  filled: true, // Apply background color directly to TextField
+                  filled: true,
                   prefixIcon: const Icon(
                     Icons.search,
                     color: Colors.grey,
@@ -110,7 +106,6 @@ class _LocationPickerState extends State<LocationPicker> {
                           reverseGeocode(
                               LatLng(position.latitude, position.longitude));
                         } catch (e) {
-                          // CommonFunctions.showSnackbar(context, e);
                           CommonFunctions.showSnackbar(context, e.toString());
                         }
                         value.toggleLocationLoading(false);

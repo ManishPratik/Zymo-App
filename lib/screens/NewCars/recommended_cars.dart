@@ -110,7 +110,6 @@ class _RecommendedCarsContainerState extends State<RecommendedCarsContainer> {
       elevation: 5,
       // shape: ,
       child: Container(
-        // margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
         width: 380,
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
         padding: EdgeInsets.all(10),
@@ -148,7 +147,6 @@ class _RecommendedCarsContainerState extends State<RecommendedCarsContainer> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        // SizedBox(height: 5),
                         Row(
                           children: [
                             Text(
@@ -161,8 +159,10 @@ class _RecommendedCarsContainerState extends State<RecommendedCarsContainer> {
                             ),
                             Text(
                               'Onwards',
-                              style:
-                                  TextStyle(fontSize: 14, color: Colors.yellow,),
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.yellow,
+                              ),
                             ),
                           ],
                         ),
