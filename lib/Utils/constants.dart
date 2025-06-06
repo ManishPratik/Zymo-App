@@ -512,44 +512,88 @@ Padding durationPicker(BuildContext context, CarProvider value) {
     padding: const EdgeInsets.all(4.0),
     child: Column(
       children: [
+        // Padding(
+        //   padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+        //   child: Row(
+        //     // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //     children: [
+        //       // Start Date Picker
+        //       InkWell(
+        //         onTap: () => CarFunctions().startDatePicker(context),
+        //         child: DurationTile(
+        //             title: 'Start Date',
+        //             body: value.startDate != null
+        //                 ? dateFormatter.format(value.startDate!)
+        //                 : 'Select Date',
+        //             textColor: Colors.grey),
+        //       ),
+        //       SizedBox(
+        //         width: 5,
+        //       ),
+        //       Icon(
+        //         Icons.arrow_drop_down,
+        //         color: appColor,
+        //       ),
+        //       Spacer(),
+        //       Icon(
+        //         Icons.arrow_drop_down,
+        //         color: appColor,
+        //       ),
+        //       SizedBox(
+        //         width: 5,
+        //       ),
+        //       InkWell(
+        //         onTap: () => CarFunctions().startTimePicker(context),
+        //         child: DurationTile(
+        //           title: 'Start Time',
+        //           body: value.startTime != null
+        //               ? value.startTime!.format(context).toString()
+        //               : 'Select Time',
+        //           textColor: Colors.grey, // Text color set to grey
+        //         ),
+        //       ),
+        //     ],
+        //   ),
+        // ),
         Padding(
           padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
           child: Row(
-            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               // Start Date Picker
-              InkWell(
-                onTap: () => CarFunctions().startDatePicker(context),
-                child: DurationTile(
+              Expanded(
+                child: InkWell(
+                  onTap: () => CarFunctions().startDatePicker(context),
+                  child: DurationTile(
                     title: 'Start Date',
                     body: value.startDate != null
                         ? dateFormatter.format(value.startDate!)
                         : 'Select Date',
-                    textColor: Colors.grey),
+                    textColor: Colors.grey,
+                  ),
+                ),
               ),
-              SizedBox(
-                width: 5,
-              ),
+              const SizedBox(width: 5),
               Icon(
                 Icons.arrow_drop_down,
                 color: appColor,
               ),
-              Spacer(),
+              const SizedBox(width: 10), // Added spacing between sections
               Icon(
                 Icons.arrow_drop_down,
                 color: appColor,
               ),
-              SizedBox(
-                width: 5,
-              ),
-              InkWell(
-                onTap: () => CarFunctions().startTimePicker(context),
-                child: DurationTile(
-                  title: 'Start Time',
-                  body: value.startTime != null
-                      ? value.startTime!.format(context).toString()
-                      : 'Select Time',
-                  textColor: Colors.grey, // Text color set to grey
+              const SizedBox(width: 5),
+              // Start Time Picker
+              Expanded(
+                child: InkWell(
+                  onTap: () => CarFunctions().startTimePicker(context),
+                  child: DurationTile(
+                    title: 'Start Time',
+                    body: value.startTime != null
+                        ? value.startTime!.format(context).toString()
+                        : 'Select Time',
+                    textColor: Colors.grey,
+                  ),
                 ),
               ),
             ],
@@ -618,15 +662,16 @@ Future<dynamic> warningPopUp(BuildContext context, String title, String body) {
                   Icon(
                     FontAwesomeIcons.bell,
                     size: .1.sh,
+                    color: Colors.black,
                   ),
                   ListTile(
                     title: Text(
                       title,
-                      style: TextStyle(color: Colors.grey),
+                      style: TextStyle(color: Colors.black),
                     ),
                     subtitle: Text(
                       body,
-                      style: TextStyle(color: Colors.grey),
+                      style: TextStyle(color: Colors.black),
                     ),
                   ),
                   AppButton(
