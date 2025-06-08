@@ -8,6 +8,58 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:912635063803:android:6c0174f99f7897d1e22f5e",
+        "android_client_info": {
+          "package_name": "com.example.letzrent"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "912635063803-d26ftp5j8c6hj1tka4fiq2s5runm4ohm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.letzrent",
+            "certificate_hash": "eef85f736ac1267ddca1fe6a3acfd08a1de1b897"
+          }
+        },
+        {
+          "client_id": "912635063803-mthb6f4ekuioja3qmcrp9477hrbpsmgb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.letzrent",
+            "certificate_hash": "2d60c4f7bf218c23de18753a26debce2d9ac7c8f"
+          }
+        },
+        {
+          "client_id": "912635063803-kr8202n1g6218o2t25vjjqte2a39s1gf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDkfsTD8o5HaNXSDl7j6Sog_2o8kHXII8s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "912635063803-kr8202n1g6218o2t25vjjqte2a39s1gf.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "912635063803-2t2n19akqio8oqrsbv916sihshuv2aa8.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.letzrent.letzrentnew"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:912635063803:android:a4e9f04642a6ff94e22f5e",
         "android_client_info": {
           "package_name": "com.example.letzrentnew"
@@ -46,6 +98,42 @@
             "certificate_hash": "0f01647c85f8cf8d4a7e5823d19875d70f224c9a"
           }
         },
+        {
+          "client_id": "912635063803-kr8202n1g6218o2t25vjjqte2a39s1gf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDkfsTD8o5HaNXSDl7j6Sog_2o8kHXII8s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "912635063803-kr8202n1g6218o2t25vjjqte2a39s1gf.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "912635063803-2t2n19akqio8oqrsbv916sihshuv2aa8.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.letzrent.letzrentnew"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:912635063803:android:1c9739b78391f269e22f5e",
+        "android_client_info": {
+          "package_name": "com.example.zymo_partner_app"
+        }
+      },
+      "oauth_client": [
         {
           "client_id": "912635063803-kr8202n1g6218o2t25vjjqte2a39s1gf.apps.googleusercontent.com",
           "client_type": 3
@@ -152,6 +240,14 @@
           "android_info": {
             "package_name": "com.letzrent.letzrentnew",
             "certificate_hash": "8fad42e82c138de4916acb0f5a4b2ee5d05e3db2"
+          }
+        },
+        {
+          "client_id": "912635063803-nqc11gadt8cdblqavtc1optp0et6edir.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.letzrent.letzrentnew",
+            "certificate_hash": "eef85f736ac1267ddca1fe6a3acfd08a1de1b897"
           }
         },
         {

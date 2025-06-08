@@ -8,7 +8,8 @@ import 'package:provider/provider.dart';
 import 'package:tap_debouncer/tap_debouncer.dart';
 
 class Otp extends StatefulWidget {
-  const Otp({Key? key, this.verificationId, this.phoneNumber}) : super(key: key);
+  const Otp({Key? key, this.verificationId, this.phoneNumber})
+      : super(key: key);
   final String? verificationId;
   final String? phoneNumber;
   @override
@@ -107,7 +108,10 @@ class _OtpState extends State<Otp> {
                                 cooldown: sevenSeconds,
                                 onTap: () async => (value.otpTimeout == 0)
                                     ? Auth().sendOTP(
-                                        widget.phoneNumber, context, true)
+                                        phoneNumber: widget.phoneNumber!,
+                                        context: context,
+                                        isResend: true,
+                                      )
                                     : null,
                                 waitBuilder: (context, w) => whiteSpinkit,
                                 builder: (context, onTap) => InkWell(
@@ -161,8 +165,12 @@ class _OtpState extends State<Otp> {
       if (otp.contains('')) {
         warningPopUp(context, oops, 'Invalid OTP');
       } else {
-        final bool res = await Auth()
-            .signInWithOTP(widget.verificationId!, context, otp.join(''));
+        final bool res = await Auth().signInWithOTP(
+          verificationId: widget.verificationId!,
+          smsCode: otp.join(''),
+          context: context,
+        );
+
         if (res) {
           value.cancelTimer();
           // FlutterBranchSdk.trackContentWithoutBuo(

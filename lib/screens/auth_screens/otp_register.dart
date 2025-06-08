@@ -100,6 +100,16 @@ class _RegisterState extends State<Register> {
                   child: TapDebouncer(
                     cooldown: sevenSeconds,
                     waitBuilder: (context, w) => whiteSpinkit,
+                    // onTap: () async {
+                    //   FocusScope.of(context).unfocus();
+                    //   final phoneNumber = '+91${phone.text}';
+                    //   if (phoneNumber.length != 13) {
+                    //     CommonFunctions.showSnackbar(context,
+                    //         'Invalid phone number. Please enter a 10 digit number.');
+                    //   } else {
+                    //     await Auth().sendOTP(phoneNumber, context, false);
+                    //   }
+                    // },
                     onTap: () async {
                       FocusScope.of(context).unfocus();
                       final phoneNumber = '+91${phone.text}';
@@ -107,12 +117,17 @@ class _RegisterState extends State<Register> {
                         CommonFunctions.showSnackbar(context,
                             'Invalid phone number. Please enter a 10 digit number.');
                       } else {
-                        await Auth().sendOTP(phoneNumber, context, false);
+                        await Auth().sendOTP(
+                          phoneNumber: phoneNumber,
+                          context: context,
+                          isResend: false,
+                        );
                       }
                     },
-                    builder:
-                        (BuildContext context, Future<void> Function()? onTap) =>
-                            CupertinoButton(
+
+                    builder: (BuildContext context,
+                            Future<void> Function()? onTap) =>
+                        CupertinoButton(
                       color: greyColor,
                       // screenHeight: 1.sh,
                       // screenWidth: 1.sw,
