@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:letzrentnew/Services/auth_services.dart';
 import 'package:letzrentnew/Utils/constants.dart';
 import 'package:letzrentnew/providers/home_provider.dart';
+import 'package:letzrentnew/screens/home_page.dart';
 import 'package:provider/provider.dart';
 import 'package:tap_debouncer/tap_debouncer.dart';
 
@@ -158,31 +159,57 @@ class _OtpState extends State<Otp> {
         ));
   }
 
-  Future<void> otpVerificationFunction(
-      BuildContext context, HomeProvider value) async {
-    FocusScope.of(context).unfocus();
-    try {
-      if (otp.contains('')) {
-        warningPopUp(context, oops, 'Invalid OTP');
-      } else {
-        final bool res = await Auth().signInWithOTP(
-          verificationId: widget.verificationId!,
-          smsCode: otp.join(''),
-          context: context,
-        );
+  // Future<void> otpVerificationFunction(
+  //     BuildContext context, HomeProvider value) async {
+  //   FocusScope.of(context).unfocus();
+  //   try {
+  //     if (otp.contains('')) {
+  //       warningPopUp(context, oops, 'Invalid OTP');
+  //     } else {
+  //       final bool res = await Auth().signInWithOTP(
+  //         verificationId: widget.verificationId!,
+  //         smsCode: otp.join(''),
+  //         context: context,
+  //       );
 
-        if (res) {
-          value.cancelTimer();
-          // FlutterBranchSdk.trackContentWithoutBuo(
-          //     branchEvent: BranchEvent.standardEvent(
-          //         BranchStandardEvent.COMPLETE_REGISTRATION));
-          Navigator.pop(context, true);
-        }
+  //       if (res) {
+  //         value.cancelTimer();
+  //         // FlutterBranchSdk.trackContentWithoutBuo(
+  //         //     branchEvent: BranchEvent.standardEvent(
+  //         //         BranchStandardEvent.COMPLETE_REGISTRATION));
+  //         Navigator.pop(context, true);
+  //       }
+  //     }
+  //   } catch (e) {
+  //     warningPopUp(context, oops, 'Sign up failed. $e');
+  //   }
+  // }
+  Future<void> otpVerificationFunction(
+    BuildContext context, HomeProvider value) async {
+  FocusScope.of(context).unfocus();
+  try {
+    if (otp.contains('')) {
+      warningPopUp(context, oops, 'Invalid OTP');
+    } else {
+      final bool res = await Auth().signInWithOTP(
+        verificationId: widget.verificationId!,
+        smsCode: otp.join(),
+        context: context,
+      );
+
+      if (res) {
+        value.cancelTimer();
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (_) => HomePage()), // your home screen
+          (route) => false, // clear previous routes
+        );
       }
-    } catch (e) {
-      warningPopUp(context, oops, 'Sign up failed. $e');
     }
+  } catch (e) {
+    warningPopUp(context, oops, 'Sign up failed. $e');
   }
+}
+
 
   final List<String> otp = List.filled(6, '');
   Widget _textFieldOTP(int index) {
