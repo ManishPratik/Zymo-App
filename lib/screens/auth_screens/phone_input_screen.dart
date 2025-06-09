@@ -60,17 +60,25 @@ class _PhoneInputScreenState extends State<PhoneInputScreen> {
     return Scaffold(
       appBar: AppBar(title: const Text('Login with Phone')),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.1),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
-              "Enter your phone number",
-              style: TextStyle(fontSize: 18),
+            // const Text(
+            //   "Enter your phone number",
+            //   style: TextStyle(fontSize: 18),
+            // ),
+            GestureDetector(
+              onTap: () => _phoneFocus.requestFocus(),
+              child: const Text(
+                "Enter your phone number",
+                style: TextStyle(fontSize: 18),
+              ),
             ),
             const SizedBox(height: 20),
             TextField(
               controller: _phoneController,
+              focusNode: _phoneFocus,
               keyboardType: TextInputType.phone,
               decoration: const InputDecoration(
                 hintText: 'e.g. 9876543210',
