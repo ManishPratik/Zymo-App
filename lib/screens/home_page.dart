@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -19,6 +21,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../Services/car_functions.dart';
 import '../Utils/functions.dart';
 import '../Utils/constants.dart';
+import '../models/UImodel.dart';
 import '../screens/user_profile.dart';
 
 class HomePage extends StatefulWidget {
@@ -27,13 +30,130 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  static const items = [
-    "assets/images/ZymoBenefits/Convenience.jpg",
-    "assets/images/ZymoBenefits/CostEffective.jpg",
-    "assets/images/ZymoBenefits/Flexibility.jpg",
-    "assets/images/ZymoBenefits/GreatPrices.jpg",
+
+  static const List<Map<String, String>> items = [
+    {
+      'image': "assets/images/ZymoBenefits/carlogo.png",
+      'text': "Wide Range of Cars",
+    },
+    {
+      'image': "assets/images/ZymoBenefits/book.png",
+      'text': "Quick and Easy Booking",
+    },
+    {
+      'image': "assets/images/ZymoBenefits/bag_of_gold.png",
+      'text': "Affordable Prices",
+    },
+    {
+      'image': "assets/images/ZymoBenefits/handshake.png",
+      'text': "Trusted by Thousands",
+    },
   ];
   bool isSelfDrive = true;
+  final ScrollController _controller = ScrollController();
+  double indicatorPosition = 0;
+
+  final steps = [
+    StepModel(
+      imagePath: 'assets/images/guide/image1.png',
+      title: 'Getting Started',
+      description:
+          'The user logs into Zymo, enters source, and time. Zymo shows a list of rental cars, enabling easy comparison by price, type, and features.',
+    ),
+    StepModel(
+      imagePath: 'assets/images/guide/image2.png',
+      title: 'Choosing & Confirming Booking',
+      description:
+          'The user selects the best-fit car after comparing options. Key details are shown before confirming the booking.',
+    ),
+    StepModel(
+      imagePath: 'assets/images/guide/image3.png',
+      title: 'Payment & Confirmation',
+      description:
+          'Payment is completed securely. Booking confirmation is sent instantly via email and WhatsApp.',
+    ),
+    StepModel(
+      imagePath: 'assets/images/guide/image4.png',
+      title: 'Car Usage & Return',
+      description:
+          'The user picks up the car, uses it during the booked time, and returns it hassle-free.',
+    ),
+    StepModel(
+      imagePath: 'assets/images/guide/image5.png',
+      title: 'Providing Feedback',
+      description:
+          'After the trip, the user rates the service and shares feedback, helping others choose better.',
+    ),
+    // Add more steps similarly
+  ];
+
+  final List<Map<String, String>> _brandImages = [
+    {'image': 'assets/images/brands/audi.png', 'carname': 'Audi'},
+    {'image': 'assets/images/brands/bmw.png', 'carname': 'BMW'},
+    {'image': 'assets/images/brands/honda.png', 'carname': 'Honda'},
+    {'image': 'assets/images/brands/Kia.png', 'carname': 'Kia'},
+    {'image': 'assets/images/brands/mahindraa.png', 'carname': 'Mahindra'},
+    {'image': 'assets/images/brands/mbenz.png', 'carname': 'Mercedes-Benz'},
+    {'image': 'assets/images/brands/mg.png', 'carname': 'MG'},
+    {'image': 'assets/images/brands/suzuki.png', 'carname': 'Maruti'},
+    //{'image': 'assets/images/brands/rnold.jpeg', 'carname': 'Renault'},
+    {'image': 'assets/images/brands/tata.png', 'carname': 'Tata'},
+    {'image': 'assets/images/brands/toyota.png', 'carname': 'Toyota'},
+  ];
+
+  final List<Map<String, String>> FeaturedInImages = [
+    {'image': 'assets/images/fearturedin/ANI.png', 'carname': 'ANI News'},
+    {
+      'image': 'assets/images/fearturedin/BINN.png',
+      'carname': 'British News Network'
+    },
+    {
+      'image': 'assets/images/fearturedin/BNN.png',
+      'carname': 'Big News Network'
+    },
+    {
+      'image': 'assets/images/fearturedin/BS.png',
+      'carname': 'Business Standards'
+    },
+    {
+      'image': 'assets/images/fearturedin/FNT.png',
+      'carname': 'France Network Times'
+    },
+    {
+      'image': 'assets/images/fearturedin/INDNN.png',
+      'carname': 'Indian News Network'
+    },
+    {'image': 'assets/images/fearturedin/LT.png', 'carname': 'Lokmat Times'},
+    {'image': 'assets/images/fearturedin/MD.png', 'carname': 'MD'},
+    {'image': 'assets/images/fearturedin/TP.png', 'carname': 'The Print'},
+    {'image': 'assets/images/fearturedin/UPN.png', 'carname': 'UP42 News'},
+    {
+      'image': 'assets/images/fearturedin/WNN.png',
+      'carname': 'World News Network'
+    },
+    {'image': 'assets/images/fearturedin/ZEE5.png', 'carname': 'ZEE5'},
+  ];
+
+  void _onScroll() {
+    setState(() {
+      indicatorPosition = _controller.offset;
+    });
+  }
+
+  @override
+  void initState() {
+    _controller.addListener(_onScroll);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.removeListener(_onScroll);
+    _controller.dispose();
+    super.dispose();
+  }
+
+  String selectedTab = 'Rent';
 
   @override
   Widget build(BuildContext context) {
@@ -57,112 +177,420 @@ class _HomePageState extends State<HomePage> {
                     return NoLocationWidget();
                   }
 
-                  final list = [Colors.white, Colors.white];
+                  //final list = [Colors.white, Colors.white];
                   return DefaultTabController(
                     length: AppData.Categories.length,
                     child: Scaffold(
-                      appBar: AppBar(
-                        flexibleSpace: Container(
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(colors: gradientColors),
+                      backgroundColor: Colors.black,
+                      appBar: PreferredSize(
+                        preferredSize: Size.fromHeight(80),
+                        child: AppBar(
+                          flexibleSpace: Container(
+                            color: Colors.black,
+                          ),
+                          automaticallyImplyLeading: false,
+                          titleSpacing: 0,
+                          title: Row(
+                            children: [
+                              SizedBox(
+                                height: 30,
+                              ),
+                              Container(
+                                margin: const EdgeInsets.only(left: 20.0),
+                                height: 100,
+                                width: 100,
+                                child: Image.asset(
+                                  height: 80,
+                                  width: 80,
+                                  'assets/images/guide/finallogo.png',
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                        actions: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: InkWell(
-                              onTap: () async => CommonFunctions.navigateTo(
-                                  context, LocationPicker()),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Row(
-                                    children: const [
-                                      Text(
-                                        'Location',
-                                        maxLines: 1,
-                                        style: TextStyle(
-                                            color: whiteColor,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 14),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    height: 5,
-                                  ),
-                                  Text(
-                                    CommonFunctions.getCityFromLocation(
-                                        snapshot.data!),
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(
-                                        color: whiteColor,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
                       ),
-                      drawer: Drawer(child: UserProfile()),
+                      endDrawer: Drawer(child: UserProfile()),
                       body: SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            Container(
-                              height: 25,
-                              decoration: BoxDecoration(
-                                gradient:
-                                    LinearGradient(colors: gradientColors),
-                              ),
-                            ),
-                            Stack(
-                              children: [
-                                Container(
-                                  height:
-                                      MediaQuery.of(context).size.height * .5,
-                                  decoration: BoxDecoration(
-                                      gradient: LinearGradient(
-                                          colors: gradientColors),
-                                      borderRadius: const BorderRadius.vertical(
-                                          bottom: Radius.circular(40))),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 20.0),
-                                  child: Column(
-                                    children: [
-                                      Padding(
-                                        padding: EdgeInsets.all(8),
-                                        child: bannerWidget(),
+                        child: Container(
+                          color: Colors.black,
+                          child: Column(
+                            children: [
+                              Container(
+                                color: Colors.black,
+                                child: Stack(
+                                  children: [
+                                    // ─── Background Video ─────────────────────────────────────────────
+                                    /*if (_videoController.value.isInitialized)
+                                                SizedBox.expand(
+                                                  child: FittedBox(
+                                                    fit: BoxFit.cover,
+                                                    child: SizedBox(
+                                                      width: _videoController.value.size.width,
+                                                      height: _videoController.value.size.height,
+                                                      child: VideoPlayer(_videoController),
+                                                    ),
+                                                  ),
+                                                )
+                                              else*/
+                                    Container(color: Colors.black),
+
+                                    SafeArea(
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 24, vertical: 16),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            // 1. Title + Subtitle
+                                            const Text('Your Ride. Your Way.',
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 28,
+                                                  fontWeight: FontWeight.bold,
+                                                )),
+                                            const SizedBox(height: 8),
+                                            const Text('Tap. Book. Drive.',
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 20,
+                                                    fontWeight:
+                                                        FontWeight.bold)),
+                                            const SizedBox(height: 14),
+                                            const Text(
+                                                'Self-drive rentals made seamless with Zymo.',
+                                                style: TextStyle(
+                                                  color: Colors.white70,
+                                                  fontSize: 14,
+                                                )),
+                                            const SizedBox(height: 36),
+
+                                            // 2. Smart badge
+                                            Container(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 6,
+                                                      horizontal: 12),
+                                              decoration: BoxDecoration(
+                                                color: Colors.white24,
+                                                borderRadius:
+                                                    BorderRadius.circular(20),
+                                              ),
+                                              child: const Text(
+                                                  '✨ Smart rentals, easy driving ✨',
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.w500)),
+                                            ),
+                                            const SizedBox(height: 24),
+
+                                            // 3. BOOK NOW tabs
+                                            const Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  vertical: 6, horizontal: 12),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
+                                                children: [
+                                                  Text('────────',
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: TextStyle(
+                                                          fontSize: 15,
+                                                          color: Colors.white,
+                                                          fontWeight:
+                                                              FontWeight.bold)),
+                                                  Text('BOOK NOW',
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: TextStyle(
+                                                          fontSize: 18,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color: Colors.white,
+                                                          letterSpacing: 1.2)),
+                                                  Text('────────',
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: TextStyle(
+                                                          fontSize: 15,
+                                                          color: Colors.white,
+                                                          fontWeight:
+                                                              FontWeight.bold)),
+                                                ],
+                                              ),
+                                            ),
+                                            const SizedBox(height: 8),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                'Rent',
+                                                'Subscribe',
+                                                'Buy'
+                                              ].map((label) {
+                                                return GestureDetector(
+                                                  onTap: () {
+                                                    if (label == 'Rent') {
+                                                      setState(() {
+                                                        selectedTab = label;
+                                                        isSelfDrive = true;
+                                                      });
+                                                    } else if (label ==
+                                                        'Subscribe') {
+                                                      setState(() {
+                                                        selectedTab = label;
+                                                        isSelfDrive = false;
+                                                      });
+                                                    }
+                                                    // No action on 'Buy'
+                                                  },
+                                                  child: Padding(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                        horizontal: 12),
+                                                    child: Text(
+                                                      label,
+                                                      style: TextStyle(
+                                                        color: selectedTab ==
+                                                                label
+                                                            ? Colors.white
+                                                            : Colors.white54,
+                                                        fontSize: 18,
+                                                        fontWeight:
+                                                            selectedTab == label
+                                                                ? FontWeight
+                                                                    .bold
+                                                                : FontWeight
+                                                                    .normal,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                );
+                                              }).toList(),
+                                            ),
+                                            const SizedBox(height: 24),
+                                            Container(
+                                              margin: EdgeInsets.symmetric(
+                                                  horizontal: 12),
+                                              decoration: BoxDecoration(
+                                                color: Colors.transparent,
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                                border: Border.all(
+                                                    color: Colors.white54,
+                                                    width: 1.2),
+                                              ),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 12,
+                                                      vertical: 14),
+                                              child: InkWell(
+                                                child: Row(
+                                                  children: [
+                                                    Icon(
+                                                        Icons
+                                                            .location_on_outlined,
+                                                        color: Colors.white70),
+                                                    const SizedBox(width: 12),
+                                                    Expanded(
+                                                      child: Text(
+                                                          CommonFunctions
+                                                              .getLocation(
+                                                                  snapshot
+                                                                      .data!),
+                                                          style:
+                                                              const TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontSize:
+                                                                      16)),
+                                                    ),
+                                                    const Icon(
+                                                        Icons.my_location),
+                                                  ],
+                                                ),
+                                                onTap: () async =>
+                                                    CommonFunctions.navigateTo(
+                                                        context,
+                                                        LocationPicker()),
+                                              ),
+                                            ),
+                                            /*Container(
+                                              color: Colors.white,
+                                              child: TextField(
+                                                decoration: InputDecoration(
+                                                  iconColor: Colors.white,
+                                                  suffixIcon: Icon(Icons.location_on_outlined),
+                                                  hintText: CommonFunctions.getLocation(snapshot.data!),
+                                                ),
+                                                onTap: () async => CommonFunctions.navigateTo(context, LocationPicker()),
+                                              ),
+                                            )*/
+/*
+                                            // 4. Location field
+                                            /*_buildField(
+                                              icon: Icons.location_on_outlined,
+                                              hint: 'Enter a location',
+                                            ),
+                                            const SizedBox(height: 12),
+
+                                            // 5. Start date picker
+                                            _buildField(
+                                              icon: Icons.calendar_today_outlined,
+                                              hint: 'May 24, 2025, 12:30 PM',
+                                              filledColor: Colors.yellow.shade100,
+                                            ),
+                                            const SizedBox(height: 12),
+
+                                            // 6. End date picker
+                                            _buildField(
+                                              icon: Icons.calendar_today_outlined,
+                                              hint: 'Select End Date',
+                                            ),*/
+                                            const SizedBox(height: 12),
+
+                                            // 7. Trip Duration
+                                            Padding(
+                                              padding: const EdgeInsets.symmetric(horizontal: 12),
+                                              child: Container(
+                                                width: double.infinity,
+                                                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                                                decoration: BoxDecoration(
+                                                  color: Colors.grey[800],
+                                                  borderRadius: BorderRadius.circular(12),
+                                                ),
+                                                child: const Column(
+                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  children: [
+                                                    Text(
+                                                      'Trip Duration',
+                                                      textAlign: TextAlign.center,
+                                                      style: TextStyle(fontSize: 16,color: Colors.white30, fontWeight: FontWeight.bold),
+                                                    ),
+                                                    Text(
+                                                      'Select both dates',
+                                                      textAlign: TextAlign.center,
+                                                      style: TextStyle(fontSize: 20,color: Colors.white),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+
+                                            const SizedBox(height: 16),
+
+                                            // 8. SEARCH button
+                                            Padding(
+                                              padding: const EdgeInsets.symmetric(horizontal: 12),
+                                              child: SizedBox(
+                                                width: double.infinity,
+                                                child: ElevatedButton(
+                                                  style: ElevatedButton.styleFrom(
+                                                    foregroundColor: Colors.black,
+                                                    backgroundColor: Colors.yellow.shade100,
+                                                    padding: const EdgeInsets.symmetric(vertical: 16),
+                                                    textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                                                  ),
+                                                  onPressed: () {
+                                                    // Your search logic
+                                                  },
+                                                  child: const Text('Search'),
+                                                ),
+                                              ),
+                                            ),*/
+                                          ],
+                                        ),
                                       ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(12.0),
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius:
-                                                BorderRadius.circular(15),
-                                          ),
-                                          padding: const EdgeInsets.all(8),
-                                          child: Row(
-                                            children: [
-                                              Expanded(
-                                                child: Container(
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Stack(
+                                children: [
+                                  /*Container(
+                                    height:
+                                    MediaQuery.of(context).size.height * .5,
+                                    decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                            colors: gradientColors),
+                                        borderRadius: const BorderRadius.vertical(
+                                            bottom: Radius.circular(40))),
+                                  ),*/
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20.0),
+                                    child: Column(
+                                      children: [
+                                        /*Padding(
+                                          padding: EdgeInsets.all(8),
+                                          child: bannerWidget(),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(12.0),
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
+                                            ),
+                                            padding: const EdgeInsets.all(8),
+                                            child: Row(
+                                              children: [
+                                                Expanded(
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                                15),
+                                                        gradient: LinearGradient(
+                                                            colors: isSelfDrive
+                                                                ? gradientColors
+                                                                : list)),
+                                                    child: InkWell(
+                                                      onTap: () {
+                                                        setState(() {
+                                                          isSelfDrive = true;
+                                                        });
+                                                      },
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets.all(
+                                                                18.0),
+                                                        child: Text(
+                                                          'For Hours Or Days',
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          style: isSelfDrive
+                                                              ? whiteTitleStyle
+                                                              : titleStyle,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  width: 5,
+                                                ),
+                                                Expanded(
+                                                    child: Container(
                                                   decoration: BoxDecoration(
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                               15),
                                                       gradient: LinearGradient(
-                                                          colors: isSelfDrive
+                                                          colors: !isSelfDrive
                                                               ? gradientColors
                                                               : list)),
                                                   child: InkWell(
                                                     onTap: () {
                                                       setState(() {
-                                                        isSelfDrive = true;
+                                                        isSelfDrive = false;
                                                       });
                                                     },
                                                     child: Padding(
@@ -170,316 +598,516 @@ class _HomePageState extends State<HomePage> {
                                                           const EdgeInsets.all(
                                                               18.0),
                                                       child: Text(
-                                                        'For Hours Or Days',
+                                                        'Monthly Rental',
                                                         textAlign:
                                                             TextAlign.center,
-                                                        style: isSelfDrive
+                                                        style: !isSelfDrive
                                                             ? whiteTitleStyle
                                                             : titleStyle,
                                                       ),
                                                     ),
                                                   ),
-                                                ),
-                                              ),
-                                              const SizedBox(
-                                                width: 5,
-                                              ),
-                                              Expanded(
-                                                  child: Container(
-                                                decoration: BoxDecoration(
+                                                )),
+                                              ],
+                                            ),
+                                          ),
+                                        ),*/
+                                        Consumer<CarProvider>(
+                                            builder: (BuildContext context,
+                                                    value, Widget? child) =>
+                                                Column(children: [
+                                                  Padding(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                        horizontal: 0.0),
+                                                    child: Column(
+                                                      children: [
+                                                        Card(
+                                                          color: Colors
+                                                              .transparent,
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(0.0),
+                                                            child:
+                                                                AnimatedSwitcher(
+                                                              duration:
+                                                                  const Duration(
+                                                                      milliseconds:
+                                                                          480),
+                                                              child:
+                                                                  KeyedSubtree(
+                                                                key: ValueKey<
+                                                                        bool>(
+                                                                    isSelfDrive),
+                                                                child: isSelfDrive
+                                                                    ? durationPicker(
+                                                                        context,
+                                                                        value)
+                                                                    : atDurationPicker(
+                                                                        context,
+                                                                        value),
+                                                              ),
+                                                              transitionBuilder:
+                                                                  (child,
+                                                                      animation) {
+                                                                return FadeTransition(
+                                                                    opacity:
+                                                                        animation,
+                                                                    child:
+                                                                        child);
+                                                              },
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        SizedBox(
+                                                          height: .01.sh,
+                                                        ),
+                                                        TripDurationWidget(
+                                                            duration: isSelfDrive
+                                                                ? value
+                                                                    .getTripDuration()
+                                                                : "30 Days"),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    height: .02.sh,
+                                                  ),
+                                                  SizedBox(
+                                                      height: .06.sh,
+                                                      child: value.isLoading
+                                                          ? spinkit
+                                                          : Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .symmetric(
+                                                                      horizontal:
+                                                                          8.0),
+                                                              child: AppButton(
+                                                                  color:
+                                                                      accentColor,
+                                                                  textSize: 20,
+                                                                  title: 'Search'
+                                                                      .toUpperCase(),
+                                                                  screenHeight:
+                                                                      1.sh,
+                                                                  function: () => isSelfDrive
+                                                                      ? CarFunctions()
+                                                                          .selfDriveNavigate(
+                                                                              context)
+                                                                      : CarFunctions()
+                                                                          .monthlyRentalNavigate(
+                                                                              context)),
+                                                            )),
+                                                  SizedBox(
+                                                    height: .01.sh,
+                                                  ),
+                                                  RecentSearches(
+                                                      provider: value)
+                                                ])),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: .01.sh,
+                              ),
+                              Container(
+                                padding: const EdgeInsets.all(12.0),
+                                /*
+                                decoration: BoxDecoration(
+                                    gradient:
+                                    LinearGradient(colors: gradientColors)),*/
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 40),
+                                      margin: const EdgeInsets.all(16),
+                                      decoration: BoxDecoration(
+                                        color: const Color(0xFF3A3A3A),
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 8.0),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: const [
+                                            FeatureItem(
+                                              icon: Icons.touch_app,
+                                              text: 'Compare and Choose',
+                                            ),
+                                            SizedBox(height: 40),
+                                            FeatureItem(
+                                              icon: Icons.directions_car,
+                                              text: 'Flexible Options',
+                                            ),
+                                            SizedBox(height: 40),
+                                            FeatureItem(
+                                              icon:
+                                                  Icons.account_balance_wallet,
+                                              text: 'Easy to Use',
+                                            ),
+                                            SizedBox(height: 40),
+                                            FeatureItem(
+                                                icon: Icons.local_shipping,
+                                                text:
+                                                    'Self PickUp Or Get it Delivered'),
+                                            SizedBox(height: 40),
+                                            FeatureItem(
+                                                icon: Icons.location_on,
+                                                text:
+                                                    '2000+ Locations in 59 Cities'),
+                                            SizedBox(height: 40),
+                                            FeatureItem(
+                                                icon: Icons.check_box_outlined,
+                                                text:
+                                                    'Select from Limited Or Unlimited Kms Packages'),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: .01.sh,
+                                    ),
+                                    CarouselSlider(
+                                        items: List.generate(
+                                            2,
+                                            (index) => Card(
+                                                  shape: RoundedRectangleBorder(
                                                     borderRadius:
                                                         BorderRadius.circular(
                                                             15),
-                                                    gradient: LinearGradient(
-                                                        colors: !isSelfDrive
-                                                            ? gradientColors
-                                                            : list)),
-                                                child: InkWell(
-                                                  onTap: () {
-                                                    setState(() {
-                                                      isSelfDrive = false;
-                                                    });
-                                                  },
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            18.0),
-                                                    child: Text(
-                                                      'Monthly Rental',
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      style: !isSelfDrive
-                                                          ? whiteTitleStyle
-                                                          : titleStyle,
+                                                  ),
+                                                  elevation: 5,
+                                                  child: ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15),
+                                                    child: Image.asset(
+                                                      "assets/icons/HomeIcons/hero_img_${index + 1}.jpg",
+                                                    ),
+                                                  ),
+                                                )),
+                                        options: CarouselOptions(
+                                          aspectRatio: 16 / 10,
+                                          autoPlay: true,
+                                          autoPlayInterval:
+                                              Duration(seconds: 3),
+                                          viewportFraction: 1,
+                                          enlargeFactor: .5,
+                                          enlargeCenterPage: true,
+                                        )),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                height: .01.sh,
+                              ),
+                              /*InkWell(
+                                onTap: () => CommonFunctions.navigateTo(
+                                    context, ReferralScreen()),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Card(
+                                    elevation: 4,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: CachedNetworkImage(
+                                          imageUrl:
+                                              "https://zymo.app/Imgs/img20.jpg"),
+                                    ),
+                                  ),
+                                ),
+                              ),*/
+                              const SizedBox(
+                                height: 12,
+                              ),
+                              Container(
+                                color: Colors.transparent,
+                                child: Column(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 12.0),
+                                      child: Text(
+                                        "Zymo Benefits".toUpperCase(),
+                                        style: bigTitleStyle.copyWith(
+                                            color: accentColor),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 12,
+                                    ),
+                                    ...items
+                                        .map((item) => Column(
+                                              children: [
+                                                BenefitBox(
+                                                  imagePath: item['image']!,
+                                                  text: item['text']!,
+                                                ),
+                                                const SizedBox(height: 24),
+                                              ],
+                                            ))
+                                        .toList(),
+                                    /*GridView(
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      gridDelegate:
+                                          const SliverGridDelegateWithFixedCrossAxisCount(
+                                              crossAxisCount: 2,
+                                              childAspectRatio: .9,
+                                              mainAxisSpacing: 1,
+                                              crossAxisSpacing: 1),
+                                      children: items.map((String imagePath) {
+                                        return Builder(
+                                          builder: (BuildContext context) {
+                                            return Image.asset(
+                                              imagePath,
+                                              fit: BoxFit.contain,
+                                            );
+                                          },
+                                        );
+                                      }).toList(),
+                                    ),*/
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 12,
+                              ),
+                              Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 20),
+                                child: ConstrainedBox(
+                                  constraints: BoxConstraints(
+                                    minHeight: 500,
+                                    // Minimum height to prevent overflow
+                                    maxHeight:
+                                        MediaQuery.of(context).size.height *
+                                            0.75, // Maximum height
+                                    maxWidth: 350, //
+                                  ),
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      /// Left Timeline with Indicator
+                                      SizedBox(
+                                        height: double.infinity,
+                                        // Take available height
+                                        width: 60,
+                                        child: Stack(
+                                          clipBehavior: Clip.none,
+                                          children: [
+                                            // Full height grey background line
+                                            Positioned.fill(
+                                              child: Center(
+                                                child: Container(
+                                                  width: 10,
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.grey[700],
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            12),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+
+                                            // Yellow progress line
+                                            Positioned(
+                                              top: 0,
+                                              bottom: (MediaQuery.of(context)
+                                                          .size
+                                                          .height *
+                                                      0.75) -
+                                                  (indicatorPosition / 3.15) -
+                                                  6,
+                                              left: 0,
+                                              right: 0,
+                                              child: Center(
+                                                child: Container(
+                                                  width: 10,
+                                                  decoration:
+                                                      const BoxDecoration(
+                                                    color: Colors.yellow,
+                                                    borderRadius:
+                                                        BorderRadius.vertical(
+                                                      top: Radius.circular(12),
+                                                      bottom: Radius.zero,
                                                     ),
                                                   ),
                                                 ),
-                                              )),
-                                            ],
+                                              ),
+                                            ),
+
+                                            // Scroll dot with proper positioning
+                                            Positioned(
+                                              top: (indicatorPosition / 3.15) -
+                                                  6,
+                                              left: 24,
+                                              child: Container(
+                                                width: 12,
+                                                height: 12,
+                                                decoration: BoxDecoration(
+                                                  color: Colors.yellow,
+                                                  shape: BoxShape.circle,
+                                                  border: Border.all(
+                                                    strokeAlign: BorderSide
+                                                        .strokeAlignOutside,
+                                                    color: Colors.yellow,
+                                                    width: 2,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+
+                                      /// Right Content
+                                      Expanded(
+                                        child: SizedBox(
+                                          height: double.infinity,
+                                          // Take available height
+                                          child: SingleChildScrollView(
+                                            controller: _controller,
+                                            child: Column(
+                                              children: steps.map((step) {
+                                                return Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 46.0,
+                                                          right: 16.0,
+                                                          left: 16.0,
+                                                          bottom: 20.0),
+                                                  child: Column(
+                                                    children: [
+                                                      Image.asset(
+                                                          step.imagePath),
+                                                      const SizedBox(
+                                                          height: 12),
+                                                      Text(
+                                                        step.title,
+                                                        style: const TextStyle(
+                                                          fontSize: 28,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color: Colors.white,
+                                                        ),
+                                                      ),
+                                                      const SizedBox(height: 8),
+                                                      Text(
+                                                        step.description,
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        style: const TextStyle(
+                                                          color: Colors.white70,
+                                                          fontSize: 18,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                );
+                                              }).toList(),
+                                            ),
                                           ),
                                         ),
                                       ),
-                                      Consumer<CarProvider>(
-                                          builder: (BuildContext context, value,
-                                                  Widget? child) =>
-                                              Column(children: [
-                                                Padding(
-                                                  padding: const EdgeInsets
-                                                      .symmetric(
-                                                      horizontal: 8.0),
-                                                  child: Column(
-                                                    children: [
-                                                      Card(
-                                                        shape:
-                                                            RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(15),
-                                                        ),
-                                                        child: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(8.0),
-                                                          child:
-                                                              AnimatedSwitcher(
-                                                            duration:
-                                                                const Duration(
-                                                                    milliseconds:
-                                                                        480),
-                                                            child: KeyedSubtree(
-                                                              key: ValueKey<
-                                                                      bool>(
-                                                                  isSelfDrive),
-                                                              child: isSelfDrive
-                                                                  ? durationPicker(
-                                                                      context,
-                                                                      value)
-                                                                  : atDurationPicker(
-                                                                      context,
-                                                                      value),
-                                                            ),
-                                                            transitionBuilder:
-                                                                (child,
-                                                                    animation) {
-                                                              return FadeTransition(
-                                                                  opacity:
-                                                                      animation,
-                                                                  child: child);
-                                                            },
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      SizedBox(
-                                                        height: .01.sh,
-                                                      ),
-                                                      TripDurationWidget(
-                                                          duration: isSelfDrive
-                                                              ? value
-                                                                  .getTripDuration()
-                                                              : "30 Days"),
-                                                    ],
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                  height: .02.sh,
-                                                ),
-                                                SizedBox(
-                                                    height: .06.sh,
-                                                    child: value.isLoading
-                                                        ? spinkit
-                                                        : Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .symmetric(
-                                                                    horizontal:
-                                                                        8.0),
-                                                            child: AppButton(
-                                                                color: accentColor,
-                                                                textSize: 20,
-                                                                title: 'Search'
-                                                                    .toUpperCase(),
-                                                                screenHeight:
-                                                                    1.sh,
-                                                                function: () => isSelfDrive
-                                                                    ? CarFunctions()
-                                                                        .selfDriveNavigate(
-                                                                            context)
-                                                                    : CarFunctions()
-                                                                        .monthlyRentalNavigate(
-                                                                            context)),
-                                                          )),
-                                                SizedBox(
-                                                  height: .01.sh,
-                                                ),
-                                                RecentSearches(provider: value)
-                                              ])),
                                     ],
                                   ),
                                 ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: .01.sh,
-                            ),
-                            Container(
-                              padding: const EdgeInsets.all(12.0),
-                              decoration: BoxDecoration(
-                                  gradient:
-                                      LinearGradient(colors: gradientColors)),
-                              child: Column(
-                                children: [
-                                  Text('Why $appName?'.toUpperCase(),
-                                      style: bigTitleStyle.copyWith(
-                                          color: Colors.white)),
-                                  SizedBox(
-                                    height: .01.sh,
-                                  ),
-                                  CarouselSlider(
-                                      items: List.generate(
-                                          4,
-                                          (index) => Card(
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(15),
-                                                ),
-                                                elevation: 5,
-                                                child: ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(15),
-                                                  child: Image.asset(
-                                                    "assets/icons/HomeIcons/${index + 1}.png",
-                                                  ),
-                                                ),
-                                              )),
-                                      options: CarouselOptions(
-                                        aspectRatio: 16 / 10,
-                                        autoPlay: true,
-                                        viewportFraction: 1,
-                                        enlargeFactor: .5,
-                                        enlargeCenterPage: true,
-                                      )),
-                                ],
                               ),
-                            ),
-                            SizedBox(
-                              height: .01.sh,
-                            ),
-                            InkWell(
-                              onTap: () => CommonFunctions.navigateTo(
-                                  context, ReferralScreen()),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Card(
-                                  elevation: 4,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: CachedNetworkImage(
-                                        imageUrl:
-                                            "https://zymo.app/Imgs/img20.jpg"),
-                                  ),
+                              const SizedBox(
+                                height: 42,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(12.0),
+                                child: Text(
+                                  'Brands Available'.toUpperCase(),
+                                  style: bigTitleStyle.copyWith(
+                                      color: accentColor),
                                 ),
                               ),
-                            ),
-                            const SizedBox(
-                              height: 12,
-                            ),
-                            Container(
-                              color: Colors.white,
-                              child: Column(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 12.0),
-                                    child: Text(
-                                      "Zymo Benefits".toUpperCase(),
-                                      style: bigTitleStyle.copyWith(
-                                          color: accentColor),
-                                    ),
-                                  ),
-                                  GridView(
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    shrinkWrap: true,
-                                    gridDelegate:
-                                        const SliverGridDelegateWithFixedCrossAxisCount(
-                                            crossAxisCount: 2,
-                                            childAspectRatio: .9,
-                                            mainAxisSpacing: 1,
-                                            crossAxisSpacing: 1),
-                                    children: items.map((String imagePath) {
-                                      return Builder(
-                                        builder: (BuildContext context) {
-                                          return Image.asset(
-                                            imagePath,
-                                            fit: BoxFit.contain,
-                                          );
-                                        },
-                                      );
-                                    }).toList(),
-                                  ),
+                              BrandImagesWidget(
+                                brandImages: _brandImages,
+                                reverse: false,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(12.0),
+                                child: Text(
+                                  'Featured In'.toUpperCase(),
+                                  style: bigTitleStyle.copyWith(
+                                      color: accentColor),
+                                ),
+                              ),
+                              BrandImagesWidget(
+                                brandImages: FeaturedInImages,
+                                reverse: true,
+                              ),
+                              const SizedBox(
+                                height: 30,
+                              ),
+                              const Padding(
+                                padding: EdgeInsets.symmetric(vertical: 8.0),
+                                child: Center(
+                                  child: Text("CONNECT WITH US",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18,
+                                          color: accentColor)),
+                                ),
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: <Widget>[
+                                  IconButton(
+                                      icon:
+                                          const Icon(FontAwesomeIcons.facebook),
+                                      onPressed: () {
+                                        launchUrl(Uri.parse(
+                                            'https://www.facebook.com/LetzRent.official/'));
+                                      }),
+                                  IconButton(
+                                      icon: const Icon(
+                                          FontAwesomeIcons.instagram),
+                                      onPressed: () {
+                                        launchUrl(Uri.parse(
+                                            'https://www.instagram.com/zymo.app'));
+                                      }),
+                                  IconButton(
+                                      icon:
+                                          const Icon(FontAwesomeIcons.linkedin),
+                                      onPressed: () {
+                                        launchUrl(Uri.parse(
+                                            'https://www.linkedin.com/company/letzrent/'));
+                                      }),
+                                  IconButton(
+                                      icon:
+                                          const Icon(FontAwesomeIcons.twitter),
+                                      onPressed: () {
+                                        launchUrl(Uri.parse(
+                                            'https://twitter.com/zymoapp'));
+                                      }),
+                                  IconButton(
+                                      icon:
+                                          const Icon(FontAwesomeIcons.youtube),
+                                      onPressed: () {
+                                        launchUrl(Uri.parse(
+                                            'https://www.youtube.com/channel/UCHUvrPwNYxw7bukWFjhNpag'));
+                                      })
                                 ],
                               ),
-                            ),
-                            const SizedBox(
-                              height: 12,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(12.0),
-                              child: Text(
-                                'Brands Available'.toUpperCase(),
-                                style: bigTitleStyle.copyWith(color: accentColor),
-                              ),
-                            ),
-                            BrandImagesWidget(),
-                            const Padding(
-                              padding: EdgeInsets.symmetric(vertical: 8.0),
-                              child: Center(
-                                child: Text("CONNECT WITH US",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18,
-                                        color: accentColor)),
-                              ),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: <Widget>[
-                                IconButton(
-                                    icon: const Icon(FontAwesomeIcons.facebook),
-                                    onPressed: () {
-                                      launchUrl(Uri.parse(
-                                          'https://www.facebook.com/LetzRent.official/'));
-                                    }),
-                                IconButton(
-                                    icon:
-                                        const Icon(FontAwesomeIcons.instagram),
-                                    onPressed: () {
-                                      launchUrl(Uri.parse(
-                                          'https://www.instagram.com/zymo.app'));
-                                    }),
-                                IconButton(
-                                    icon: const Icon(FontAwesomeIcons.linkedin),
-                                    onPressed: () {
-                                      launchUrl(Uri.parse(
-                                          'https://www.linkedin.com/company/letzrent/'));
-                                    }),
-                                IconButton(
-                                    icon: const Icon(FontAwesomeIcons.twitter),
-                                    onPressed: () {
-                                      launchUrl(Uri.parse(
-                                          'https://twitter.com/zymoapp'));
-                                    }),
-                                IconButton(
-                                    icon: const Icon(FontAwesomeIcons.youtube),
-                                    onPressed: () {
-                                      launchUrl(Uri.parse(
-                                          'https://www.youtube.com/channel/UCHUvrPwNYxw7bukWFjhNpag'));
-                                    })
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 12,
-                            )
-                          ],
+                              const SizedBox(
+                                height: 12,
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -488,6 +1116,141 @@ class _HomePageState extends State<HomePage> {
               }),
         );
       },
+    );
+  }
+}
+
+class BrandImagesWidget extends StatefulWidget {
+  final List<Map<String, String>> brandImages;
+  final bool reverse;
+
+  const BrandImagesWidget(
+      {Key? key, required this.brandImages, required this.reverse})
+      : super(key: key);
+
+  @override
+  _BrandImagesWidgetState createState() => _BrandImagesWidgetState();
+}
+
+class _BrandImagesWidgetState extends State<BrandImagesWidget> {
+  final ScrollController _scrollController = ScrollController();
+  late Timer _autoScrollTimer;
+  final double _scrollSpeed = 50.0; // pixels per second
+
+  @override
+  void initState() {
+    super.initState();
+    // start auto scrolling
+    _autoScrollTimer = Timer.periodic(Duration(milliseconds: 100), (_) {
+      if (_scrollController.hasClients) {
+        final maxScroll = _scrollController.position.maxScrollExtent;
+        final current = _scrollController.offset;
+        final delta = _scrollSpeed * 0.05;
+        // direction: forward = positive, reverse = negative
+        final direction = widget.reverse ? -1 : 1;
+        double target = current + delta * direction;
+
+        if (direction > 0 && target >= maxScroll) {
+          target = 0;
+        } else if (direction < 0 && target <= 0) {
+          target = maxScroll;
+        }
+
+        _scrollController.jumpTo(target);
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _autoScrollTimer.cancel();
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: widget.reverse ? 200 : 150,
+      child: ListView.builder(
+        controller: _scrollController,
+        scrollDirection: Axis.horizontal,
+        itemCount: widget.brandImages.length,
+        itemBuilder: (context, index) {
+          final item = widget.brandImages[index];
+          final imagePath = item['image']!;
+          final titleText = item['carname']!;
+          final imageWidget = Image.asset(
+            imagePath,
+            fit: BoxFit.contain,
+          );
+
+          return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: widget.reverse
+                  ? Column(
+                      children: [
+                        Container(
+                          height: 150,
+                          width: 200,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          padding: const EdgeInsets.all(8),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              imageWidget,
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Expanded(
+                          child: Text(
+                            titleText,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  : Column(
+                      children: [
+                        Container(
+                          height: 80,
+                          width: 80,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              imageWidget,
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Expanded(
+                          child: Text(
+                            titleText,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ));
+        },
+      ),
     );
   }
 }
@@ -508,7 +1271,7 @@ Future<void> voucherFunction(
   }
 }
 
-Widget bannerWidget() {
+/*Widget bannerWidget() {
   return ClipRRect(
     borderRadius: BorderRadius.circular(15),
     child: SizedBox(
@@ -545,7 +1308,7 @@ Widget bannerWidget() {
       ),
     ),
   );
-}
+}*/
 
 InkWell profilePictureWidget(BuildContext context, User user) {
   return InkWell(
@@ -566,7 +1329,7 @@ InkWell profilePictureWidget(BuildContext context, User user) {
   );
 }
 
-class GrowTile extends StatelessWidget {
+/*class GrowTile extends StatelessWidget {
   final IconData icon;
   final String title;
   final String body;
@@ -589,7 +1352,7 @@ class GrowTile extends StatelessWidget {
             ),
         child: Image.asset("assets/icons/HomeIcons/1.png"));
   }
-}
+}*/
 
 class NoUserError extends StatelessWidget {
   final Function() onLogin;
@@ -724,6 +1487,7 @@ class CategoryWidget extends StatelessWidget {
   }
 }
 
+/*
 class BrandImagesWidget extends StatelessWidget {
   const BrandImagesWidget({
     super.key,
@@ -769,7 +1533,9 @@ class BrandImagesWidget extends StatelessWidget {
     );
   }
 }
+*/
 
+/*
 class BannerWidget extends StatelessWidget {
   final List<Map<String, String>> images;
 
@@ -820,3 +1586,4 @@ class BannerWidget extends StatelessWidget {
     );
   }
 }
+*/

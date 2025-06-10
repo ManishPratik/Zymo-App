@@ -11,7 +11,7 @@ class MyBookings extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration:
-          BoxDecoration(gradient: LinearGradient(colors: gradientColors)),
+          BoxDecoration(color: Colors.grey[800]),
       child: Padding(
         padding: const EdgeInsets.all(28.0),
         child: Column(

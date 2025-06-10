@@ -500,7 +500,7 @@ class _SummaryPageState extends State<SummaryPage> {
     widget.carModel.actualPrice = snapshot.data?['actualPrice'];
     promoprovider.setInitialPrice(deliveryCharges +
         securityDeposit +
-        widget.carModel.finalPrice -
+        widget.carModel.finalPrice! -
         (promoprovider.discountPrice ?? 0));
     trackEvent();
   }

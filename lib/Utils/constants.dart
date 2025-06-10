@@ -22,17 +22,16 @@ import 'package:provider/provider.dart';
 import 'location_picker.dart';
 import 'widgets.dart';
 
-
-const Color accentColor   = Color(0xfff6f8a2);
-const Color darkBgColor   = Color(0xff212121);
-const Color darkSurface   = Color(0xff333333);
-const Color onDarkLight   = Colors.white70;
-const Color onDarkAccent  = accentColor;
+const Color accentColor = Color(0xfff6f8a2);
+const Color darkBgColor = Colors.black;
+const Color darkSurface = Color(0xff333333);
+const Color onDarkLight = Colors.white70;
+const Color onDarkAccent = accentColor;
 
 // 1️⃣ Accent + dark-surface gradient
 final List<Color> gradientColors = [
-  accentColor,   // #f6f8a2
-  darkSurface,   // #333333
+  accentColor, // #f6f8a2
+  darkSurface, // #333333
 ];
 
 const biBlackTitleStyle = TextStyle(
@@ -43,124 +42,10 @@ const biBlackTitleStyle = TextStyle(
 
 const whiteColor = Colors.white;
 
-/*
-
-final gradientColors = [
-  appColor,
-  Color(0xFF673AB7),
-  Color(0xFF9C27B0),
-];
-const appColor = Color(0xff9b08fe);
-const greyColor = Color(0xffFDF9F9);
-
-const blackColor = Colors.black54;
-*/
-
-enum DriveTypes { WC, SD, SUB, RT, AT, OW }
-
-enum AirportTransferTypes { pickup, drop }
-
-enum DocumentEnum { AF, AB, LF, LB }
-
-const String appName = 'Zymo';
-const String mixedPanelToken = 'd7786806f19ca334ba91dc03790a0c81';
-const List delhiNCR = ["gurugram", "gurgaon", "noida", "ghaziabad", "faridabad"];
-
-final DateFormat dateFormatter = DateFormat('dd MMM, yyyy');
-final DateFormat lowcarsDate = DateFormat('dd-MM-yyyy');
-final DateFormat myChoizeDate = DateFormat('dd-MM-yyyy HH:mm');
-final DateFormat lowcarsDate2 = DateFormat('yyyy-MM-dd');
-// final DateFormat timeFormatter = DateFormat.jm();
-const appStoreId = '1547829759';
-const String oops = 'Oops!';
-const String ContactNumber = '+919987933348';
-
-final playStoreLink =
-    'https://play.google.com/store/apps/details?id=com.letzrent.letzrentnew';
-final appStoreLink =
-    "https://apps.apple.com/in/app/letzrent-self-drive-car/id1547829759";
-final platformStoreLink = Platform.isIOS ? appStoreLink : playStoreLink;
-
-final String openWhatsApp = Platform.isIOS
-    ? "https://wa.me/$ContactNumber"
-    : "whatsapp://send?phone=$ContactNumber";
-const String EmailContact = 'hello@zymo.app';
-const bool zoomProd = true;
-const String zoomCarApiKey = zoomProd
-    ? 'b0Jhi0eTQg6SoHq9bcmLX6ldVlzM1OU9Wyuuurl3'
-    : 'DqRzg8il66Qz7kXUzlHy3EyKejdfAdM12Rl7rNC2';
-const String zoomCarId = zoomProd ? 'letzrent' : 'bw10lmnvbmmts56b29ty2fy';
-const String zoomCarPassword =
-    zoomProd ? 'd&8rv#G9o9pvZ8P>D}M9' : 'ZWIxZmQyNTIxN2Qx*YzkwNDc4Y2FjMzhh';
-const String zoomProductionUrl = 'https://partner-api.zoomcar.com/';
-const String zoomTestUrl = 'https://sandbox.zoomcartest.com/';
-const String zoomUrl = zoomProd ? zoomProductionUrl : zoomTestUrl;
-const myChoizeProd = true;
-const String myChoizeTestUrl =
-    'https://appuat.mychoize.com/OrixMobileAppThirdParty/';
-const String myChoizeProdUrl = 'https://app.mychoize.com/Orix.ThirdPartyLive/';
-const String myChoizeUrl = myChoizeProd ? myChoizeProdUrl : myChoizeTestUrl;
-const String myChoizeUserName = 'LETZRENT';
-const String myChoizeKey = 'LetzRent@321';
-
-const int referralAmount = 200;
-final DateFormat timeFormat = DateFormat("hh:mm a"); //"6:00 AM"
-
-const String sadEmoji = '😔';
-const String happyEmoji = '🥳';
-
-const minTransactionValue = 750;
-
-final deliveryWow = [
-  PickupModel(pickupAddress: 'Self Pickup', deliveryCharges: 0,),
-  PickupModel(
-      pickupAddress: '$homeDelivery (Upto 20 KMs)', deliveryCharges: 650,),
-];
-
-final coR = [
-  PickupModel(pickupAddress: 'Self Pickup: Free', deliveryCharges: 0,),
-  PickupModel(
-      pickupAddress: '$homeDelivery (Upto 15 KMs from pickup point)',
-      deliveryCharges: 500,),
-  PickupModel(
-      pickupAddress: '$homeDelivery (Upto 25 KMs from pickup point)',
-      deliveryCharges: 1000,),
-];
-const cashFreeAppId = '1155688286b537d8778413e98b865511';
-
-const users = 'users';
-const carsPaymentSuccessDetails = 'CarsPaymentSuccessDetails';
-
-const bengaluru = 'Bengaluru';
-
-const wowCarz = 'Wowcarz';
-const lowCars = 'LowCars';
-const zoomCar = 'ZoomCar';
-const karyana = 'Karyana';
-const kyp = 'Kyp';
-const myChoize = 'mychoize';
-const carOnRent = 'CarOnRent';
-const avis = 'avis';
-const ems = 'ems';
-const eco = 'eco';
-const cars24 = 'cars24';
-const orix = 'orix';
-const hrx = 'Hrx';
-const zt = "Zt";
-const Duration timeOutDuration = const Duration(seconds: 30);
-
-const twoSeconds = const Duration(seconds: 2);
-const sevenSeconds = const Duration(seconds: 7);
-
-
-
-const String homeDelivery = 'Delivery & Pickup';
-const String airportPickup = 'Airport Pickup';
-
 const contentStyle =
     TextStyle(fontSize: 15, color: Colors.black87, fontWeight: FontWeight.w600);
 const titleStyle =
-    TextStyle(fontSize: 14, color: accentColor, fontWeight: FontWeight.w600);
+    TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.w600);
 const whiteTitleStyle =
     TextStyle(fontSize: 14, color: Colors.white, fontWeight: FontWeight.w600);
 const smallText =
@@ -228,9 +113,125 @@ const biWhiteTitleStyle = TextStyle(
   fontWeight: FontWeight.bold,
 );
 
+enum DriveTypes { WC, SD, SUB, RT, AT, OW }
+
+enum AirportTransferTypes { pickup, drop }
+
+enum DocumentEnum { AF, AB, LF, LB }
+
+const String appName = 'Zymo';
+const String mixedPanelToken = 'd7786806f19ca334ba91dc03790a0c81';
+const List delhiNCR = [
+  "gurugram",
+  "gurgaon",
+  "noida",
+  "ghaziabad",
+  "faridabad"
+];
+
+final DateFormat dateFormatter = DateFormat('MMM dd, yyyy');
+final DateFormat lowcarsDate = DateFormat('dd-MM-yyyy');
+final DateFormat myChoizeDate = DateFormat('dd-MM-yyyy HH:mm');
+final DateFormat lowcarsDate2 = DateFormat('yyyy-MM-dd');
+// final DateFormat timeFormatter = DateFormat.jm();
+const appStoreId = '1547829759';
+const String oops = 'Oops!';
+const String ContactNumber = '+919987933348';
+
+final playStoreLink =
+    'https://play.google.com/store/apps/details?id=com.letzrent.letzrentnew';
+final appStoreLink =
+    "https://apps.apple.com/in/app/letzrent-self-drive-car/id1547829759";
+final platformStoreLink = Platform.isIOS ? appStoreLink : playStoreLink;
+
+final String openWhatsApp = Platform.isIOS
+    ? "https://wa.me/$ContactNumber"
+    : "whatsapp://send?phone=$ContactNumber";
+const String EmailContact = 'hello@zymo.app';
+const bool zoomProd = true;
+const String zoomCarApiKey = zoomProd
+    ? 'b0Jhi0eTQg6SoHq9bcmLX6ldVlzM1OU9Wyuuurl3'
+    : 'DqRzg8il66Qz7kXUzlHy3EyKejdfAdM12Rl7rNC2';
+const String zoomCarId = zoomProd ? 'letzrent' : 'bw10lmnvbmmts56b29ty2fy';
+const String zoomCarPassword =
+    zoomProd ? 'd&8rv#G9o9pvZ8P>D}M9' : 'ZWIxZmQyNTIxN2Qx*YzkwNDc4Y2FjMzhh';
+const String zoomProductionUrl = 'https://partner-api.zoomcar.com/';
+const String zoomTestUrl = 'https://sandbox.zoomcartest.com/';
+const String zoomUrl = zoomProd ? zoomProductionUrl : zoomTestUrl;
+const myChoizeProd = true;
+const String myChoizeTestUrl =
+    'https://appuat.mychoize.com/OrixMobileAppThirdParty/';
+const String myChoizeProdUrl = 'https://app.mychoize.com/Orix.ThirdPartyLive/';
+const String myChoizeUrl = myChoizeProd ? myChoizeProdUrl : myChoizeTestUrl;
+const String myChoizeUserName = 'LETZRENT';
+const String myChoizeKey = 'LetzRent@321';
+
+const int referralAmount = 200;
+final DateFormat timeFormat = DateFormat("hh:mm a"); //"6:00 AM"
+
+const String sadEmoji = '😔';
+const String happyEmoji = '🥳';
+
+const minTransactionValue = 750;
+
+final deliveryWow = [
+  PickupModel(
+    pickupAddress: 'Self Pickup',
+    deliveryCharges: 0,
+  ),
+  PickupModel(
+    pickupAddress: '$homeDelivery (Upto 20 KMs)',
+    deliveryCharges: 650,
+  ),
+];
+
+final coR = [
+  PickupModel(
+    pickupAddress: 'Self Pickup: Free',
+    deliveryCharges: 0,
+  ),
+  PickupModel(
+    pickupAddress: '$homeDelivery (Upto 15 KMs from pickup point)',
+    deliveryCharges: 500,
+  ),
+  PickupModel(
+    pickupAddress: '$homeDelivery (Upto 25 KMs from pickup point)',
+    deliveryCharges: 1000,
+  ),
+];
+const cashFreeAppId = '1155688286b537d8778413e98b865511';
+
+const users = 'users';
+const carsPaymentSuccessDetails = 'CarsPaymentSuccessDetails';
+
+const bengaluru = 'Bengaluru';
+
+const wowCarz = 'Wowcarz';
+const lowCars = 'LowCars';
+const zoomCar = 'ZoomCar';
+const karyana = 'Karyana';
+const kyp = 'Kyp';
+const myChoize = 'mychoize';
+const carOnRent = 'CarOnRent';
+const avis = 'avis';
+const ems = 'ems';
+const eco = 'eco';
+const cars24 = 'cars24';
+const orix = 'orix';
+const hrx = 'Hrx';
+const zt = "Zt";
+const Duration timeOutDuration = const Duration(seconds: 30);
+
+const twoSeconds = const Duration(seconds: 2);
+const sevenSeconds = const Duration(seconds: 7);
+
+const String homeDelivery = 'Delivery & Pickup';
+const String airportPickup = 'Airport Pickup';
+
 String contactNumber = ContactNumber;
 
 Mixpanel mixpanel = mixpanel;
+
 Future<void> initMixpanel() async {
   try {
     mixpanel = await Mixpanel.init(mixedPanelToken, trackAutomaticEvents: true);
@@ -287,7 +288,9 @@ Future buildShowDialog(BuildContext context, String title, String body) {
                   title: 'Okay',
                   function: () => Navigator.of(ctx).pop(),
                   screenHeight: 1.sh,
-                  screenWidth: 1.sw, textSize: 12, color: Colors.black,
+                  screenWidth: 1.sw,
+                  textSize: 12,
+                  color: Colors.black,
                 )
               ],
             ),
@@ -344,8 +347,10 @@ buildConfettiWidget(controller, Alignment alignment) {
       confettiController: controller,
       // blastDirection: blastDirection,
       blastDirectionality: BlastDirectionality.explosive,
-      maxBlastForce: 18, // set a lower max blast force
-      minBlastForce: 8, // set a lower min blast force
+      maxBlastForce: 18,
+      // set a lower max blast force
+      minBlastForce: 8,
+      // set a lower min blast force
       emissionFrequency: 1,
       colors: const [Colors.red, Colors.blue, Colors.yellow, Colors.green],
       // a lot of particles at once
@@ -401,7 +406,9 @@ Future voucherPopUp(BuildContext context, String title, String body) {
                         title: 'Okay',
                         function: () => Navigator.of(context).pop(),
                         screenHeight: 1.sh,
-                        screenWidth: 1.sw, textSize: 12, color: Colors.black,
+                        screenWidth: 1.sw,
+                        textSize: 12,
+                        color: Colors.black,
                       )
                     ],
                   ),
@@ -416,9 +423,55 @@ Future voucherPopUp(BuildContext context, String title, String body) {
 }
 
 Widget atDurationPicker(BuildContext context, CarProvider value) {
+  //final isSet = value.isDurationSet;
+
   return Padding(
     padding: const EdgeInsets.symmetric(vertical: 36.5),
     child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.transparent,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: Colors.white54, width: 1.2),
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 10),
+          child: InkWell(
+            onTap: () {
+              //value.setDuration(true);
+              CarFunctions().startDatePicker(context);
+            },
+            child: DurationTile(
+                //isSet: isSet,
+                title: 'Start date',
+                body: value.startDate != null
+                    ? dateFormatter.format(value.startDate)
+                    : 'Select date'),
+          ),
+        ),
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.transparent,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: Colors.white54, width: 1.2),
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 10),
+          child: InkWell(
+            onTap: () {
+              //value.setDuration(true);
+              CarFunctions().startTimePicker(context);
+            },
+            child: DurationTile(
+                //isSet: isSet,
+                title: 'Start time',
+                body: value.startTime != null
+                    ? value.startTime.format(context)
+                    : 'Select time'),
+          ),
+        ),
+      ],
+    ), /* Row(
       crossAxisAlignment: CrossAxisAlignment.end,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -439,7 +492,7 @@ Widget atDurationPicker(BuildContext context, CarProvider value) {
                   : 'Select time'),
         ),
       ],
-    ),
+    ),*/
   );
 }
 
@@ -452,6 +505,7 @@ class AppButton extends StatelessWidget {
     required this.title,
     required this.textSize,
     required this.color,
+    this.textColor
   });
 
   final double screenWidth;
@@ -460,6 +514,8 @@ class AppButton extends StatelessWidget {
   final Function function;
   final double textSize;
   final Color color;
+  final Color? textColor;
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -479,7 +535,7 @@ class AppButton extends StatelessWidget {
               maxLines: 1,
               style: TextStyle(
                   fontSize: textSize ?? 16,
-                  color: Colors.white,
+                  color: textColor ?? Colors.black,
                   fontWeight: FontWeight.w600),
             ),
           ),
@@ -489,20 +545,125 @@ class AppButton extends StatelessWidget {
   }
 }
 
-Padding durationPicker(BuildContext context, CarProvider value) {
+Widget durationPicker(BuildContext context, CarProvider value) {
   final carFuncs = CarFunctions();
+  //final isSet = value.isDurationSet;
 
-  return Padding(
-    padding: const EdgeInsets.all(4.0),
-    child: Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  return Column(
+    children: [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.transparent,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: Colors.white54, width: 1.2),
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 10),
+            child: InkWell(
+              onTap: () {
+                //value.setDuration(true);
+                carFuncs.startDatePicker(context);
+              },
+              child: DurationTile(
+                  //isSet: isSet,
+                  title: 'Start Date',
+                  body: value.startDate != null
+                      ? dateFormatter.format(value.startDate)
+                      : 'Select Date'),
+            ),
+          ),
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.transparent,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: Colors.white54, width: 1.2),
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 10),
+            child: InkWell(
+                onTap: () {
+                  //value.setDuration(true);
+                  CarFunctions().startTimePicker(context);
+                },
+                child: DurationTile(
+                  //isSet: isSet,
+                  title: 'Start Time',
+                  body: value.startTime != null
+                      ? value.startTime.format(context).toString()
+                      : 'Select Time',
+                )),
+          ),
+        ],
+      ),
+      const SizedBox(
+        height: 20,
+      ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.transparent,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: Colors.white54, width: 1.2),
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 10),
+            child: InkWell(
+                onTap: () {
+                  //value.setDuration(true);
+                  carFuncs.endDatePicker(context);
+                },
+                child: DurationTile(
+                  title: 'End Date',
+                  body: value.endDate != null
+                      ? dateFormatter.format(value.endDate)
+                      : 'Select Date',
+                  // isSet: isSet
+                )),
+          ),
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.transparent,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: Colors.white54, width: 1.2),
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 10),
+            child: InkWell(
+              onTap: () {
+                //value.setDuration(true);
+                CarFunctions().endTimePicker(context);
+              },
+              child: DurationTile(
+                // isSet: isSet,
+                title: 'End Time',
+                body: value.endTime != null
+                    ? value.endTime.format(context).toString()
+                    : 'Select Time',
+              ),
+            ),
+          ),
+        ],
+      ),
+      const SizedBox(
+        height: 20,
+      ),
+      /*Container(
+        decoration: BoxDecoration(
+          color: accentColor,
+          borderRadius: BorderRadius.circular(12),
+          */ /*border: Border.all(
+              color: Colors.white54,
+              width: 1.2),*/ /*
+        ),
+        height: 60,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            // Icon(
-            //   Icons.arrow_drop_down_circle_outlined,
-            //   color: Colors.blue,
-            // ),
+            Icon(
+              Icons.calendar_today_outlined,
+              color: Colors.black,
+            ),
             InkWell(
                 onTap: () => carFuncs.startDatePicker(context),
                 child: DurationTile(
@@ -521,16 +682,23 @@ Padding durationPicker(BuildContext context, CarProvider value) {
             ),
           ],
         ),
-        Divider(
-          height: 20,
+      ),
+      SizedBox(
+        height: 20,
+      ),
+      Container(
+        decoration: BoxDecoration(
+          color: accentColor,
+          borderRadius: BorderRadius.circular(12),
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        height: 55,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Icon(
-            //   Icons.location_on,
-            //   color: Colors.green,
-            // ),
+            Icon(
+              Icons.calendar_today_outlined,
+              color: Colors.black,
+            ),
             InkWell(
               onTap: () => carFuncs.endDatePicker(context),
               child: DurationTile(
@@ -549,9 +717,9 @@ Padding durationPicker(BuildContext context, CarProvider value) {
               ),
             ),
           ],
-        )
-      ],
-    ),
+        ),
+      )*/
+    ],
   );
 }
 
@@ -576,7 +744,9 @@ Future<dynamic> warningPopUp(BuildContext context, String title, String body) {
                     title: 'Okay',
                     function: () => Navigator.of(context).pop(),
                     screenHeight: 1.sh,
-                    screenWidth: 1.sw, textSize: 12, color: Colors.black,
+                    screenWidth: 1.sw,
+                    textSize: 12,
+                    color: Colors.black,
                   )
                 ],
               ),
@@ -620,8 +790,8 @@ class PickLocationWidget extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text('Your Location', maxLines: 1,
-                            style: whiteTitleStyle),
+                        Text('Your Location',
+                            maxLines: 1, style: whiteTitleStyle),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -648,6 +818,7 @@ class PickLocationWidget extends StatelessWidget {
     );
   }
 }
+
 class AllDocumentsWidget extends StatelessWidget {
   final DocumentModel? documents; // Make documents nullable for safety
 
@@ -728,8 +899,6 @@ class AllDocumentsWidget extends StatelessWidget {
   }
 }
 
-
-
 Future<File?> pickImage(ImageSource source) async {
   final picker = ImagePicker();
   final selected =
@@ -741,7 +910,8 @@ Future<File?> pickImage(ImageSource source) async {
   }
 }
 
-Future<String?> uploadFunction(File file, String name, BuildContext context) async {
+Future<String?> uploadFunction(
+    File file, String name, BuildContext context) async {
   final FirebaseStorage storage = FirebaseStorage.instance;
   final User? user = Auth().getCurrentUser();
   final String filePath = 'userImages/${user?.uid}/${name}.png';
@@ -770,7 +940,9 @@ class NoteWidget extends StatelessWidget {
     super.key,
     required this.text,
   });
+
   final String text;
+
   @override
   Widget build(BuildContext context) {
     return Container(

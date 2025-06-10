@@ -95,7 +95,7 @@ class CarModel {
   double? weekendprice;
   dynamic finalDiscount;
   double? actualPrice;
-  var finalPrice;
+  double? finalPrice;
   String? drive;
   dynamic extraKmCharge;
   int? extraHrCharge;

@@ -36,11 +36,10 @@ class _UserBookingScreenState extends State<UserBookingScreen> {
   int pickupIndex = 0;
   final DateTime now = DateTime.now();
 
-
   autoFillData(User user) {
     firebaseServices.getUserDetails(user.uid).then((value) {
       street1Controller.text = value!.street1;
-      street2Controller.text = value!.street2;
+      street2Controller.text = value.street2;
       cityController.text = value.city;
       nameController.text = value.name;
       emailController.text = value.email;
@@ -60,7 +59,8 @@ class _UserBookingScreenState extends State<UserBookingScreen> {
   final TextEditingController pinCodeController = TextEditingController();
   final TextEditingController flightNumberController = TextEditingController();
   final _form = GlobalKey<FormState>();
-  final slider.CarouselSliderController _controller = slider.CarouselSliderController();
+  final slider.CarouselSliderController _controller =
+      slider.CarouselSliderController();
   late DateTime _dob;
   bool isAdvancePay = true;
   int selected = 0;
@@ -69,10 +69,7 @@ class _UserBookingScreenState extends State<UserBookingScreen> {
   @override
   Widget build(BuildContext context) {
     final routeArgs =
-    ModalRoute
-        .of(context)
-        ?.settings
-        .arguments as Map<dynamic, dynamic>;
+        ModalRoute.of(context)?.settings.arguments as Map<dynamic, dynamic>;
     final CarModel carModel = routeArgs['carModel'];
     final DriveModel model = routeArgs['model'];
     final List<String> details = routeArgs['details'];
@@ -90,7 +87,7 @@ class _UserBookingScreenState extends State<UserBookingScreen> {
             .toStringAsFixed(0),
         carModel.vendor!.advancePay!);
     final double payableAmount =
-        carModel.finalPrice - double.parse(advancePayPrice);
+        carModel.finalPrice! - double.parse(advancePayPrice);
 
     final bool isZoomCar = carModel.vendor!.name == zoomCar;
 
@@ -106,171 +103,192 @@ class _UserBookingScreenState extends State<UserBookingScreen> {
       'End time': '${model.endtime} ${model.endDate}',
     });
     final selectedPickup =
-    carModel.pickups != null ? carModel.pickups![selected] : null;
+        carModel.pickups != null ? carModel.pickups![selected] : null;
 
     return SafeArea(
       bottom: false,
       child: Scaffold(
-          backgroundColor: darkBgColor,
-          body: StreamBuilder<User?>(
-              stream: FirebaseAuth.instance.userChanges(),
-              builder: (ctx, snapshot) {
-                final user = snapshot.data;
-                autoFillData(user!);
-                return ListView(children: <Widget>[
-                  Row(
+        backgroundColor: darkBgColor,
+        body: StreamBuilder<User?>(
+          stream: FirebaseAuth.instance.userChanges(),
+          builder: (ctx, snapshot) {
+            final hasUser =
+                snapshot.connectionState == ConnectionState.active &&
+                    snapshot.hasData &&
+                    snapshot.data != null;
+
+            final user = hasUser ? snapshot.data! : null;
+
+            if (user != null) {
+              autoFillData(user);
+            }
+
+            return ListView(
+              children: <Widget>[
+                Row(
+                  children: [
+                    IconButton(
+                      icon: const Icon(
+                        Icons.arrow_back,
+                        color: accentColor,
+                      ),
+                      onPressed: () => Navigator.pop(context),
+                    )
+                  ],
+                ),
+                if ((carModel.multiImages?.isEmpty ?? true))
+                  carImage(carModel.imageUrl)
+                else
+                  Stack(
+                    alignment: AlignmentDirectional.center,
                     children: [
-                      IconButton(
-                        icon: const Icon(Icons.arrow_back),
-                        onPressed: () => Navigator.pop(context),
-                      )
+                      CarouselSlider(
+                        carouselController: _controller,
+                        items: carModel.multiImages!
+                            .map(
+                              (e) => CachedNetworkImage(
+                                imageUrl: e,
+                                fit: BoxFit.fitWidth,
+                                placeholder: (context, _) => const Image(
+                                  image: AssetImage(
+                                      'assets/images/guide/finallogo.png'),
+                                ),
+                              ),
+                            )
+                            .toList(),
+                        options: CarouselOptions(
+                          viewportFraction: 1,
+                          autoPlay: true,
+                          autoPlayInterval: const Duration(seconds: 3),
+                        ),
+                      ),
+                      /*Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.white54,
+                            ),
+                            child: IconButton(
+                              onPressed: () => _controller.previousPage(
+                                duration: const Duration(milliseconds: 300),
+                                curve: Curves.easeInOut,
+                              ),
+                              icon: const Icon(Icons.chevron_left),
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () => _controller.nextPage(
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeInOut,
+                            ),
+                            icon: const Icon(Icons.chevron_right),
+                          )
+                        ],
+                      )*/
                     ],
                   ),
-                  if (carModel.multiImages!.isEmpty ?? true)
-                    carImage(carModel.imageUrl)
-                  else
-                    Stack(
-                      alignment: AlignmentDirectional.center,
-                      children: [
-                        CarouselSlider(
-                          //carouselController: _pageController,
-                          items: carModel.multiImages!
-                              .map(
-                                (e) =>
-                                CachedNetworkImage(
-                                  imageUrl: e,
-
-                                  fit: BoxFit.fitWidth,
-                                  placeholder: (context, ok) =>
-                                  const Image(
-                                      image: AssetImage(
-                                          'assets/images/finallogo.png')),
-                                  //      ),
-                                ),
-                          )
-                              .toList(),
-                          options: CarouselOptions(
-                            viewportFraction: 1,
-                            autoPlay: true,
-                            autoPlayInterval: const Duration(seconds: 3),
+                carDetails(carModel, model, context, details),
+                if ((carModel.pickups?.isNotEmpty ?? false)) ...[
+                  SizedBox(height: .01.sh),
+                  Container(
+                    color: accentColor,
+                    child: Padding(
+                      padding: const EdgeInsets.all(14.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Pickup/Drop Locations (${carModel.pickups!.length})',
+                            style: largeBlackStyle,
                           ),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.white54,
-                              ),
-                              child: IconButton(
-                                  onPressed: () =>
-                                      _pageController?.previousPage(
-                                        duration: Duration(seconds: 300),
-                                        curve: Curves.easeInOut,),
-                                  icon: Icon(
-                                    Icons.chevron_left,
-                                  )),
+                          SizedBox(height: 5,),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.black,
+                              borderRadius: BorderRadius.circular(30),
+                              border: Border.all(width: 0.8, style: BorderStyle.solid, color: Colors.black),
                             ),
-                            IconButton(
-                                onPressed: () =>
-                                    _pageController?.previousPage(
-                                      duration: Duration(seconds: 300),
-                                      curve: Curves.easeInOut,),
-                                icon: Icon(
-                                  Icons.chevron_right,
-                                ))
-                          ],
-                        )
-                      ],
-                    ),
-                  carDetails(
-                    carModel,
-                    model,
-                    context,
-                    details,
-                  ),
-                  if (carModel.pickups!.isNotEmpty ?? false) ...[
-                    SizedBox(height: .01.sh),
-                    Container(
-                        color: Colors.white,
-                        child: Padding(
-                            padding: const EdgeInsets.all(14.0),
-                            child: Column(
+                            child: ListTile(
+                              onTap: () async {
+                                final lo =
+                                    await openLocationSelector(carModel.pickups!);
+                                if (lo != null) {
+                                  setState(() {
+                                    carModel.pickUpAndDrop = lo;
+                                  });
+                                }
+                              },
+                              title: Text(
+                                selectedPickup?.pickupAddress ?? '',
+                                style: TextStyle(fontSize: 15, color: accentColor, fontWeight: FontWeight.w600),
+                              ),
+                              subtitle: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                      'Pickup/Drop Locations (${carModel.pickups!
-                                          .length})',
-                                      style: largeBlackStyle),
-                                  ListTile(
-                                    onTap: () async {
-                                      final lo = await openLocationSelector(
-                                          carModel.pickups!);
-                                      if (lo != null)
-                                        setState(() {
-                                          carModel.pickUpAndDrop = lo;
-                                        });
-                                    },
-                                    title: Text(
-                                        '${selectedPickup?.pickupAddress}',
-                                        style: contentStyle),
-                                    subtitle: Column(
-                                      crossAxisAlignment:
-                                      CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                            '${selectedPickup
-                                                ?.distanceFromUser} KMs away',
-                                            style: itleStyle),
-                                        Text(
-                                            selectedPickup?.deliveryCharges == 0
-                                                ? 'Free'
-                                                : '$rupeeSign${selectedPickup
-                                                ?.deliveryCharges}',
-                                            style: titleStyle),
-                                      ],
+                                    '${selectedPickup?.distanceFromUser ?? '--'} KMs away',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: accentColor,
+                                      fontWeight: FontWeight.w600,
                                     ),
-                                    trailing:
-                                    Icon(Icons.chevron_right_outlined),
-                                  )
-                                ]))),
-                  ],
-                  SizedBox(
-                    height: .01.sh,
+                                  ),
+                                  Text(
+                                    selectedPickup?.deliveryCharges == 0
+                                        ? 'Free'
+                                        : '$rupeeSign${selectedPickup?.deliveryCharges ?? '--'}',
+                                    style: TextStyle(fontSize: 14, color: accentColor, fontWeight: FontWeight.w600),
+                                  ),
+                                ],
+                              ),
+                              trailing: const Icon(Icons.chevron_right_outlined, color: accentColor,),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
                   ),
-                  if (!isAdvancePay) rentBreakdown(context, carModel),
-                  SizedBox(
-                    height: .01.sh,
-                  ),
-                  !snapshot.hasData
-                      ? Padding(
+                ],
+                SizedBox(height: .01.sh),
+                if (!isAdvancePay) rentBreakdown(context, carModel),
+                SizedBox(height: .01.sh),
+                if (!hasUser)
+                  Padding(
                     padding: const EdgeInsets.all(14.0),
                     child: ElevatedButton.icon(
-                        label: Text("Proceed"),
-                        icon: Icon(Icons.chevron_right),
-                        onPressed: () async {
-                          await CommonFunctions.navigateToSignIn(context);
-                          setState(() {});
-                        }),
+                      label: const Text("Proceed", style: TextStyle(fontSize: 15, color: Colors.black, fontWeight: FontWeight.w600),),
+                      icon: const Icon(Icons.chevron_right, color: Colors.black,),
+                      onPressed: () async {
+                        await CommonFunctions.navigateToSignIn(context);
+                        setState(() {});
+                      },
+                    ),
                   )
-                      : form(
-                      context,
-                      isAdvancePay
-                          ? double.parse(advancePayPrice)
-                          : payableAmount,
-                      carModel,
-                      model,
-                      isChauffeur,
-                      isZoomCar,
-                      selectedPickup!,
-                      user)
-                ]);
-              })),
+                else
+                  form(
+                    context,
+                    isAdvancePay
+                        ? double.parse(advancePayPrice)
+                        : payableAmount,
+                    carModel,
+                    model,
+                    isChauffeur,
+                    isZoomCar,
+                    selectedPickup!,
+                    user!,
+                  ),
+              ],
+            );
+          },
+        ),
+      ),
     );
   }
 
-  Future<void> _saveForm(CarModel carModel,
+  Future<void> _saveForm(
+      CarModel carModel,
       DriveModel model,
       UserModel userModel,
       double balance,
@@ -287,14 +305,13 @@ class _UserBookingScreenState extends State<UserBookingScreen> {
 
     if ((model.drive == DriveTypes.SD || model.drive == DriveTypes.SUB)) {
       final int minAge =
-      carModel.vendor!.name == wowCarz || carModel.vendor!.name == myChoize
-          ? 21
-          : 18;
+          carModel.vendor!.name == wowCarz || carModel.vendor!.name == myChoize
+              ? 21
+              : 18;
       final plusMinAge = DateTime(_dob.year + minAge, _dob.month, _dob.day);
       if (plusMinAge.isAfter(now)) {
         buildShowDialog(context, 'Oops!',
-            "Driver's age should be above $minAge years for ${carModel.vendor!
-                .name} bookings");
+            "Driver's age should be above $minAge years for ${carModel.vendor!.name} bookings");
         return;
       }
     }
@@ -321,11 +338,11 @@ class _UserBookingScreenState extends State<UserBookingScreen> {
       carModel.pickUpAndDrop = carModel.pickups![selected].pickupAddress;
       carModel.locationId = carModel.pickups![selected].locationId;
     }
-    final double finalPrice = carModel.finalPrice +
+    final double finalPrice = carModel.finalPrice! +
         (carModel.vendor!.securityDeposit ?? 0) +
         (carModel.deliveryCharges ?? 0);
     final CarProvider promoprovider =
-    Provider.of<CarProvider>(context, listen: false);
+        Provider.of<CarProvider>(context, listen: false);
     promoprovider.setInitialPrice(
         isAdvancePay ? balance : double.parse(finalPrice.toStringAsFixed(2)));
     final double balanceAmount = isAdvancePay
@@ -341,17 +358,18 @@ class _UserBookingScreenState extends State<UserBookingScreen> {
     );
   }
 
-  void navigateToPromo(CarModel carModel,
-      UserModel userModel,
-      DriveModel model,) {
+  void navigateToPromo(
+    CarModel carModel,
+    UserModel userModel,
+    DriveModel model,
+  ) {
     Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) =>
-            SummaryPage(
-                carModel: carModel, model: model, userModel: userModel)));
+        builder: (context) => SummaryPage(
+            carModel: carModel, model: model, userModel: userModel)));
   }
 
-  Future<void> addUserDataToFirestore(UserModel userModel, CarModel carModel,
-      DriveModel model) async {
+  Future<void> addUserDataToFirestore(
+      UserModel userModel, CarModel carModel, DriveModel model) async {
     final Map<String, dynamic> data = {
       'FirstName': userModel.name,
       'Email': userModel.email,
@@ -435,7 +453,7 @@ class _UserBookingScreenState extends State<UserBookingScreen> {
         width: .8.sw,
         fit: BoxFit.fitWidth,
         placeholder: (context, ok) =>
-        const Image(image: AssetImage('assets/images/finallogo.png')),
+            const Image(image: AssetImage('assets/images/finallogo.png')),
         //      ),
       ),
     );
@@ -445,8 +463,9 @@ class _UserBookingScreenState extends State<UserBookingScreen> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Card(
+        color: accentColor,
           shape:
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
           child: SizedBox(
             width: 1.sw,
             child: Padding(
@@ -457,15 +476,18 @@ class _UserBookingScreenState extends State<UserBookingScreen> {
                     Text('Base Fare', style: titleStyle),
                     if (carModel.finalDiscount > carModel.finalPrice)
                       Text(
-                          '$rupeeSign${carModel.finalDiscount.toStringAsFixed(
-                              0)}',
+                          '$rupeeSign${carModel.finalDiscount.toStringAsFixed(0)}',
                           style: TextStyle(
                               fontSize: 14,
                               color: Colors.black54,
                               fontWeight: FontWeight.w600,
                               decoration: TextDecoration.lineThrough)),
-                    Text('$rupeeSign${carModel.finalPrice.toStringAsFixed(0)}',
-                        style: purpleLargeStyle),
+                    Text('$rupeeSign${carModel.finalPrice!.toStringAsFixed(0)}',
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w600,
+                        )),
                     const SizedBox(height: 10),
                   ],
                 ],
@@ -475,12 +497,14 @@ class _UserBookingScreenState extends State<UserBookingScreen> {
     );
   }
 
-  Widget advancePayWidget(bool isChauffeur,
-      double _advancePayPercentage,
-      double _discountprice,
-      double _price,
-      double payableAmount,
-      String advancePayPrice,) {
+  Widget advancePayWidget(
+    bool isChauffeur,
+    double _advancePayPercentage,
+    double _discountprice,
+    double _price,
+    double payableAmount,
+    String advancePayPrice,
+  ) {
     return Container(
       color: Colors.white,
       child: Padding(
@@ -520,8 +544,7 @@ class _UserBookingScreenState extends State<UserBookingScreen> {
                 ),
             if (isAdvancePay) ...[
               Text(
-                  'Paying now: $rupeeSign$advancePayPrice Balance: $rupeeSign${payableAmount
-                      .toStringAsFixed(0)}',
+                  'Paying now: $rupeeSign$advancePayPrice Balance: $rupeeSign${payableAmount.toStringAsFixed(0)}',
                   style: contentStyle),
             ]
           ],
@@ -530,7 +553,8 @@ class _UserBookingScreenState extends State<UserBookingScreen> {
     );
   }
 
-  Widget form(BuildContext context,
+  Widget form(
+      BuildContext context,
       double payableAmount,
       CarModel carModel,
       DriveModel model,
@@ -555,9 +579,8 @@ class _UserBookingScreenState extends State<UserBookingScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    if ((selectedPickup.pickupAddress!
-                        .contains(homeDelivery) ??
-                        true) ||
+                    if ((selectedPickup.pickupAddress!.contains(homeDelivery) ??
+                            true) ||
                         carModel.vendor!.name == myChoize) ...[
                       const Center(
                           child: Text("Enter Details", style: largeBlackStyle)),
@@ -703,7 +726,7 @@ class _UserBookingScreenState extends State<UserBookingScreen> {
                       if (carModel.vendor!.name == myChoize)
                         NoteWidget(
                           text:
-                          'Note - \nMyChoize insists on local city documents.',
+                              'Note - \nMyChoize insists on local city documents.',
                         ),
                     const Divider(color: Colors.transparent),
                     if (carModel.vendor!.name == wowCarz ||
@@ -711,7 +734,7 @@ class _UserBookingScreenState extends State<UserBookingScreen> {
                         carModel.vendor!.name == lowCars)
                       NoteWidget(
                           text:
-                          'Please Note: Driving License Should Be Atleast 1 Year Old.'),
+                              'Please Note: Driving License Should Be Atleast 1 Year Old.'),
                     if (!isChauffeur && !isZoom)
                       AllDocumentsWidget(documents: documents),
                     const Divider(color: Colors.transparent),
@@ -719,57 +742,52 @@ class _UserBookingScreenState extends State<UserBookingScreen> {
                         child: RichText(
                             text: TextSpan(
                                 style: TextStyle(
-                                    color: Theme
-                                        .of(context)
+                                    color: Theme.of(context)
                                         .colorScheme
                                         .secondary),
                                 children: [
-                                  const TextSpan(
-                                    text: 'By clicking on proceed, I agree with ',
-                                  ),
-                                  TextSpan(
-                                      text: '$appName terms and conditions ',
-                                      style: const TextStyle(
-                                          color: Colors.blue),
-                                      recognizer: TapGestureRecognizer()
-                                        ..onTap = () {
-                                          launchUrl(Uri.parse(zymoTerms));
-                                        }),
-                                  const TextSpan(text: ' and '),
-                                  TextSpan(
-                                      text:
-                                      '${carModel.vendor!.name!
-                                          .toUpperCase()} terms and conditions. ',
-                                      style: const TextStyle(
-                                          color: Colors.blue),
-                                      recognizer: TapGestureRecognizer()
-                                        ..onTap = () {
-                                          launchUrl(Uri.parse(
-                                              CarServices.termsAndConditions(
-                                                  carModel.vendor!.name!)));
-                                        }),
-                                  const TextSpan(
-                                      text: 'Thank you for trusting our service.'),
-                                ]))),
+                          const TextSpan(
+                            text: 'By clicking on proceed, I agree with ',
+                          ),
+                          TextSpan(
+                              text: '$appName terms and conditions ',
+                              style: const TextStyle(color: Colors.blue),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  launchUrl(Uri.parse(zymoTerms));
+                                }),
+                          const TextSpan(text: ' and '),
+                          TextSpan(
+                              text:
+                                  '${carModel.vendor!.name!.toUpperCase()} terms and conditions. ',
+                              style: const TextStyle(color: Colors.blue),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  launchUrl(Uri.parse(
+                                      CarServices.termsAndConditions(
+                                          carModel.vendor!.name!)));
+                                }),
+                          const TextSpan(
+                              text: 'Thank you for trusting our service.'),
+                        ]))),
                     SizedBox(
                       height: .02.sh,
                     ),
                     Center(
                         child: AppButton(
-                          screenHeight: 1.sh,
-                          function: () =>
-                              proceedToPromoPage(
-                                  model,
-                                  context,
-                                  carModel,
-                                  payableAmount,
-                                  documents,
-                                  !isChauffeur && !isZoom,
-                                  user),
-                          title: 'Proceed',
-                          textSize: 12,
-                          color: Colors.black,
-                        ))
+                      screenHeight: 1.sh,
+                      function: () => proceedToPromoPage(
+                          model,
+                          context,
+                          carModel,
+                          payableAmount,
+                          documents,
+                          !isChauffeur && !isZoom,
+                          user),
+                      title: 'Proceed',
+                      textSize: 12,
+                      color: Colors.black,
+                    ))
                   ],
                 ),
               );
@@ -785,8 +803,8 @@ class _UserBookingScreenState extends State<UserBookingScreen> {
           decoration: const InputDecoration(
             border: OutlineInputBorder(
                 borderRadius: BorderRadius.all(
-                  Radius.circular(10.0),
-                )),
+              Radius.circular(10.0),
+            )),
             labelText: 'Date Of Birth',
           ),
           child: Row(
@@ -795,9 +813,7 @@ class _UserBookingScreenState extends State<UserBookingScreen> {
             children: <Widget>[
               Text(_dob == null ? 'Select a date' : dateFormatter.format(_dob)),
               Icon(Icons.arrow_drop_down,
-                  color: Theme
-                      .of(context)
-                      .brightness == Brightness.light
+                  color: Theme.of(context).brightness == Brightness.light
                       ? Colors.grey.shade700
                       : Colors.white70),
             ],
@@ -807,7 +823,8 @@ class _UserBookingScreenState extends State<UserBookingScreen> {
     );
   }
 
-  void proceedToPromoPage(DriveModel model,
+  void proceedToPromoPage(
+      DriveModel model,
       BuildContext context,
       CarModel carModel,
       double payableAmount,
@@ -820,9 +837,7 @@ class _UserBookingScreenState extends State<UserBookingScreen> {
           'Please select a date before proceeding');
       return;
     }
-    if (isDocumentsRequired) {
-
-    }
+    if (isDocumentsRequired) {}
     final UserModel submitModel = getUserModel(model, user.uid);
     _saveForm(carModel, model, submitModel, payableAmount,
         flightNumberController.text, documents);
@@ -833,7 +848,7 @@ class _UserBookingScreenState extends State<UserBookingScreen> {
     final UserModel submitModel = UserModel(
         aadhaarNumber: '',
         name: nameController.text.trim(),
-        phoneNumber:phoneNumber,
+        phoneNumber: phoneNumber,
         email: emailController.text.trim(),
         prefix: '',
         username: '',
@@ -853,7 +868,7 @@ class _UserBookingScreenState extends State<UserBookingScreen> {
       ..name = nameController.text.trim()
       ..phoneNumber = phoneNumber
       ..uid = uid
-    // ..panNumber = panNumberController.text
+      // ..panNumber = panNumberController.text
       ..zipcode = pinCodeController.text;
     if (submitModel.city.isEmpty) {
       submitModel.city = model.city!;
@@ -861,18 +876,21 @@ class _UserBookingScreenState extends State<UserBookingScreen> {
     return submitModel;
   }
 
-  Widget carDetails(CarModel carModel,
-      DriveModel model,
-      BuildContext context,
-      List<String> details,) {
+  Widget carDetails(
+    CarModel carModel,
+    DriveModel model,
+    BuildContext context,
+    List<String> details,
+  ) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
           decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.vertical(top: Radius.circular(30))),
+            color: accentColor,
+            //borderRadius: BorderRadius.vertical(top: Radius.circular(30))
+          ),
           child: Padding(
               padding: const EdgeInsets.all(14.0),
               child: Column(
@@ -900,7 +918,10 @@ class _UserBookingScreenState extends State<UserBookingScreen> {
                               SizedBox(
                                 width: 5,
                               ),
-                              RatingWidget(totalStars: carModel.carRating!),
+                              RatingWidget(
+                                totalStars: carModel.carRating!,
+                                starColor: Colors.black,
+                              ),
                             ],
                           ),
                         )
@@ -956,9 +977,6 @@ class _UserBookingScreenState extends State<UserBookingScreen> {
                     '${model.endDate} ${model.endtime}',
                     style: contentStyle,
                   ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 8.0),
-                  ),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
                     child: distanceWidget(model.distanceOs!),
@@ -968,8 +986,8 @@ class _UserBookingScreenState extends State<UserBookingScreen> {
                       model.drive == DriveTypes.SD
                           ? "Self Drive"
                           : model.drive == DriveTypes.SUB
-                          ? "Monthly Rental"
-                          : "Chauffeur",
+                              ? "Monthly Rental"
+                              : "Chauffeur",
                       style: contentStyle),
                   const Padding(
                     padding: EdgeInsets.symmetric(vertical: 8.0),
@@ -986,10 +1004,10 @@ class _UserBookingScreenState extends State<UserBookingScreen> {
                         model.drive == DriveTypes.WC
                             ? "Within City"
                             : model.drive == DriveTypes.AT
-                            ? 'Airport Transfer'
-                            : model.drive == DriveTypes.OW
-                            ? 'OutStation (One-way)'
-                            : 'OutStation',
+                                ? 'Airport Transfer'
+                                : model.drive == DriveTypes.OW
+                                    ? 'OutStation (One-way)'
+                                    : 'OutStation',
                         style: contentStyle),
                   ]
                 ],
@@ -1023,7 +1041,10 @@ class _UserBookingScreenState extends State<UserBookingScreen> {
                         carModel.pickups = data!;
                         return Text(
                             'Pickup location: ${data[selected].pickupAddress}',
-                            style: titleStyle);
+                            style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w600));
                       },
                     ),
                   ),
@@ -1034,6 +1055,7 @@ class _UserBookingScreenState extends State<UserBookingScreen> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: Card(
+            color: accentColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(15),
             ),
@@ -1059,46 +1081,51 @@ class _UserBookingScreenState extends State<UserBookingScreen> {
   Future<dynamic> cancellationPolicyWidget(BuildContext context) {
     return showDialog(
         context: context,
-        builder: (ctx) =>
-            Dialog(
-                shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(20.0))),
-                child: SizedBox(
-                    height: .4.sh,
-                    width: 1.sw,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(4.0),
-                          child: Text(
-                            'Cancellation Policy',
-                            textAlign: TextAlign.center,
-                            style: headingStyle,
-                          ),
-                        ),
-                        CancellationRateWidget(),
-                        Padding(
-                          padding: const EdgeInsets.all(4.0),
-                          child: AppButton(
-                            title: 'Okay',
-                            function: () => Navigator.of(ctx).pop(),
-                            screenHeight: 1.sh,
-                            screenWidth: 1.sw,
-                            textSize: 12,
-                            color: Colors.black,
-                          ),
-                        )
-                      ],
-                    ))));
+        builder: (ctx) => Dialog(
+            backgroundColor: accentColor,
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20.0))),
+            child: SizedBox(
+                height: .4.sh,
+                width: 1.sw,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Text(
+                      'Cancellation Policy',
+                      textAlign: TextAlign.center,
+                      style: headingStyle,
+                    ),
+                    CancellationRateWidget(),
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: AppButton(
+                        title: 'Okay',
+                        function: () => Navigator.of(ctx).pop(),
+                        screenHeight: 1.sh,
+                        screenWidth: 1.sw,
+                        textSize: 12,
+                        color: Colors.black,
+                        textColor: accentColor,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                  ],
+                ))));
   }
 
   Widget extraDetails(BuildContext context, List<String> details) {
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
         child: Card(
+          color: Colors.black,
           shape:
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
           child: Padding(
               padding: const EdgeInsets.all(14.0),
               child: Column(
@@ -1115,7 +1142,11 @@ class _UserBookingScreenState extends State<UserBookingScreen> {
                     itemBuilder: (context, index) {
                       return Padding(
                         padding: const EdgeInsets.only(top: 8.0),
-                        child: Text('${details[index]}', style: titleStyle),
+                        child: Text('${details[index]}',
+                            style: TextStyle(
+                                fontSize: 14,
+                                color: accentColor,
+                                fontWeight: FontWeight.w600)),
                       );
                     },
                   ),
@@ -1153,65 +1184,63 @@ class _UserBookingScreenState extends State<UserBookingScreen> {
     //     ? a.deliveryCharges
     //     : b.deliveryCharges);
     return showModalBottomSheet<String>(
+      backgroundColor: accentColor,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
         ),
         context: context,
         isScrollControlled: true,
-        builder: (context) =>
-            Padding(
-                padding: const EdgeInsets.all(18.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Pickup/Drop Locations', style: bigTitleStyle),
-                    Text('Showing ${pickups.showOptionsText()}'),
-                    const SizedBox(
-                      height: 6,
-                    ),
-                    ConstrainedBox(
-                      constraints: BoxConstraints(maxHeight: .7.sh),
-                      child: Scrollbar(
-                        interactive: true,
-                        child: ListView.builder(
-                            itemCount: pickups.length,
-                            shrinkWrap: true,
-                            itemBuilder: (context, index) {
-                              final num deliveryCharge =
-                                  pickups[index].deliveryCharges;
-                              return Card(
-                                child: CheckboxListTile(
-                                    title: Text(
-                                        '${pickups[index].pickupAddress}'),
-                                    subtitle: Column(
-                                      crossAxisAlignment: CrossAxisAlignment
-                                          .start,
-                                      children: [
-                                        Text(
-                                            '${pickups[index]
-                                                .distanceFromUser} KMs away',
-                                            style: itleStyle),
-                                        Text(deliveryCharge == 0
-                                            ? 'Free'
-                                            : '$rupeeSign${deliveryCharge}'),
-                                      ],
-                                    ),
-                                    value: selected == index,
-                                    onChanged: (val) {
-                                      setState(() {
-                                        selected = index;
-                                      });
-                                      Navigator.pop(
-                                          context,
-                                          pickups[index].pickupAddress);
-                                    }),
-                              );
-                            }),
-                      ),
-                    ),
-                  ],
-                )));
+        builder: (context) => Padding(
+            padding: const EdgeInsets.all(18.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Pickup/Drop Locations', style: bigTitleStyle),
+                Text('Showing ${pickups.showOptionsText()}'),
+                const SizedBox(
+                  height: 6,
+                ),
+                ConstrainedBox(
+                  constraints: BoxConstraints(maxHeight: .7.sh),
+                  child: Scrollbar(
+                    interactive: true,
+                    child: ListView.builder(
+                        itemCount: pickups.length,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          final num deliveryCharge =
+                              pickups[index].deliveryCharges;
+                          return Card(
+                            color: Colors.black,
+                            child: CheckboxListTile(
+                              checkboxShape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                                title: Text('${pickups[index].pickupAddress}', style: TextStyle(color: accentColor),),
+                                subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                        '${pickups[index].distanceFromUser} KMs away',
+                                        style: itleStyle),
+                                    Text(deliveryCharge == 0
+                                        ? 'Free'
+                                        : '$rupeeSign${deliveryCharge}', style: TextStyle(color: accentColor),),
+                                  ],
+                                ),
+                                value: selected == index,
+                                onChanged: (val) {
+                                  setState(() {
+                                    selected = index;
+                                  });
+                                  Navigator.pop(
+                                      context, pickups[index].pickupAddress);
+                                }),
+                          );
+                        }),
+                  ),
+                ),
+              ],
+            )));
   }
 }
 
@@ -1222,7 +1251,8 @@ class TextFieldBooking extends StatelessWidget {
     required this.validatorFunction,
     required this.controller,
     required this.keyboardType,
-    required this.smallCase, required this.function,
+    required this.smallCase,
+    required this.function,
   });
 
   final bool smallCase;
@@ -1237,14 +1267,13 @@ class TextFieldBooking extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: TextFormField(
-          textCapitalization: smallCase
-              ? TextCapitalization.none
-              : TextCapitalization.words,
+          textCapitalization:
+              smallCase ? TextCapitalization.none : TextCapitalization.words,
           decoration: InputDecoration(
               border: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(
-                    Radius.circular(10.0),
-                  )),
+                Radius.circular(10.0),
+              )),
               labelText: title),
           controller: controller,
           keyboardType: keyboardType ?? TextInputType.text,
@@ -1254,4 +1283,3 @@ class TextFieldBooking extends StatelessWidget {
     );
   }
 }
-

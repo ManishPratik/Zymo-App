@@ -75,9 +75,12 @@ class _TabScreenState extends State<TabScreen> {
           builder: (BuildContext context, value, child) {
             return BottomNavigationBar(
               showUnselectedLabels: true,
+              backgroundColor: Colors.black,
               type: BottomNavigationBarType.fixed,
               onTap: (index) => _selectPage(index, value),
               selectedItemColor: Theme.of(context).colorScheme.secondary,
+              unselectedItemColor: Colors.white54,
+
               currentIndex: _selectedPageIndex,
               items: [
                 BottomNavigationBarItem(
@@ -90,7 +93,7 @@ class _TabScreenState extends State<TabScreen> {
                     child: Stack(
                       children: [
                         Center(
-                          child: Image.asset('assets/icons/HomeIcons/rewards.png'),
+                          child: Icon(Icons.diamond)//Image.asset('assets/icons/HomeIcons/rewards.png'),
                         ),
                         if (value.rewardIndicator)
                           Align(
@@ -98,7 +101,7 @@ class _TabScreenState extends State<TabScreen> {
                             child: Icon(
                               Icons.circle,
                               size: 10,
-                              color: Colors.red,
+                              color: Colors.blueGrey,
                             ),
                           ),
                       ],
@@ -107,11 +110,11 @@ class _TabScreenState extends State<TabScreen> {
                   label: 'Rewards',
                 ),
                 BottomNavigationBarItem(
-                  icon: Image.asset('assets/icons/HomeIcons/bookings.png'),
+                  icon: Icon(Icons.history),
                   label: 'Bookings',
                 ),
                 BottomNavigationBarItem(
-                  icon: Image.asset('assets/icons/HomeIcons/contact.png'),
+                  icon: Icon(Icons.call),
                   label: 'Contact Us',
                 ),
               ],

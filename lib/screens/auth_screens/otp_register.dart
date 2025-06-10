@@ -21,8 +21,9 @@ class _RegisterState extends State<Register> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
+        iconTheme: IconThemeData(color: Colors.black),
       ),
-      backgroundColor: accentColor,
+      backgroundColor: Colors.black,
       body: SafeArea(
         child: Stack(
           children: [
@@ -38,7 +39,7 @@ class _RegisterState extends State<Register> {
                       "What's your number?",
                       style: TextStyle(
                         fontSize: 28,
-                        color: Colors.white,
+                        color: accentColor,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -48,7 +49,7 @@ class _RegisterState extends State<Register> {
                     Text(
                       "Enter your phone number to start!",
                       style: TextStyle(
-                        color: Colors.white,
+                        color: accentColor,
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -61,6 +62,7 @@ class _RegisterState extends State<Register> {
                         SizedBox(
                           width: .2.sw,
                           child: Card(
+                            color: accentColor,
                               elevation: 3,
                               shape: const RoundedRectangleBorder(
                                   borderRadius:
@@ -71,6 +73,7 @@ class _RegisterState extends State<Register> {
                                       vertical: 16.0, horizontal: 8),
                                   child: Text(
                                     'IN +91',
+                                    style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600),
                                   ),
                                 ),
                               )),
@@ -80,6 +83,13 @@ class _RegisterState extends State<Register> {
                           child: TextField(
                             controller: phone,
                             keyboardType: TextInputType.number,
+                            cursorColor: accentColor,
+                            style: TextStyle(color: accentColor), // Text color
+                              decoration: InputDecoration(
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: accentColor),
+                                ),
+                              ),
                           ),
                         ),
                       ],
@@ -100,7 +110,7 @@ class _RegisterState extends State<Register> {
                   child: // Assuming TapDebouncer and necessary variables are already imported and set
 
                   TapDebouncer(
-                    cooldown: sevenSeconds,
+                    cooldown: Duration(seconds: 5),
                     waitBuilder: (context, w) => whiteSpinkit, // Loading spinner while waiting
                     onTap: () async {
                       FocusScope.of(context).unfocus();
@@ -113,11 +123,11 @@ class _RegisterState extends State<Register> {
                     },
                     builder: (BuildContext context, TapDebouncerFunc? debouncer) {
                       return CupertinoButton(
-                        color: darkBgColor,
+                        color: accentColor,
                         onPressed: debouncer, // ✅ Correct way to call debouncer
                         child: Text(
                           'SEND OTP',
-                          style: TextStyle(color: Colors.black),
+                          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
                         ),
                       );
                     },

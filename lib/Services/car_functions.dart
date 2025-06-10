@@ -46,9 +46,10 @@ class CarFunctions {
         isScrollControlled: true,
         context: context,
         builder: (context) => Container(
+          color: Colors.grey[800],
           height: 0.4.sh,
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(0.0),
             child: Column(
               children: [
                 const Text('Start time',
@@ -74,7 +75,7 @@ class CarFunctions {
                     Navigator.of(context).pop();
                   },
                   textSize: 15,
-                  color: Colors.black,
+                  color: accentColor,
                 )
               ],
             ),
@@ -87,6 +88,7 @@ class CarFunctions {
     showModalBottomSheet(
         context: context,
         builder: (context) => Container(
+          color: Colors.grey[800],
           height: 0.4.sh,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -117,7 +119,7 @@ class CarFunctions {
                     Navigator.of(context).pop();
                   },
                   textSize: 15,
-                  color: Colors.black,
+                  color: accentColor,
                 )
               ],
             ),

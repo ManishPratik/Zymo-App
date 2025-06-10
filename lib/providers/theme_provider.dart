@@ -3,38 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:letzrentnew/Utils/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-const String font = 'Garamond';/*
-ThemeData lightTheme = ThemeData(
-  textTheme: GoogleFonts.montserratTextTheme(),
-    scaffoldBackgroundColor: greyColor,
-    pageTransitionsTheme: const PageTransitionsTheme(builders: {
-      TargetPlatform.android:
-          //CupertinoPageTransitionsBuilder()
-          ZoomPageTransitionsBuilder()
-    }),
-    brightness: Brightness.light,
-    iconTheme: IconThemeData(color: appColor),
-    appBarTheme: const AppBarTheme(
-        elevation: 0,
-        backgroundColor: appColor,
-        iconTheme: IconThemeData(color: whiteColor),
-        toolbarTextStyle: TextStyle(
-            color: whiteColor, fontSize: 20, fontWeight: FontWeight.w600)),
-    primaryColor: whiteColor,
-    elevatedButtonTheme: ElevatedButtonThemeData(
-        style: ElevatedButton.styleFrom(backgroundColor: appColor)),
-    secondaryHeaderColor: Colors.black,
-    fontFamily: font,
-    textButtonTheme: TextButtonThemeData(
-        style: TextButton.styleFrom(
-            backgroundColor: Colors.black, foregroundColor: whiteColor)),
-    floatingActionButtonTheme: const FloatingActionButtonThemeData(
-      foregroundColor: whiteColor,
-      backgroundColor: Colors.black,
-    ),
-    colorScheme: const ColorScheme.light(primary: Colors.black)
-        .copyWith(secondary: appColor, surface: whiteColor));
-*/
+const String font = 'Garamond';
 
 final ThemeData lightTheme = ThemeData(
   brightness: Brightness.light,

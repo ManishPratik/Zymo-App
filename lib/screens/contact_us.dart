@@ -12,6 +12,7 @@ class ContactUs extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[800],
       body: SingleChildScrollView(
         child: SizedBox(
           width: 1.sw,
@@ -22,7 +23,11 @@ class ContactUs extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 70),
                 child: Text(
                   'CONTACT US ',
-                  style: bigTitleStyle,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
               ContactUsTile(
@@ -74,6 +79,7 @@ class ContactUsTile extends StatelessWidget {
       height: .1.sh,
       width: .8.sw,
       child: Card(
+        color: Colors.black,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
         elevation: 9,
         child: InkWell(
@@ -92,6 +98,7 @@ class ContactUsTile extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 14.5,
                       fontWeight: FontWeight.bold,
+                      color: accentColor
                     ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,

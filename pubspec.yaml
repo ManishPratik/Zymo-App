@@ -77,6 +77,9 @@ flutter:
     - assets/icons/
     - assets/icons/HomeIcons/
     - assets/images/Tips&Tricks/
+    - assets/images/guide/
+    - assets/images/brands/
+    - assets/images/fearturedin/
     - assets/images/ZymoBenefits/
     - dev_assets/
 

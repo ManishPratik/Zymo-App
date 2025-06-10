@@ -16,6 +16,7 @@ import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../models/UImodel.dart';
 import '../models/car_model.dart';
 import '../providers/home_provider.dart';
 import 'app_data.dart';
@@ -23,7 +24,8 @@ import 'constants.dart';
 import '../models/user_model.dart';
 
 class UserDetailsWidget extends StatelessWidget {
-  const UserDetailsWidget({super.key, required this.userModel, this.showAddress = true});
+  const UserDetailsWidget(
+      {super.key, required this.userModel, this.showAddress = true});
 
   final UserModel userModel;
   final bool showAddress;
@@ -76,7 +78,8 @@ class UserDetailsWidget extends StatelessWidget {
 }
 
 class TripDetailsWidget extends StatelessWidget {
-  const TripDetailsWidget({super.key,
+  const TripDetailsWidget({
+    super.key,
     required this.model,
     required this.carModel,
   });
@@ -95,7 +98,8 @@ class TripDetailsWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if ((model.drive == DriveTypes.SD || model.drive == DriveTypes.SUB) &&
+            if ((model.drive == DriveTypes.SD ||
+                    model.drive == DriveTypes.SUB) &&
                 carModel.pickUpAndDrop!.contains(homeDelivery))
               const Text(homeDelivery, style: largeStyle)
             else if ((model.drive == DriveTypes.SD ||
@@ -103,34 +107,34 @@ class TripDetailsWidget extends StatelessWidget {
                 carModel.pickUpAndDrop!.contains(airportPickup))
               const Text(airportPickup, style: largeStyle)
             else ...[
-            Text('Pickup', style: largeStyle),
-            SizedBox(height: .01.sh),
-            Row(
-              children: [
-                Text('Pickup location', style: titleStyle),
-                Icon(
-                  Icons.location_on_outlined,
-                  size: 14,
-                ),
-              ],
-            ),
-            Text('${carModel.pickUpAndDrop}',
-                overflow: TextOverflow.ellipsis,
-                maxLines: 3,
-                style: titleStyle),
-            if (carModel.vendor!.name == karyana ||
-                carModel.vendor!.name == kyp)
-              openInMapsButton(carModel.pickUpAndDrop!),
-            // Card(
-            //   color: Colors.blue[50],
-            //   child: Padding(
-            //     padding: const EdgeInsets.all(8.0),
-            //     child: Text(
-            //       'Exact car location will be shared 4 hours before trip start time.',
-            //     ),
-            //   ),
-            // ),
-          ],
+              Text('Pickup', style: largeStyle),
+              SizedBox(height: .01.sh),
+              Row(
+                children: [
+                  Text('Pickup location', style: titleStyle),
+                  Icon(
+                    Icons.location_on_outlined,
+                    size: 14,
+                  ),
+                ],
+              ),
+              Text('${carModel.pickUpAndDrop}',
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 3,
+                  style: titleStyle),
+              if (carModel.vendor!.name == karyana ||
+                  carModel.vendor!.name == kyp)
+                openInMapsButton(carModel.pickUpAndDrop!),
+              // Card(
+              //   color: Colors.blue[50],
+              //   child: Padding(
+              //     padding: const EdgeInsets.all(8.0),
+              //     child: Text(
+              //       'Exact car location will be shared 4 hours before trip start time.',
+              //     ),
+              //   ),
+              // ),
+            ],
             SizedBox(height: 10),
             Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               const Text("Start Date", style: titleStyle),
@@ -145,8 +149,7 @@ class TripDetailsWidget extends StatelessWidget {
                   "End Date",
                   style: titleStyle,
                 ),
-                Text('${model.endDate} ${model.endtime}',
-                    style: contentStyle),
+                Text('${model.endDate} ${model.endtime}', style: contentStyle),
               ],
             ),
           ],
@@ -265,6 +268,7 @@ class FAQTile extends StatelessWidget {
 
   final String title;
   final String body;
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -302,30 +306,37 @@ class FAQTile extends StatelessWidget {
 }
 
 class TripDurationWidget extends StatelessWidget {
-  const TripDurationWidget({ super.key, required this.duration});
+  const TripDurationWidget({super.key, required this.duration});
+
   final String duration;
 
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
       duration: const Duration(seconds: 2),
       curve: Curves.fastOutSlowIn,
       width: 1.sw,
       decoration: BoxDecoration(
-          border: Border.all(color: Colors.black54, width: .6),
+          color: Colors.grey[900],
           borderRadius: const BorderRadius.all(Radius.circular(15))),
       child: duration.isNotEmpty
           ? Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
                 children: [
-                  const Text(
+                  Text(
                     'Trip Duration',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.white30,
+                        fontWeight: FontWeight.bold),
                   ),
                   Text(
                     duration,
-                    style: const TextStyle(fontSize: 20),
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontSize: 20, color: Colors.white),
                   ),
                 ],
               ),
@@ -342,6 +353,7 @@ class TextFieldWidget extends StatelessWidget {
   final bool obscureText;
   final TextInputType keyboardType;
   final Widget prefix;
+
   const TextFieldWidget({
     super.key,
     required this.label,
@@ -419,6 +431,7 @@ class AllCategoryWidget extends StatelessWidget {
   final String title;
   final String image;
   final Function function;
+
   const AllCategoryWidget({
     super.key,
     required this.title,
@@ -437,7 +450,9 @@ class AllCategoryWidget extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(6.0),
         child: InkWell(
-          onTap: (){ function;},
+          onTap: () {
+            function;
+          },
           child: SizedBox(
             width: 0.44.sw,
             child: ClipRRect(
@@ -586,14 +601,15 @@ class FulfilledByWidget extends StatelessWidget {
 class Uploader extends StatefulWidget {
   final File file;
   final String cat;
+
   const Uploader({super.key, required this.file, required this.cat});
 
   @override
   _UploaderState createState() => _UploaderState();
 }
-
 class _UploaderState extends State<Uploader> {
   late UploadTask _uploadTask;
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<TaskSnapshot>(
@@ -632,7 +648,7 @@ class _UploaderState extends State<Uploader> {
             ],
           );
         });
-    }
+  }
 
   Future<void> uploadFunction() async {
     {
@@ -657,9 +673,9 @@ class _UploaderState extends State<Uploader> {
         warningPopUp(
             context, oops, 'Something went wrong. Please try again. $e');
       }
-
     }
-}}
+  }
+}
 
 class DocumentsUploader extends StatelessWidget {
   @override
@@ -682,7 +698,8 @@ class DocumentsUploader extends StatelessWidget {
           return const Center(child: Text('No documents available.'));
         }
 
-        final userData = UserModel.fromJson(snapshot.data!.data() as Map<String, dynamic>);
+        final userData =
+            UserModel.fromJson(snapshot.data!.data() as Map<String, dynamic>);
 
         return Consumer<HomeProvider>(
           builder: (BuildContext context, value, Widget? child) => Column(
@@ -730,7 +747,7 @@ class DocumentsUploader extends StatelessWidget {
                 title: 'back_page_aadhaar_card',
                 description: 'Uploaded Aadhaar card back page',
                 link: userData.backAadhaar,
-                image: value.aadhaarBack as  File,
+                image: value.aadhaarBack as File,
                 function: (x) async {
                   final File? file = await pickImage(x);
                   value.setImage(file!, DocumentEnum.AB);
@@ -745,7 +762,6 @@ class DocumentsUploader extends StatelessWidget {
   }
 }
 
-
 class DocumentWidget extends StatelessWidget {
   const DocumentWidget(
       {super.key,
@@ -755,6 +771,7 @@ class DocumentWidget extends StatelessWidget {
       required this.clearImage,
       required this.title,
       required this.description});
+
   final String title;
   final String description;
   final String link;
@@ -790,19 +807,23 @@ class DocumentWidget extends StatelessWidget {
         ],
       ),
       ...[
-      Container(
-          margin: const EdgeInsets.all(4),
-          child: Image.file(
-            image,
-            height: 200,
-          )),
-      Row(
-        children: <Widget>[
-          TextButton(onPressed: (){clearImage;}, child: const Icon(Icons.refresh)),
-        ],
-      ),
-      Uploader(file: image, cat: title),
-    ],
+        Container(
+            margin: const EdgeInsets.all(4),
+            child: Image.file(
+              image,
+              height: 200,
+            )),
+        Row(
+          children: <Widget>[
+            TextButton(
+                onPressed: () {
+                  clearImage;
+                },
+                child: const Icon(Icons.refresh)),
+          ],
+        ),
+        Uploader(file: image, cat: title),
+      ],
     ]);
   }
 }
@@ -811,8 +832,8 @@ Widget shimmerLoading(BuildContext context) {
   return Padding(
     padding: const EdgeInsets.all(8.0),
     child: Shimmer.fromColors(
-      baseColor: Colors.black,
-      highlightColor: Colors.black,
+      baseColor: Colors.grey.shade600,
+      highlightColor: Colors.grey.shade900,
       child: ListView.builder(
         physics: const BouncingScrollPhysics(),
         itemBuilder: (_, __) => Padding(
@@ -889,26 +910,40 @@ class DurationTile extends StatelessWidget {
     super.key,
     required this.title,
     required this.body,
+    //required this.isSet,
   });
+
   final String title;
   final String body;
+  //final bool isSet;
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
       width: .37.sw,
-      child: Column(
-        // crossAxisAlignment: CrossAxisAlignment.start,
+      decoration: BoxDecoration(
+        color: Colors.transparent,
+        //borderRadius: BorderRadius.circular(12),
+        //border: Border.all(color: Colors.transparent, width: 1.2),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Text(
-            title,
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+          Icon(Icons.calendar_today, color: accentColor),
+          Column(
+            // crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(body, style: const TextStyle(fontSize: 15)),
-              const Icon(Icons.arrow_drop_down)
+              Text(
+                title,
+                style: TextStyle( color:  Colors.white,fontWeight: FontWeight.bold, fontSize: 17),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(body, style: TextStyle(fontSize: 15,  color: Colors.white)),
+                  Icon(Icons.arrow_drop_down,  color: Colors.white,)
+                ],
+              ),
             ],
           ),
         ],
@@ -922,6 +957,7 @@ class FilterItem extends StatelessWidget {
   final bool isSelected;
   final Function function;
   final double width;
+
   const FilterItem({
     super.key,
     required this.title,
@@ -1007,15 +1043,16 @@ class RatingWidget extends StatelessWidget {
   const RatingWidget({
     super.key,
     required this.totalStars,
+    this.starColor
   });
-
+  final Color? starColor;
   final double totalStars;
 
   @override
   Widget build(BuildContext context) {
     final containsHalf = (totalStars % 1 != 0);
     final int stars = totalStars.ceil();
-    const starColor = Colors.black;
+    var starColors = starColor ?? accentColor;
 
     return SizedBox(
       width: .23.sw,
@@ -1026,24 +1063,290 @@ class RatingWidget extends StatelessWidget {
           itemCount: 5,
           itemBuilder: (context, index) {
             if (index + 1 > stars) {
-              return const Padding(
-                padding: EdgeInsets.only(right: 3.0),
-                child: Icon(FontAwesomeIcons.star, size: 15, color: starColor),
+              return Padding(
+                padding: const EdgeInsets.only(right: 3.0),
+                child: Icon(FontAwesomeIcons.star, size: 15, color: starColors),
               );
             } else if (containsHalf && ((index + 1) == stars)) {
-              return const Padding(
-                padding: EdgeInsets.only(right: 3.0),
+              return Padding(
+                padding: const EdgeInsets.only(right: 3.0),
                 child: Icon(FontAwesomeIcons.starHalfStroke,
-                    size: 15, color: starColor),
+                    size: 15, color: starColors),
               );
             } else {
-              return const Padding(
+              return Padding(
                 padding: EdgeInsets.only(right: 3.0),
                 child: Icon(FontAwesomeIcons.solidStar,
-                    size: 15, color: starColor),
+                    size: 15, color: starColors/*starColor*/),
               );
             }
           }),
+    );
+  }
+}
+
+/*NEW FUNCTIONS :
+* BUILDFIELD FOR THE LOOK OF DATE AND TIME PICKER */
+
+class FeatureItem extends StatelessWidget {
+  final IconData icon;
+  final String text;
+
+  const FeatureItem({
+    super.key,
+    required this.icon,
+    required this.text,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Icon(
+          icon,
+          size: 40,
+          color: Color(0xFFEAF86F), // Light yellow-green
+        ),
+        const SizedBox(height: 8),
+        Text(text,
+            style: TextStyle(
+              color: Color(0xFFEAF86F),
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+            ),
+            textAlign: TextAlign.center),
+      ],
+    );
+  }
+}
+
+class BenefitBox extends StatelessWidget {
+  final String imagePath;
+  final String text;
+
+  const BenefitBox({
+    super.key,
+    required this.imagePath,
+    required this.text,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 36),
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 24),
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: const Color(0xFF1E1E1E),
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(
+            color: const Color(0xFFEAF86F),
+            width: 1.5,
+          ),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Image.asset(
+              imagePath,
+              height: 68,
+              color: Colors.white,
+            ),
+            const SizedBox(height: 16),
+            Text(
+              text,
+              style: const TextStyle(
+                color: Color(0xFFEAF86F),
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
+class TimelineStepsWidget extends StatefulWidget {
+  final ScrollController controller;
+
+  const TimelineStepsWidget({super.key, required this.controller});
+
+  @override
+  State<TimelineStepsWidget> createState() => _TimelineStepsWidgetState();
+}
+
+class _TimelineStepsWidgetState extends State<TimelineStepsWidget> {
+  double scrollOffset = 0.0;
+
+  @override
+  void initState() {
+    super.initState();
+    widget.controller.addListener(_updateScrollOffset);
+  }
+
+  void _updateScrollOffset() {
+    setState(() {
+      scrollOffset = widget.controller.offset;
+    });
+  }
+
+  @override
+  void dispose() {
+    widget.controller.removeListener(_updateScrollOffset);
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final double timelineHeight = MediaQuery.of(context).size.height * 0.75;
+    final double maxScrollExtent = widget.controller.position.hasContentDimensions
+        ? widget.controller.position.maxScrollExtent
+        : 1;
+    final steps = [
+      StepModel(
+        imagePath: 'assets/images/guide/image1.png',
+        title: 'Getting Started',
+        description:
+        'The user logs into Zymo, enters source, and time. Zymo shows a list of rental cars, enabling easy comparison by price, type, and features.',
+      ),
+      StepModel(
+        imagePath: 'assets/images/guide/image2.png',
+        title: 'Choosing & Confirming Booking',
+        description:
+        'The user selects the best-fit car after comparing options. Key details are shown before confirming the booking.',
+      ),
+      StepModel(
+        imagePath: 'assets/images/guide/image3.png',
+        title: 'Payment & Confirmation',
+        description:
+        'Payment is completed securely. Booking confirmation is sent instantly via email and WhatsApp.',
+      ),
+      StepModel(
+        imagePath: 'assets/images/guide/image4.png',
+        title: 'Car Usage & Return',
+        description:
+        'The user picks up the car, uses it during the booked time, and returns it hassle-free.',
+      ),
+      StepModel(
+        imagePath: 'assets/images/guide/image5.png',
+        title: 'Providing Feedback',
+        description:
+        'After the trip, the user rates the service and shares feedback, helping others choose better.',
+      ),
+      // Add more steps similarly
+    ];
+    // Safe fraction of scroll progress
+    final double scrollProgress = (scrollOffset / maxScrollExtent).clamp(0.0, 1.0);
+    final double indicatorTop = scrollProgress * (timelineHeight - 12); // 12 = circle height
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Left timeline
+          SizedBox(
+            height: timelineHeight,
+            width: 60,
+            child: Stack(
+              clipBehavior: Clip.none,
+              children: [
+                // Grey track
+                Positioned.fill(
+                  child: Center(
+                    child: Container(
+                      width: 10,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[700],
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                  ),
+                ),
+
+                // Yellow progress line
+                Positioned(
+                  top: 0,
+                  height: indicatorTop + 6,
+                  left: 0,
+                  right: 0,
+                  child: Center(
+                    child: Container(
+                      width: 10,
+                      decoration: const BoxDecoration(
+                        color: Colors.yellow,
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(12),
+                          bottom: Radius.zero,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+
+                // Indicator circle
+                Positioned(
+                  top: indicatorTop,
+                  left: 24,
+                  child: Container(
+                    width: 12,
+                    height: 12,
+                    decoration: BoxDecoration(
+                      color: Colors.yellow,
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: Colors.yellow,
+                        width: 2,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          // Right content
+          Expanded(
+            child: SingleChildScrollView(
+              controller: widget.controller,
+              child: Column(
+                children: steps.map((step) {
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 46.0, right: 16.0, left: 16.0),
+                    child: Column(
+                      children: [
+                        Image.asset(step.imagePath),
+                        const SizedBox(height: 12),
+                        Text(
+                          step.title,
+                          style: const TextStyle(
+                            fontSize: 28,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          step.description,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            color: Colors.white70,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }).toList(),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

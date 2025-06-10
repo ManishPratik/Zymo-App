@@ -31,6 +31,13 @@ class CarProvider with ChangeNotifier {
   TimeOfDay _endTime = TimeOfDay(hour: 12, minute: 00);
   TimeOfDay get endTime => _endTime;
 
+  /*bool _isDurationSet = false;
+  bool get isDurationSet => _isDurationSet;
+  void setDuration(bool value) {
+    _isDurationSet = value;
+    notifyListeners();
+  }*/
+
   DriveTypes cdType = DriveTypes.AT;
   AirportTransferTypes atType = AirportTransferTypes.pickup;
 

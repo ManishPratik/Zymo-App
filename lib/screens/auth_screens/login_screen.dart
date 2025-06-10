@@ -27,8 +27,10 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: accentColor,
-      appBar: AppBar(),
+      backgroundColor: Colors.black,
+      appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.black),
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Visibility(
@@ -36,21 +38,17 @@ class _LoginScreenState extends State<LoginScreen> {
             replacement: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                ClipRRect(
-                  borderRadius:
-                      const BorderRadius.vertical(bottom: Radius.circular(40)),
-                  child: Container(
-                    width: 1.sw,
-                    height: .16.sh,
-                    color: accentColor,
-                    child: Center(
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 18.0),
-                        child: Image.asset(
-                          'dev_assets/new_logo_trans.png',
-                          // color: Colors.white,
-                          height: .12.sh,
-                        ),
+                Container(
+                  width: 1.sw,
+                  height: .16.sh,
+                  color: Colors.black,
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 18.0),
+                      child: Image.asset(
+                        'assets/images/guide/finallogo.png',
+                        // color: Colors.white,
+                        height: .12.sh,
                       ),
                     ),
                   ),
@@ -66,7 +64,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     style: TextStyle(
                         fontSize: 30,
                         fontWeight: FontWeight.bold,
-                        color: whiteColor),
+                        color: accentColor),
                   ),
                 ),
                 Padding(
@@ -84,7 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             height: .06.sh,
                             child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.white),
+                                    backgroundColor: accentColor),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -107,7 +105,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   );
                                 })),
                       ),
-                      SizedBox(
+                      /*SizedBox(
                         height: .02.sh,
                       ),
                       ClipRRect(
@@ -134,7 +132,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ],
                                 ),
                                 onPressed: signIn)),
-                      ),
+                      ),*/
                       SizedBox(
                         height: .02.sh,
                       ),
@@ -146,7 +144,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             height: .06.sh,
                             child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.white),
+                                    backgroundColor: accentColor),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -193,7 +191,9 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  void signIn() async {
+/*
+  GOOGLE SIGN IN CODE
+   void signIn() async {
     try {
       final GoogleSignIn _google = GoogleSignIn(
         scopes: [
@@ -238,7 +238,7 @@ class _LoginScreenState extends State<LoginScreen> {
     //     });
     //   }
     // }
-  }
+  }*/
 
   Future signInApple(BuildContext context) async {
     try {

@@ -19,8 +19,10 @@ class _OtpState extends State<Otp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(),
-        backgroundColor: accentColor,
+        appBar: AppBar(
+          iconTheme: IconThemeData(color: Colors.black),
+        ),
+        backgroundColor: Colors.black,
         body: SafeArea(
           child: Consumer<HomeProvider>(
             builder: (BuildContext context, value, Widget? child) => Stack(
@@ -37,7 +39,7 @@ class _OtpState extends State<Otp> {
                           'Verify your number',
                           style: TextStyle(
                             fontSize: 28,
-                            color: Colors.white,
+                            color: accentColor,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -47,7 +49,7 @@ class _OtpState extends State<Otp> {
                         Text(
                           "Please enter the code sent to ${widget.phoneNumber}",
                           style: TextStyle(
-                            color: Colors.white,
+                            color: accentColor,
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -56,7 +58,7 @@ class _OtpState extends State<Otp> {
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
-                            color: Colors.white,
+                            color: Colors.black,
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -87,7 +89,7 @@ class _OtpState extends State<Otp> {
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
-                            color: Colors.white,
+                            color: accentColor,
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -100,7 +102,7 @@ class _OtpState extends State<Otp> {
                                 style: TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.white,
+                                  color: accentColor,
                                 ),
                               )
                             : TapDebouncer(
@@ -117,7 +119,7 @@ class _OtpState extends State<Otp> {
                                         style: TextStyle(
                                           fontSize: 18,
                                           fontWeight: FontWeight.bold,
-                                          color: Colors.white,
+                                          color: accentColor,
                                         ),
                                         textAlign: TextAlign.center,
                                       ),
@@ -138,7 +140,7 @@ class _OtpState extends State<Otp> {
                                   await otpVerificationFunction(context, value),
                               waitBuilder: (context, w) => whiteSpinkit,
                               builder: (context, onTap) => CupertinoButton(
-                                    color: darkBgColor,
+                                    color: accentColor,
                                     // screenHeight: 1.sh,
                                     // screenWidth: 1.sw,
                                     onPressed: onTap,
@@ -155,6 +157,31 @@ class _OtpState extends State<Otp> {
   }
 
   Future<void> otpVerificationFunction(
+      BuildContext context, HomeProvider provider) async {
+    FocusScope.of(context).unfocus();
+
+    if (otp.any((digit) => digit.isEmpty)) {
+      warningPopUp(context, 'Oops!', 'Please enter all 6 digits');
+      return;
+    }
+
+    try {
+      final success = await Auth().verifyAndSignIn(
+        sessionId: widget.verificationId,  //TODO : MIND YOU SESSION ID IS COMING HERE
+        phone: widget.phoneNumber,
+        otp: otp.join(),
+      );
+
+      if (success) {
+        provider.cancelTimer();
+        Navigator.pop(context, true);
+      }
+    } catch (e) {
+      warningPopUp(context, 'Oops!', e.toString());
+    }
+  }
+
+  /*Future<void> otpVerificationFunction(
       BuildContext context, HomeProvider value) async {
     FocusScope.of(context).unfocus();
     try {
@@ -174,7 +201,7 @@ class _OtpState extends State<Otp> {
     } catch (e) {
       warningPopUp(context, oops, 'Sign up failed. $e');
     }
-  }
+  }*/
 
   final List<String> otp = List.filled(6, '');
   Widget _textFieldOTP(int index) {
@@ -204,10 +231,10 @@ class _OtpState extends State<Otp> {
             maxLength: 1,
             decoration: InputDecoration(
               filled: true,
-              focusColor: Colors.white,
+              focusColor: accentColor,
               hoverColor: Colors.white,
               counter: Offstage(),
-              fillColor: Colors.white,
+              fillColor: accentColor,
               enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(width: 2, color: Colors.black12),
                   borderRadius: BorderRadius.circular(12)),

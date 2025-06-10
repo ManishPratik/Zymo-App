@@ -14,7 +14,7 @@ class MyRewards extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration:
-          BoxDecoration(gradient: LinearGradient(colors: gradientColors)),
+          BoxDecoration(color: Colors.grey[800]),
       child: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Column(
@@ -63,7 +63,7 @@ class MyRewards extends StatelessWidget {
                 RewardButton(
                   child: Icon(
                     FontAwesomeIcons.gift,
-                    color: accentColor,
+                    color: Colors.black,
                   ),
                   title: 'Offers',
                   color: Colors.green,
@@ -93,15 +93,15 @@ class MyRewards extends StatelessWidget {
               height: .16.sh,
               width: 1.sw,
               child: Card(
-                  color: accentColor,
-                  elevation: 4,
+                  color: Colors.black,
+                  elevation: 5,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15),
                   ),
                   child: InkWell(
-                    hoverColor: Colors.transparent,
-                    highlightColor: Colors.transparent,
-                    splashColor: Colors.transparent,
+                    hoverColor: accentColor,
+                    highlightColor: accentColor,
+                    splashColor: accentColor,
                     onTap: () => Navigator.of(context).pushNamed(
                       RewardsScreen.routeName,
                     ),
@@ -111,19 +111,19 @@ class MyRewards extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           SizedBox(
-                            width: .6.sw,
+                            width: .4.sw,
                             child: Text(
                               'Your Vouchers',
                               style: TextStyle(
                                 fontSize: 22,
-                                color: Colors.black,
+                                color: Colors.white,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),
                           Image.asset(
-                            'dev_assets/new_logo.jpeg',
-                            fit: BoxFit.fill,
+                            'assets/images/guide/finallogo.png',height: 100,width: 150,
+                            fit: BoxFit.contain,
                           ),
                         ],
                       ),
@@ -157,7 +157,7 @@ class RewardButton extends StatelessWidget {
       height: .2.sh,
       width: .3.sw,
       child: Card(
-          color: accentColor,
+          color: Colors.black,
           elevation: 4,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15),
@@ -184,7 +184,7 @@ class RewardButton extends StatelessWidget {
                       title,
                       textAlign: TextAlign.center,
                       maxLines: 2,
-                      style: whiteTitleStyle,
+                      style: TextStyle(color: accentColor),
                     ),
                   ),
                 )
