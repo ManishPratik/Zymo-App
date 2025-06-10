@@ -266,15 +266,15 @@ class CarServices {
     if (vendors[myChoize]!.api!.pu! &&
         tripDurationInHours >= 24 &&
         hoursTillBooking >= vendors[myChoize]!.minHrsTillBooking.sd) {
-      // apiCalls.add(MyChoizeServices.getSd(
-      //     model, vendors[myChoize], citykey, tripDurationInHours));
-      final citykey =
-          MyChoizeServices.getCityKey(model.city.toString().toUpperCase());
-      apiCalls.add(MyChoizeServices.getSd(
+      final citykey = MyChoizeServices.getCityKey(model.city.toString().toUpperCase());
+      if (citykey != null) {
+        apiCalls.add(MyChoizeServices.searchCarsNewApi(
           model: model,
           vendor: vendors[myChoize],
-          cityKey: citykey!,
-          tripDurationHours: tripDurationInHours));
+          cityKey: citykey,
+          tripDurationHours: tripDurationInHours,
+        ));
+      }
     }
     if (vendors[kyp]!.api!.pu! &&
         tripDurationInHours >= 24 &&

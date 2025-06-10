@@ -14,6 +14,8 @@ class MyChoizeServices {
   // Updated base URLs
   static const String _baseUrl =
       'https://orixiddriveuat.orixindia.com/OrixMobileAppThirdParty/';
+  static const String _newSearchEndpoint =
+      'https://api-cqkjtyggsq-uc.a.run.app/mychoize/search-cars';
 
   // Rest of the existing methods remain the same...
   static List<CarModel> getCarModelMyChoize(
@@ -135,6 +137,135 @@ class MyChoizeServices {
 
 //new code
 
+  static Future<List<CarModel>> searchCarsNewApi({
+    required DriveModel model,
+    required Vendor? vendor,
+    required int cityKey,
+    required int tripDurationHours,
+  }) async {
+    try {
+      final headers = {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      };
+
+      final startMillis = model.startDateTime.millisecondsSinceEpoch;
+      final endMillis = model.endDateTime.millisecondsSinceEpoch;
+
+      String cityName;
+      switch (cityKey) {
+        case 346:
+          cityName = "delhi";
+          break;
+        case 345:
+          cityName = "mumbai";
+          break;
+        default:
+          print("Warning: Unknown cityKey $cityKey, defaulting to Delhi");
+          cityName = "delhi";
+      }
+
+      final requestBody = {
+        "data": {
+          "CityName": cityName,
+          "PickDate": "/Date($startMillis+0530)/",
+          "DropDate": "/Date($endMillis+0530)/"
+        }
+      };
+
+      print('=== New API Request Details ===');
+      print('URL: $_newSearchEndpoint');
+      print('Headers: $headers');
+      print('Request body: ${json.encode(requestBody)}');
+      print('Searching in city: ${cityName.toUpperCase()}');
+
+      final response = await http
+          .post(
+            Uri.parse(_newSearchEndpoint),
+            headers: headers,
+            body: json.encode(requestBody),
+          )
+          .timeout(const Duration(seconds: 30));
+
+      print('=== Response Details ===');
+      print('Status code: ${response.statusCode}');
+      
+      if (response.statusCode != 200) {
+        throw Exception(
+            'HTTP Error: ${response.statusCode} - ${response.reasonPhrase}');
+      }
+
+      final Map<String, dynamic> data = json.decode(response.body);
+
+      if (data['error'] != null) {
+        throw Exception('API Error: ${data['error']}');
+      }
+
+      if (data['ErrorFlag'] == 'Y') {
+        throw Exception('API Error: ${data['ErrorMessage']}');
+      }
+
+      final List<dynamic> searchResults = data['SearchBookingModel'] ?? [];
+      print('Total cars in response: ${searchResults.length}');
+      
+      final List<CarModel> availableCars = [];
+      
+      for (var car in searchResults) {
+        if (car['TotalAvailableVehicle'] != null &&
+            car['TotalAvailableVehicle'] > 0) {
+          print(
+              'Found available car: ${car['BrandName']} (${car['TotalAvailableVehicle']} available)');
+          print(
+              'Price: ${car['TotalExpCharge']}, Package: ${car['RateBasisDesc']}');
+          
+          // Convert price to double first
+          final double price = double.parse(car['TotalExpCharge'].toString());
+          
+          final carModel = CarModel()
+            ..isSoldOut = false
+            ..name = car['BrandName']
+            ..seats = car['SeatingCapacity']
+            ..type = car['VTRSUVFlag'] == 'Y' ? 'SUV' : car['GroupName']
+            ..apiFlag = true
+            ..transmission = car['TransMissionType']
+            ..imageUrl = car['VehicleBrandImageName']
+            ..finalPrice = price * vendor!.currentRate! * vendor.discountRate!
+            ..finalDiscount = price * vendor.currentRate!
+            ..actualPrice = price
+            ..freeKm = car['RateBasisDesc']
+            ..fuel = car['FuelType']
+            ..pickUpAndDrop = car['LocationName']
+            ..vendor = vendor
+            ..extraKmCharge = car['ExKMRate'];
+
+          availableCars.add(carModel);
+        }
+      }
+
+      if (availableCars.isEmpty) {
+        print('No available cars found in ${cityName.toUpperCase()}');
+        return [];
+      }
+
+      print(
+          'Found ${availableCars.length} available cars in ${cityName.toUpperCase()}');
+
+      // Sort cars by price
+      availableCars.sort((a, b) => a.finalPrice!.compareTo(b.finalPrice!));
+
+      return availableCars;
+    } catch (e) {
+      print('Error in searchCarsNewApi: $e');
+      // If the new API fails, fallback to the old API
+      return getSd(
+        model: model,
+        vendor: vendor,
+        cityKey: cityKey,
+        tripDurationHours: tripDurationHours,
+      );
+    }
+  }
+
   static Future<List<CarModel>> getSd({
     required DriveModel model,
     required Vendor? vendor,
@@ -163,46 +294,25 @@ class MyChoizeServices {
         "PageNo": 1,
         "PageSize": 50,
         "RentalType": "D",
-        "CustomerSecurityToken": "Letsrent@test123",
-        "CustomerType": "LETSRENTTEST",
+        "CustomerSecurityToken": myChoizeKey,
+        "CustomerType": myChoizeUserName,
         "VehcileType": ""
       };
-
-      print('=== Request Details ===');
-      print('URL: $url');
-      print('Headers: $headers');
-      final requestJson = json.encode(requestBody);
-      print('Request body: $requestJson');
 
       final response = await http
           .post(
             Uri.parse(url),
             headers: headers,
-            body: requestJson,
+            body: json.encode(requestBody),
           )
           .timeout(const Duration(seconds: 30));
-
-      print('=== Response Details ===');
-      print('Status code: ${response.statusCode}');
-      print('Response headers: ${response.headers}');
-      print('Response body: ${response.body}');
 
       if (response.statusCode != 200) {
         throw Exception(
             'HTTP Error: ${response.statusCode} - ${response.reasonPhrase}');
       }
 
-      if (response.body.isEmpty) {
-        throw Exception('Empty response received');
-      }
-
-      final Map<String, dynamic> data;
-      try {
-        data = json.decode(response.body);
-      } catch (e) {
-        throw Exception(
-            'Failed to parse JSON response: $e\nResponse: ${response.body}');
-      }
+      final Map<String, dynamic> data = json.decode(response.body);
 
       if (data['ErrorFlag'] == 'Y') {
         throw Exception(
@@ -214,33 +324,24 @@ class MyChoizeServices {
         throw Exception('Invalid or missing SearchBookingModel in response');
       }
 
-      // Convert to list of CarModel objects
-      List<CarModel> carModels = [];
-      for (var carData in searchBookingModel) {
-        try {
-          if (carData is Map<String, dynamic>) {
-            final carModel = CarModel.fromJson(
-              carData,
-              vendor,
-              DriveTypes.SUB,
-              isApi: true, // Set isApi flag to true for new API format
-              driveModel: model,
-            );
-            if (carModel != null) {
-              carModels.add(carModel);
-            }
-          }
-        } catch (e) {
-          print('Error creating CarModel from data: $e');
-          // Continue processing other cars even if one fails
-          continue;
+      final List<MyChoizeModel> cars = [];
+      for (var car in searchBookingModel) {
+        final myChoizeModel = MyChoizeModel.fromJson(car);
+        if (myChoizeModel.brandName != null && !myChoizeModel.isSoldOut!) {
+          cars.add(myChoizeModel);
         }
       }
 
-      return carModels;
+      final pickups = await getPickupLocations(
+        cityKey,
+        model.startDateTime.millisecondsSinceEpoch,
+        model.endDateTime.millisecondsSinceEpoch,
+      );
+
+      return getCarModelMyChoize(cars, vendor, pickups);
     } catch (e) {
       print('Error in getSd: $e');
-      rethrow;
+      return [];
     }
   }
 
