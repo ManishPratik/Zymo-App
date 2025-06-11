@@ -79,8 +79,14 @@ flutter:
     - assets/images/Tips&Tricks/
     - assets/images/guide/
     - assets/images/brands/
-    - assets/images/fearturedin/
+    # - assets/images/fearturedin/
     - assets/images/ZymoBenefits/
+    - assets/images/AppLogo/
+    - assets/images/HeroImages/
+    - assets/images/Steps/
+    - assets/images/Benefits/
+    - assets/images/CarLogos/
+    - assets/images/FeaturedIn/
     - dev_assets/
 
   fonts:

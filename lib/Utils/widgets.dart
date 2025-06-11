@@ -918,38 +918,62 @@ class DurationTile extends StatelessWidget {
   //final bool isSet;
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: .37.sw,
-      decoration: BoxDecoration(
-        color: Colors.transparent,
-        //borderRadius: BorderRadius.circular(12),
-        //border: Border.all(color: Colors.transparent, width: 1.2),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Icon(Icons.calendar_today, color: accentColor),
-          Column(
-            // crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: TextStyle( color:  Colors.white,fontWeight: FontWeight.bold, fontSize: 17),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(body, style: TextStyle(fontSize: 15,  color: Colors.white)),
-                  Icon(Icons.arrow_drop_down,  color: Colors.white,)
-                ],
-              ),
-            ],
+  // Widget build(BuildContext context) {
+  //   return Container(
+  //     width: .37.sw,
+  //     decoration: BoxDecoration(
+  //       color: Colors.transparent,
+  //       //borderRadius: BorderRadius.circular(12),
+  //       //border: Border.all(color: Colors.transparent, width: 1.2),
+  //     ),
+  //     child: Row(
+  //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //       children: [
+  //         Icon(Icons.calendar_today, color: accentColor),
+  //         Column(
+  //           // crossAxisAlignment: CrossAxisAlignment.start,
+  //           children: [
+  //             Text(
+  //               title,
+  //               style: TextStyle( color:  Colors.white,fontWeight: FontWeight.bold, fontSize: 17),
+  //             ),
+  //             Row(
+  //               mainAxisAlignment: MainAxisAlignment.center,
+  //               children: [
+  //                 Text(body, style: TextStyle(fontSize: 15,  color: Colors.white)),
+  //                 Icon(Icons.arrow_drop_down,  color: Colors.white,)
+  //               ],
+  //             ),
+  //           ],
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
+    Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: TextStyle(
+            color: const Color.fromARGB(255, 197, 197, 197), // Use the passed textColor
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
           ),
-        ],
-      ),
+        ),
+        SizedBox(height: 5),
+        Text(
+          body,
+          style: TextStyle(
+            color: Colors.grey, // Use the passed textColor
+            fontSize: 14,
+          ),
+        ),
+      ],
     );
   }
+
 }
 
 class FilterItem extends StatelessWidget {
@@ -1150,8 +1174,8 @@ class BenefitBox extends StatelessWidget {
           children: [
             Image.asset(
               imagePath,
-              height: 68,
-              color: Colors.white,
+              height: 80,
+              // color: Colors.white,
             ),
             const SizedBox(height: 16),
             Text(

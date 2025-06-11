@@ -100,7 +100,7 @@ class _CarsViewState extends State<CarsView> {
       child: Scaffold(
         backgroundColor: darkBgColor,
         appBar: AppBar(
-          backgroundColor: Colors.grey[800],
+          backgroundColor: darkBgColor,
           title: Text(
             remainingDuration,
             overflow: TextOverflow.ellipsis,
@@ -929,7 +929,7 @@ class _CarTileState extends State<CarTile> with SingleTickerProviderStateMixin {
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
-                color: Colors.grey[800],
+                color: const Color.fromARGB(255, 34, 34, 34),
               ),
               height: _heightAnimation.value,
               child: Stack(
