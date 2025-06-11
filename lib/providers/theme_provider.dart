@@ -86,9 +86,13 @@ class ThemeProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  // Future<void> initPrefs() async {
+  //   _prefs ??= await SharedPreferences.getInstance();
+  // }
   Future<void> initPrefs() async {
-    _prefs ??= await SharedPreferences.getInstance();
-  }
+  _prefs = await SharedPreferences.getInstance();
+}
+
 
   Future<void> getThemeFromStorage() async {
     await initPrefs();
