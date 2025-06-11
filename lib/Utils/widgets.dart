@@ -1280,8 +1280,8 @@ class BenefitBox extends StatelessWidget {
           children: [
             Image.asset(
               imagePath,
-              height: 68,
-              color: Colors.white,
+              height: 80,
+              // color: Colors.white,
             ),
             const SizedBox(height: 16),
             Text(
