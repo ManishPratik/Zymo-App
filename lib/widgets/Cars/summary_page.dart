@@ -78,7 +78,7 @@ class _SummaryPageState extends State<SummaryPage> {
       'City': widget.userModel.city,
       'Zipcode': widget.userModel.zipcode,
       'FirstName': widget.userModel.name,
-      'Email': widget.userModel.email.trim(),
+      'Email': widget.userModel.email!.trim(),
       'PhoneNumber': widget.userModel.phoneNumber,
       'DateOfBirth': widget.userModel.dob,
       'UserId': widget.userModel.uid,

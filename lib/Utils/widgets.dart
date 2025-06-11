@@ -62,13 +62,13 @@ class UserDetailsWidget extends StatelessWidget {
               "Mobile Number",
               style: titleStyle,
             ),
-            Text(userModel.phoneNumber, style: contentStyle),
+            Text(userModel.phoneNumber!, style: contentStyle),
             SizedBox(height: 10),
             const Text(
               "Email",
               style: titleStyle,
             ),
-            Text(userModel.email, style: contentStyle),
+            Text(userModel.email!, style: contentStyle),
             SizedBox(height: 10),
           ],
         ),
@@ -598,6 +598,167 @@ class FulfilledByWidget extends StatelessWidget {
   }
 }
 
+
+
+class DocumentsUploader extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<DocumentSnapshot>(
+      stream: FirebaseServices().getDocuments(),
+      builder: (context, snapshot) {
+        // Check for loading state
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: spinkit);
+        }
+
+        // Handle error state
+        if (snapshot.hasError) {
+          return Center(child: Text('Something went wrong: ${snapshot.error}'));
+        }
+
+        // Ensure data is not null
+        if (!snapshot.hasData || snapshot.data?.data() == null) {
+          return const Center(child: Text('No documents available.'));
+        }
+
+        final userData =
+            UserModel.fromJson(snapshot.data!.data() as Map<String, dynamic>);
+        print("INSIDE DOCUMENT UPLOADER : userdata : $userData");
+        return Consumer<HomeProvider>(
+          builder: (BuildContext context, value, Widget? child) => Column(
+            children: <Widget>[
+              DocumentWidget(
+                title: 'front_page_driving_license',
+                description: 'Uploaded Driving License Front Page',
+                link: userData.frontLicense!,
+                image: value.licenseFront  ?? File(''),
+                function: (x) async {
+                  final File? file = await pickImage(x);
+                  if(file != null){
+                    value.setImage(file, DocumentEnum.LF);
+                  }                },
+                clearImage: () => value.clearImage(DocumentEnum.LF),
+              ),
+              const Divider(),
+              const Divider(),
+              DocumentWidget(
+                title: 'back_page_driving_license',
+                description: 'Uploaded Driving License Back Page',
+                link: userData.backLicense!,
+                image: value.licenseBack  ?? File(''),
+                function: (x) async {
+                  final File? file = await pickImage(x);
+                  if(file != null){
+                    value.setImage(file, DocumentEnum.LB);
+                  }                },
+                clearImage: () => value.clearImage(DocumentEnum.LB),
+              ),
+              const Divider(),
+              const Divider(),
+              DocumentWidget(
+                title: 'front_page_aadhaar_card',
+                description: 'Uploaded Aadhaar card Front Page',
+                link: userData.frontAadhaar!,
+                image: value.aadhaarFront ?? File(''),
+                function: (x) async {
+                  final File? file = await pickImage(x);
+                  if(file != null){
+                    value.setImage(file, DocumentEnum.AF);
+                  }
+                },
+                clearImage: () => value.clearImage(DocumentEnum.AF),
+              ),
+              const Divider(),
+              const Divider(),
+              DocumentWidget(
+                title: 'back_page_aadhaar_card',
+                description: 'Uploaded Aadhaar card back page',
+                link: userData.backAadhaar!,
+                image: value.aadhaarBack ?? File(''),
+                function: (x) async {
+                  final File? file = await pickImage(x);
+                  if(file != null){
+                    value.setImage(file, DocumentEnum.AB);
+                  }
+                  },
+                clearImage: () => value.clearImage(DocumentEnum.AB),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+class DocumentWidget extends StatelessWidget {
+  const DocumentWidget(
+      {super.key,
+      required this.link,
+      required this.image,
+      required this.function,
+      required this.clearImage,
+      required this.title,
+      required this.description});
+
+  final String title;
+  final String description;
+  final String link;
+  final File? image;
+  final Future<void> Function(ImageSource) function;
+
+  final VoidCallback clearImage;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(children: [
+      Row(children: <Widget>[
+        Checkbox(
+          onChanged: null /*(val) {}*/,
+          checkColor: Colors.white,
+          hoverColor: Colors.transparent,
+          value: link?.isNotEmpty ?? false,
+          //onChanged: (_){},
+        ),
+        Text(description)
+      ]),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.photo_camera),
+            onPressed: () => function(ImageSource.camera),
+          ),
+          IconButton(
+            icon: const Icon(Icons.photo_library),
+            onPressed: () => function(ImageSource.gallery),
+          ),
+        ],
+      ),
+      if (image != null) ...[
+        Container(
+          margin: const EdgeInsets.all(4),
+          child: Image.file(
+            image!,
+            height: 200,
+          ),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            TextButton(
+              onPressed: clearImage,
+              child: const Icon(Icons.refresh),
+            ),
+          ],
+        ),
+        Uploader(file: image!, cat: title),
+      ],
+    ],
+    );
+  }
+}
+
 class Uploader extends StatefulWidget {
   final File file;
   final String cat;
@@ -608,46 +769,142 @@ class Uploader extends StatefulWidget {
   _UploaderState createState() => _UploaderState();
 }
 class _UploaderState extends State<Uploader> {
-  late UploadTask _uploadTask;
+  UploadTask? _uploadTask;
+  bool _uploadComplete = false;
+  bool _errorOccurred = false;
+  String? _errorMessage;
+
+  @override
+  void initState() {
+    super.initState();
+    _startUpload();
+    //uploadFunction();
+  }
+
+  Future<void> _startUpload() async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user == null) throw Exception('User not authenticated');
+
+      final storageRef = FirebaseStorage.instance
+          .ref()
+          .child('userImages/${user.uid}/${widget.cat}.png');
+
+      setState(() {
+        _uploadTask = storageRef.putFile(widget.file);
+        _uploadComplete = false;
+        _errorOccurred = false;
+      });
+
+      final taskSnapshot = await _uploadTask;
+      if (taskSnapshot == null) throw Exception('Upload task failed');
+
+      // Get download URL
+      final downloadUrl = await storageRef.getDownloadURL();
+
+      // Update Firestore
+      await FirebaseServices().addUserDocument(widget.cat, downloadUrl);
+
+      setState(() => _uploadComplete = true);
+    } catch (e, st) {
+      setState(() {
+        _errorOccurred = true;
+        _errorMessage = 'Upload failed: ${e.toString()}';
+      });
+      debugPrint('Upload error: $e\n$st');
+    } finally {
+      setState(() => _uploadTask = null);
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<TaskSnapshot>(
-        stream: _uploadTask.snapshotEvents,
-        builder: (_, snapshot) {
-          final TaskSnapshot? event = snapshot.data;
-          final double progressPercent =
+    return Column(
+      children: [
+        if (_errorOccurred)
+          Text(
+            _errorMessage ?? 'Upload error',
+            style: const TextStyle(color: Colors.red),
+          ),
+
+        if (_uploadComplete)
+          const Text(
+            'Successfully Uploaded',
+            style: TextStyle(color: Colors.green),
+          ),
+        if (_uploadTask != null)
+          StreamBuilder<TaskSnapshot>(
+            stream: _uploadTask!.snapshotEvents,
+            builder: (context, snapshot) {
+              final event = snapshot.data;
+              final progress = event != null && event.bytesTransferred > 0
+                  ? event.bytesTransferred / event.totalBytes
+                  : 0.0;
+
+              return Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      if (_uploadTask!.snapshot.state == TaskState.running)
+                        IconButton(
+                          icon: const Icon(Icons.pause),
+                          onPressed: () => _uploadTask!.pause(),
+                        ),
+                      if (_uploadTask!.snapshot.state == TaskState.paused)
+                        IconButton(
+                          icon: const Icon(Icons.play_arrow),
+                          onPressed: () => _uploadTask!.resume(),
+                        ),
+                    ],
+                  ),
+                  LinearProgressIndicator(value: progress),
+                  Text('${(progress * 100).toStringAsFixed(1)}%'),
+                ],
+              );
+            },
+          )
+        else if (!_uploadComplete && !_errorOccurred)
+          const CircularProgressIndicator(),
+        /*StreamBuilder<TaskSnapshot>(
+            stream: _uploadTask!.snapshotEvents,
+            builder: (_, snapshot) {
+              final TaskSnapshot? event = snapshot.data;
+              final double progressPercent =
               event != null ? event.bytesTransferred / event.totalBytes : 0;
 
-          return Column(
-            children: [
-              if (_uploadTask.snapshot.state == TaskState.success)
-                const Text(
-                  'Successfully Uploaded',
-                  style: smallText,
-                ),
+              return Column(
+                children: [
+                  if (_uploadTask!.snapshot.state == TaskState.success)
+                    const Text(
+                      'Successfully Uploaded',
+                      style: smallText,
+                    ),
 
-              if (_uploadTask.snapshot.state == TaskState.paused)
-                TextButton(
-                  onPressed: _uploadTask.resume,
-                  child: const Icon(Icons.play_arrow),
-                ),
+                  if (_uploadTask!.snapshot.state == TaskState.paused)
+                    TextButton(
+                      onPressed: _uploadTask!.resume,
+                      child: const Icon(Icons.play_arrow),
+                    ),
 
-              if (_uploadTask.snapshot.state == TaskState.running)
-                TextButton(
-                  onPressed: _uploadTask.pause,
-                  child: const Icon(Icons.pause),
-                ),
+                  if (_uploadTask!.snapshot.state == TaskState.running)
+                    TextButton(
+                      onPressed: _uploadTask!.pause,
+                      child: const Icon(Icons.pause),
+                    ),
 
-              // Progress bar
-              LinearProgressIndicator(value: progressPercent),
-              Text(
-                '${(progressPercent * 100).toStringAsFixed(2)} % ',
-                style: const TextStyle(color: Colors.white),
-              ),
-            ],
-          );
-        });
+                  // Progress bar
+                  LinearProgressIndicator(value: progressPercent),
+                  Text(
+                    '${(progressPercent * 100).toStringAsFixed(2)} % ',
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                ],
+              );
+            }),*/
+      ],
+    );
   }
 
   Future<void> uploadFunction() async {
@@ -674,157 +931,6 @@ class _UploaderState extends State<Uploader> {
             context, oops, 'Something went wrong. Please try again. $e');
       }
     }
-  }
-}
-
-class DocumentsUploader extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return StreamBuilder<DocumentSnapshot>(
-      stream: FirebaseServices().getDocuments(),
-      builder: (context, snapshot) {
-        // Check for loading state
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: spinkit);
-        }
-
-        // Handle error state
-        if (snapshot.hasError) {
-          return Center(child: Text('Something went wrong: ${snapshot.error}'));
-        }
-
-        // Ensure data is not null
-        if (!snapshot.hasData || snapshot.data?.data() == null) {
-          return const Center(child: Text('No documents available.'));
-        }
-
-        final userData =
-            UserModel.fromJson(snapshot.data!.data() as Map<String, dynamic>);
-
-        return Consumer<HomeProvider>(
-          builder: (BuildContext context, value, Widget? child) => Column(
-            children: <Widget>[
-              DocumentWidget(
-                title: 'front_page_driving_license',
-                description: 'Uploaded Driving License Front Page',
-                link: userData.frontLicense,
-                image: value.licenseFront as File,
-                function: (x) async {
-                  final File? file = await pickImage(x);
-                  value.setImage(file!, DocumentEnum.LF);
-                },
-                clearImage: () => value.clearImage(DocumentEnum.LF),
-              ),
-              const Divider(),
-              const Divider(),
-              DocumentWidget(
-                title: 'back_page_driving_license',
-                description: 'Uploaded Driving License Back Page',
-                link: userData.backLicense,
-                image: value.licenseBack as File,
-                function: (x) async {
-                  final File? file = await pickImage(x);
-                  value.setImage(file!, DocumentEnum.LB);
-                },
-                clearImage: () => value.clearImage(DocumentEnum.LB),
-              ),
-              const Divider(),
-              const Divider(),
-              DocumentWidget(
-                title: 'front_page_aadhaar_card',
-                description: 'Uploaded Aadhaar card Front Page',
-                link: userData.frontAadhaar,
-                image: value.aadhaarFront as File,
-                function: (x) async {
-                  final File? file = await pickImage(x);
-                  value.setImage(file!, DocumentEnum.AF);
-                },
-                clearImage: () => value.clearImage(DocumentEnum.AF),
-              ),
-              const Divider(),
-              const Divider(),
-              DocumentWidget(
-                title: 'back_page_aadhaar_card',
-                description: 'Uploaded Aadhaar card back page',
-                link: userData.backAadhaar,
-                image: value.aadhaarBack as File,
-                function: (x) async {
-                  final File? file = await pickImage(x);
-                  value.setImage(file!, DocumentEnum.AB);
-                },
-                clearImage: () => value.clearImage(DocumentEnum.AB),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-}
-
-class DocumentWidget extends StatelessWidget {
-  const DocumentWidget(
-      {super.key,
-      required this.link,
-      required this.image,
-      required this.function,
-      required this.clearImage,
-      required this.title,
-      required this.description});
-
-  final String title;
-  final String description;
-  final String link;
-  final File image;
-  final Future<void> Function(ImageSource) function;
-
-  final Function clearImage;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(children: [
-      Row(children: <Widget>[
-        Checkbox(
-          onChanged: (val) {},
-          checkColor: Colors.white,
-          hoverColor: Colors.transparent,
-          value: link != null,
-          //onChanged: (_){},
-        ),
-        Text(description)
-      ]),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.photo_camera),
-            onPressed: () => function(ImageSource.camera),
-          ),
-          IconButton(
-            icon: const Icon(Icons.photo_library),
-            onPressed: () => function(ImageSource.gallery),
-          ),
-        ],
-      ),
-      ...[
-        Container(
-            margin: const EdgeInsets.all(4),
-            child: Image.file(
-              image,
-              height: 200,
-            )),
-        Row(
-          children: <Widget>[
-            TextButton(
-                onPressed: () {
-                  clearImage;
-                },
-                child: const Icon(Icons.refresh)),
-          ],
-        ),
-        Uploader(file: image, cat: title),
-      ],
-    ]);
   }
 }
 
@@ -918,38 +1024,62 @@ class DurationTile extends StatelessWidget {
   //final bool isSet;
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: .37.sw,
-      decoration: BoxDecoration(
-        color: Colors.transparent,
-        //borderRadius: BorderRadius.circular(12),
-        //border: Border.all(color: Colors.transparent, width: 1.2),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Icon(Icons.calendar_today, color: accentColor),
-          Column(
-            // crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: TextStyle( color:  Colors.white,fontWeight: FontWeight.bold, fontSize: 17),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(body, style: TextStyle(fontSize: 15,  color: Colors.white)),
-                  Icon(Icons.arrow_drop_down,  color: Colors.white,)
-                ],
-              ),
-            ],
+  // Widget build(BuildContext context) {
+  //   return Container(
+  //     width: .37.sw,
+  //     decoration: BoxDecoration(
+  //       color: Colors.transparent,
+  //       //borderRadius: BorderRadius.circular(12),
+  //       //border: Border.all(color: Colors.transparent, width: 1.2),
+  //     ),
+  //     child: Row(
+  //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //       children: [
+  //         Icon(Icons.calendar_today, color: accentColor),
+  //         Column(
+  //           // crossAxisAlignment: CrossAxisAlignment.start,
+  //           children: [
+  //             Text(
+  //               title,
+  //               style: TextStyle( color:  Colors.white,fontWeight: FontWeight.bold, fontSize: 17),
+  //             ),
+  //             Row(
+  //               mainAxisAlignment: MainAxisAlignment.center,
+  //               children: [
+  //                 Text(body, style: TextStyle(fontSize: 15,  color: Colors.white)),
+  //                 Icon(Icons.arrow_drop_down,  color: Colors.white,)
+  //               ],
+  //             ),
+  //           ],
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
+    Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: TextStyle(
+            color: const Color.fromARGB(255, 197, 197, 197), // Use the passed textColor
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
           ),
-        ],
-      ),
+        ),
+        SizedBox(height: 5),
+        Text(
+          body,
+          style: TextStyle(
+            color: Colors.grey, // Use the passed textColor
+            fontSize: 14,
+          ),
+        ),
+      ],
     );
   }
+
 }
 
 class FilterItem extends StatelessWidget {

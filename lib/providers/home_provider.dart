@@ -48,10 +48,10 @@ class HomeProvider with ChangeNotifier {
   bool _isLocationLoading = false;
   bool get isLocationLoading => _isLocationLoading;
 
-  late File? aadhaarFront;
-  late File? aadhaarBack;
-  late File? licenseFront;
-  late File? licenseBack;
+  File? aadhaarFront;
+  File? aadhaarBack;
+  File? licenseFront;
+  File? licenseBack;
 
   late SharedPreferences _prefs;
 

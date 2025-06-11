@@ -81,6 +81,7 @@ flutter:
     - assets/images/brands/
     - assets/images/fearturedin/
     - assets/images/ZymoBenefits/
+    - assets/images/HeroImages/
     - dev_assets/
 
   fonts:

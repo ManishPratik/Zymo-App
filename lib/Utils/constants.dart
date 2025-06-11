@@ -425,75 +425,118 @@ Future voucherPopUp(BuildContext context, String title, String body) {
 Widget atDurationPicker(BuildContext context, CarProvider value) {
   //final isSet = value.isDurationSet;
 
-  return Padding(
-    padding: const EdgeInsets.symmetric(vertical: 36.5),
+  // return Padding(
+  //   padding: const EdgeInsets.symmetric(vertical: 36.5),
+  //   child: Row(
+  //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //     children: [
+  //       Expanded(
+  //         child: Container(
+  //           decoration: BoxDecoration(
+  //             // color: const Color.fromARGB(151, 206, 26, 26),
+  //             borderRadius: BorderRadius.circular(12),
+  //             border: Border.all(color: Colors.white54, width: 1.2),
+  //           ),
+  //           padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 10),
+  //           child: InkWell(
+  //             onTap: () {
+  //               //value.setDuration(true);
+  //               CarFunctions().startDatePicker(context);
+  //             },
+  //             child: DurationTile(
+  //                 //isSet: isSet,
+  //                 title: 'Start date',
+  //                 body: value.startDate != null
+  //                     ? dateFormatter.format(value.startDate)
+  //                     : 'Select date'),
+  //           ),
+  //         ),
+  //       ),
+  //       Expanded(
+  //         child: Container(
+  //           decoration: BoxDecoration(
+  //             color: Colors.transparent,
+  //             borderRadius: BorderRadius.circular(12),
+  //             border: Border.all(color: Colors.white54, width: 1.2),
+  //           ),
+  //           padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 10),
+  //           child: InkWell(
+  //             onTap: () {
+  //               //value.setDuration(true);
+  //               CarFunctions().startTimePicker(context);
+  //             },
+  //             child: DurationTile(
+  //                 //isSet: isSet,
+  //                 title: 'Start time',
+  //                 body: value.startTime != null
+  //                     ? value.startTime.format(context)
+  //                     : 'Select time'),
+  //           ),
+  //         ),
+  //       ),
+  //     ],
+  //   ), /* Row(
+  //     crossAxisAlignment: CrossAxisAlignment.end,
+  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //     children: [
+  //       InkWell(
+  //         onTap: () => CarFunctions().startDatePicker(context),
+  //         child: DurationTile(
+  //             title: 'Start date',
+  //             body: value.startDate != null
+  //                 ? dateFormatter.format(value.startDate)
+  //                 : 'Select date'),
+  //       ),
+  //       InkWell(
+  //         onTap: () => CarFunctions().startTimePicker(context),
+  //         child: DurationTile(
+  //             title: 'Start time',
+  //             body: value.startTime != null
+  //                 ? value.startTime.format(context)
+  //                 : 'Select time'),
+  //       ),
+  //     ],
+  //   ),*/
+  // );
+    return Padding(
+    padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
     child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        Container(
-          decoration: BoxDecoration(
-            color: Colors.transparent,
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: Colors.white54, width: 1.2),
-          ),
-          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 10),
-          child: InkWell(
-            onTap: () {
-              //value.setDuration(true);
-              CarFunctions().startDatePicker(context);
-            },
-            child: DurationTile(
-                //isSet: isSet,
-                title: 'Start date',
-                body: value.startDate != null
-                    ? dateFormatter.format(value.startDate)
-                    : 'Select date'),
-          ),
-        ),
-        Container(
-          decoration: BoxDecoration(
-            color: Colors.transparent,
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: Colors.white54, width: 1.2),
-          ),
-          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 10),
-          child: InkWell(
-            onTap: () {
-              //value.setDuration(true);
-              CarFunctions().startTimePicker(context);
-            },
-            child: DurationTile(
-                //isSet: isSet,
-                title: 'Start time',
-                body: value.startTime != null
-                    ? value.startTime.format(context)
-                    : 'Select time'),
-          ),
-        ),
-      ],
-    ), /* Row(
       crossAxisAlignment: CrossAxisAlignment.end,
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         InkWell(
           onTap: () => CarFunctions().startDatePicker(context),
           child: DurationTile(
-              title: 'Start date',
-              body: value.startDate != null
-                  ? dateFormatter.format(value.startDate)
-                  : 'Select date'),
+            title: 'Start date',
+            body: value.startDate != null
+                ? dateFormatter.format(value.startDate!)
+                : 'Select date',
+            // textColor: Colors.grey,
+          ),
+        ),
+        Icon(
+          Icons.arrow_drop_down,
+          color: accentColor,
+        ),
+        Spacer(),
+        Icon(
+          Icons.arrow_drop_down,
+          color: accentColor,
         ),
         InkWell(
           onTap: () => CarFunctions().startTimePicker(context),
           child: DurationTile(
-              title: 'Start time',
-              body: value.startTime != null
-                  ? value.startTime.format(context)
-                  : 'Select time'),
+            title: 'Start time',
+            body: value.startTime != null
+                ? value.startTime!.format(context)
+                : 'Select time',
+            // textColor: Colors.grey,
+          ),
         ),
       ],
-    ),*/
+    ),
   );
+
 }
 
 class AppButton extends StatelessWidget {
@@ -546,181 +589,280 @@ class AppButton extends StatelessWidget {
 }
 
 Widget durationPicker(BuildContext context, CarProvider value) {
-  final carFuncs = CarFunctions();
+  // final carFuncs = CarFunctions();
   //final isSet = value.isDurationSet;
 
-  return Column(
-    children: [
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.transparent,
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: Colors.white54, width: 1.2),
-            ),
-            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 10),
-            child: InkWell(
-              onTap: () {
-                //value.setDuration(true);
-                carFuncs.startDatePicker(context);
-              },
-              child: DurationTile(
-                  //isSet: isSet,
-                  title: 'Start Date',
-                  body: value.startDate != null
-                      ? dateFormatter.format(value.startDate)
-                      : 'Select Date'),
-            ),
-          ),
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.transparent,
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: Colors.white54, width: 1.2),
-            ),
-            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 10),
-            child: InkWell(
-                onTap: () {
-                  //value.setDuration(true);
-                  CarFunctions().startTimePicker(context);
-                },
-                child: DurationTile(
-                  //isSet: isSet,
-                  title: 'Start Time',
-                  body: value.startTime != null
-                      ? value.startTime.format(context).toString()
-                      : 'Select Time',
-                )),
-          ),
-        ],
-      ),
-      const SizedBox(
-        height: 20,
-      ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.transparent,
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: Colors.white54, width: 1.2),
-            ),
-            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 10),
-            child: InkWell(
-                onTap: () {
-                  //value.setDuration(true);
-                  carFuncs.endDatePicker(context);
-                },
-                child: DurationTile(
-                  title: 'End Date',
-                  body: value.endDate != null
-                      ? dateFormatter.format(value.endDate)
-                      : 'Select Date',
-                  // isSet: isSet
-                )),
-          ),
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.transparent,
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: Colors.white54, width: 1.2),
-            ),
-            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 10),
-            child: InkWell(
-              onTap: () {
-                //value.setDuration(true);
-                CarFunctions().endTimePicker(context);
-              },
-              child: DurationTile(
-                // isSet: isSet,
-                title: 'End Time',
-                body: value.endTime != null
-                    ? value.endTime.format(context).toString()
-                    : 'Select Time',
-              ),
-            ),
-          ),
-        ],
-      ),
-      const SizedBox(
-        height: 20,
-      ),
-      /*Container(
-        decoration: BoxDecoration(
-          color: accentColor,
-          borderRadius: BorderRadius.circular(12),
-          */ /*border: Border.all(
-              color: Colors.white54,
-              width: 1.2),*/ /*
-        ),
-        height: 60,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Icon(
-              Icons.calendar_today_outlined,
-              color: Colors.black,
-            ),
-            InkWell(
-                onTap: () => carFuncs.startDatePicker(context),
+  return Padding(
+    padding: const EdgeInsets.all(4.0),
+    child: Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+          child: Row(
+            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              // Start Date Picker
+              InkWell(
+                onTap: () => CarFunctions().startDatePicker(context),
                 child: DurationTile(
                     title: 'Start Date',
                     body: value.startDate != null
-                        ? dateFormatter.format(value.startDate)
-                        : 'Select Date')),
-            InkWell(
-              onTap: () => CarFunctions().startTimePicker(context),
-              child: DurationTile(
-                title: 'Start Time',
-                body: value.startTime != null
-                    ? value.startTime.format(context).toString()
-                    : 'Select Time',
+                        ? dateFormatter.format(value.startDate!)
+                        : 'Select Date',
+                    // textColor: Colors.grey
+                    ),
               ),
-            ),
-          ],
-        ),
-      ),
-      SizedBox(
-        height: 20,
-      ),
-      Container(
-        decoration: BoxDecoration(
-          color: accentColor,
-          borderRadius: BorderRadius.circular(12),
-        ),
-        height: 55,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.calendar_today_outlined,
-              color: Colors.black,
-            ),
-            InkWell(
-              onTap: () => carFuncs.endDatePicker(context),
-              child: DurationTile(
-                  title: 'End Date',
-                  body: value.endDate != null
-                      ? dateFormatter.format(value.endDate)
-                      : 'Select Date'),
-            ),
-            InkWell(
-              onTap: () => CarFunctions().endTimePicker(context),
-              child: DurationTile(
-                title: 'End Time',
-                body: value.endTime != null
-                    ? value.endTime.format(context).toString()
-                    : 'Select Time',
+              SizedBox(
+                width: 5,
               ),
-            ),
-          ],
+              Icon(
+                Icons.arrow_drop_down,
+                color: accentColor,
+              ),
+              Spacer(),
+              Icon(
+                Icons.arrow_drop_down,
+                color: accentColor,
+              ),
+              SizedBox(
+                width: 5,
+              ),
+              InkWell(
+                onTap: () => CarFunctions().startTimePicker(context),
+                child: DurationTile(
+                  title: 'Start Time',
+                  body: value.startTime != null
+                      ? value.startTime!.format(context).toString()
+                      : 'Select Time',
+                  // textColor: Colors.grey, // Text color set to grey
+                ),
+              ),
+            ],
+          ),
         ),
-      )*/
-    ],
+        Divider(
+          height: 20,
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              // End Date Picker
+              InkWell(
+                onTap: () => CarFunctions().endDatePicker(context),
+                child: DurationTile(
+                    title: 'End Date',
+                    body: value.endDate != null
+                        ? dateFormatter.format(value.endDate!)
+                        : 'Select Date',
+                    // textColor: Colors.grey
+                    ), // Text color set to grey
+              ),
+              SizedBox(
+                width: 5,
+              ),
+              Icon(
+                Icons.arrow_drop_down,
+                color: accentColor,
+              ),
+              Spacer(),
+              Icon(
+                Icons.arrow_drop_down,
+                color:  accentColor,
+              ),
+              SizedBox(
+                width: 5,
+              ),
+              InkWell(
+                onTap: () => CarFunctions().endTimePicker(context),
+                child: DurationTile(
+                  title: 'End Time',
+                  body: value.endTime != null
+                      ? value.endTime!.format(context).toString()
+                      : 'Select Time',
+                  // textColor: Colors.grey, // Text color set to grey
+                ),
+              ),
+            ],
+          ),
+        )
+      ],
+    ),
   );
+
+  // Column(
+  //   children: [
+  //     Row(
+  //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //       children: [
+  //         Container(
+  //           decoration: BoxDecoration(
+  //             color: Colors.transparent,
+  //             borderRadius: BorderRadius.circular(12),
+  //             border: Border.all(color: Colors.white54, width: 1.2),
+  //           ),
+  //           padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 10),
+  //           child: InkWell(
+  //             onTap: () {
+  //               //value.setDuration(true);
+  //               carFuncs.startDatePicker(context);
+  //             },
+  //             child: DurationTile(
+  //                 //isSet: isSet,
+  //                 title: 'Start Date',
+  //                 body: value.startDate != null
+  //                     ? dateFormatter.format(value.startDate)
+  //                     : 'Select Date'),
+  //           ),
+  //         ),
+  //         Container(
+  //           decoration: BoxDecoration(
+  //             color: Colors.transparent,
+  //             borderRadius: BorderRadius.circular(12),
+  //             border: Border.all(color: Colors.white54, width: 1.2),
+  //           ),
+  //           padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 10),
+  //           child: InkWell(
+  //               onTap: () {
+  //                 //value.setDuration(true);
+  //                 CarFunctions().startTimePicker(context);
+  //               },
+  //               child: DurationTile(
+  //                 //isSet: isSet,
+  //                 title: 'Start Time',
+  //                 body: value.startTime != null
+  //                     ? value.startTime.format(context).toString()
+  //                     : 'Select Time',
+  //               )),
+  //         ),
+  //       ],
+  //     ),
+  //     const SizedBox(
+  //       height: 20,
+  //     ),
+  //     Row(
+  //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //       children: [
+  //         Container(
+  //           decoration: BoxDecoration(
+  //             color: Colors.transparent,
+  //             borderRadius: BorderRadius.circular(12),
+  //             border: Border.all(color: Colors.white54, width: 1.2),
+  //           ),
+  //           padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 10),
+  //           child: InkWell(
+  //               onTap: () {
+  //                 //value.setDuration(true);
+  //                 carFuncs.endDatePicker(context);
+  //               },
+  //               child: DurationTile(
+  //                 title: 'End Date',
+  //                 body: value.endDate != null
+  //                     ? dateFormatter.format(value.endDate)
+  //                     : 'Select Date',
+  //                 // isSet: isSet
+  //               )),
+  //         ),
+  //         Container(
+  //           decoration: BoxDecoration(
+  //             color: Colors.transparent,
+  //             borderRadius: BorderRadius.circular(12),
+  //             border: Border.all(color: Colors.white54, width: 1.2),
+  //           ),
+  //           padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 10),
+  //           child: InkWell(
+  //             onTap: () {
+  //               //value.setDuration(true);
+  //               CarFunctions().endTimePicker(context);
+  //             },
+  //             child: DurationTile(
+  //               // isSet: isSet,
+  //               title: 'End Time',
+  //               body: value.endTime != null
+  //                   ? value.endTime.format(context).toString()
+  //                   : 'Select Time',
+  //             ),
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //     const SizedBox(
+  //       height: 20,
+  //     ),
+  //     /*Container(
+  //       decoration: BoxDecoration(
+  //         color: accentColor,
+  //         borderRadius: BorderRadius.circular(12),
+  //         */ /*border: Border.all(
+  //             color: Colors.white54,
+  //             width: 1.2),*/ /*
+  //       ),
+  //       height: 60,
+  //       child: Row(
+  //         mainAxisAlignment: MainAxisAlignment.start,
+  //         children: [
+  //           Icon(
+  //             Icons.calendar_today_outlined,
+  //             color: Colors.black,
+  //           ),
+  //           InkWell(
+  //               onTap: () => carFuncs.startDatePicker(context),
+  //               child: DurationTile(
+  //                   title: 'Start Date',
+  //                   body: value.startDate != null
+  //                       ? dateFormatter.format(value.startDate)
+  //                       : 'Select Date')),
+  //           InkWell(
+  //             onTap: () => CarFunctions().startTimePicker(context),
+  //             child: DurationTile(
+  //               title: 'Start Time',
+  //               body: value.startTime != null
+  //                   ? value.startTime.format(context).toString()
+  //                   : 'Select Time',
+  //             ),
+  //           ),
+  //         ],
+  //       ),
+  //     ),
+  //     SizedBox(
+  //       height: 20,
+  //     ),
+  //     Container(
+  //       decoration: BoxDecoration(
+  //         color: accentColor,
+  //         borderRadius: BorderRadius.circular(12),
+  //       ),
+  //       height: 55,
+  //       child: Row(
+  //         mainAxisAlignment: MainAxisAlignment.center,
+  //         children: [
+  //           Icon(
+  //             Icons.calendar_today_outlined,
+  //             color: Colors.black,
+  //           ),
+  //           InkWell(
+  //             onTap: () => carFuncs.endDatePicker(context),
+  //             child: DurationTile(
+  //                 title: 'End Date',
+  //                 body: value.endDate != null
+  //                     ? dateFormatter.format(value.endDate)
+  //                     : 'Select Date'),
+  //           ),
+  //           InkWell(
+  //             onTap: () => CarFunctions().endTimePicker(context),
+  //             child: DurationTile(
+  //               title: 'End Time',
+  //               body: value.endTime != null
+  //                   ? value.endTime.format(context).toString()
+  //                   : 'Select Time',
+  //             ),
+  //           ),
+  //         ],
+  //       ),
+  //     )*/
+  //   ],
+  // );
 }
 
 Future<dynamic> warningPopUp(BuildContext context, String title, String body) {

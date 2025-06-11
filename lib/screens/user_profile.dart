@@ -26,6 +26,7 @@ class _UserProfileState extends State<UserProfile> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
+          backgroundColor: accentColor,
           elevation: 5,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15.0),
@@ -69,12 +70,11 @@ class _UserProfileState extends State<UserProfile> {
 
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          title: Text("Profile"),
+       /* appBar: AppBar(
           centerTitle: true,
           elevation: 0,
           flexibleSpace: appBarGradient,
-        ),
+        ),*/
         body: user == null
             ? NoUserError(
                 message: 'Log in to view your bookings',
@@ -95,16 +95,21 @@ class _UserProfileState extends State<UserProfile> {
                   Container(
                     height: MediaQuery.of(context).size.height * .3,
                     decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                          bottomRight: Radius.circular(20),
+                          //bottomLeft: Radius.circular(20)
+                      ),
+                      //color: Colors.black
                       gradient: LinearGradient(colors: gradientColors),
                     ),
                     width: double.infinity,
                     child: Image.asset(
-                      'dev_assets/new_logo_trans.png',
+                      'assets/images/guide/finallogo.png',
                     ),
                   ),
-                  // SizedBox(
-                  //   height: .02.sh,
-                  // ),
+                  SizedBox(
+                    height: .02.sh,
+                  ),
                   // ProfileTile(
                   //   icon: FontAwesomeIcons.bagShopping,
                   //   function: () =>
@@ -124,11 +129,17 @@ class _UserProfileState extends State<UserProfile> {
                         CommonFunctions.navigateTo(context, ProfileDetails()),
                     title: 'Profile',
                   ),
+                  SizedBox(
+                    height: .02.sh,
+                  ),
                   ProfileTile(
                     icon: FontAwesomeIcons.passport,
                     function: () => Navigator.of(context)
                         .pushNamed(DocumentsUpload.routeNmae),
                     title: 'My Documents',
+                  ),
+                  SizedBox(
+                    height: .02.sh,
                   ),
 
                   // ProfileTile(
@@ -158,6 +169,9 @@ class _UserProfileState extends State<UserProfile> {
                     function: () =>
                         Navigator.of(context).pushNamed(Help.routeName),
                     title: 'Help',
+                  ),
+                  SizedBox(
+                    height: .02.sh,
                   ),
                   ProfileTile(
                     icon: FontAwesomeIcons.trash,
@@ -195,27 +209,35 @@ class ProfileTile extends StatelessWidget {
   final IconData icon;
   final Function function;
   final String title;
+
   const ProfileTile({
     super.key,
     required this.icon,
     required this.function,
-    this.title='',
+    this.title = '',
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(border: Border.all(width: .4)),
-      child: ListTile(
-        tileColor: Theme.of(context).primaryColor,
-        leading: Icon(icon),
-        minLeadingWidth: 10,
-        onTap: () => function(),
-        title: Text(
-          title,
-        ),
-        trailing: const Icon(
-          Icons.navigate_next,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: Container(
+        decoration: BoxDecoration(
+            color: accentColor,
+            borderRadius: BorderRadius.circular(15),
+            border: Border.all(width: .4)),
+        child: ListTile(
+          //tileColor: accentColor,
+          leading: Icon(icon),
+          minLeadingWidth: 10,
+          onTap: () => function(),
+          title: Text(
+            title,
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+          ),
+          trailing: const Icon(
+            Icons.navigate_next,
+          ),
         ),
       ),
     );

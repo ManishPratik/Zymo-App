@@ -38,13 +38,13 @@ class _UserBookingScreenState extends State<UserBookingScreen> {
 
   autoFillData(User user) {
     firebaseServices.getUserDetails(user.uid).then((value) {
-      street1Controller.text = value!.street1;
-      street2Controller.text = value.street2;
-      cityController.text = value.city;
-      nameController.text = value.name;
-      emailController.text = value.email;
-      phoneNumberController.text = value.phoneNumber;
-      pinCodeController.text = value.zipcode;
+      street1Controller.text = value!.street1!;
+      street2Controller.text = value.street2!;
+      cityController.text = value.city!;
+      nameController.text = value.name!;
+      emailController.text = value.email!;
+      phoneNumberController.text = value.phoneNumber!;
+      pinCodeController.text = value.zipcode!;
       _dob = DateTime.tryParse(value.dob ?? '') ?? now;
     });
   }
@@ -373,7 +373,7 @@ class _UserBookingScreenState extends State<UserBookingScreen> {
     final Map<String, dynamic> data = {
       'FirstName': userModel.name,
       'Email': userModel.email,
-      'PhoneNumber': userModel.phoneNumber.replaceFirst('+91', ''),
+      'PhoneNumber': userModel.phoneNumber!.replaceFirst('+91', ''),
       'DateOfBirth': _dob.toString().substring(0, 10),
       'UserId': userModel.uid,
       'Vendor': carModel.vendor!.name,
@@ -870,7 +870,7 @@ class _UserBookingScreenState extends State<UserBookingScreen> {
       ..uid = uid
       // ..panNumber = panNumberController.text
       ..zipcode = pinCodeController.text;
-    if (submitModel.city.isEmpty) {
+    if (submitModel.city!.isEmpty) {
       submitModel.city = model.city!;
     }
     return submitModel;

@@ -24,10 +24,10 @@ class ProfileDetails extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    details('Name', snapshot.data!.name),
-                    details('Phone', snapshot.data!.phoneNumber),
-                    details('Email', snapshot.data!.email),
-                    details('Date Of Birth', snapshot.data!.dob),
+                    details('Name', snapshot.data!.name!),
+                    details('Phone', snapshot.data!.phoneNumber!),
+                    details('Email', snapshot.data!.email!),
+                    details('Date Of Birth', snapshot.data!.dob!),
                     Spacer(),
                     CupertinoButton(
                       child: Text("Update"),

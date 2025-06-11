@@ -10,6 +10,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:letzrentnew/Services/auth_services.dart';
 import 'package:letzrentnew/Services/firebase_services.dart';
 import 'package:letzrentnew/Utils/app_data.dart';
+import 'package:letzrentnew/Utils/dimensions.dart';
 import 'package:letzrentnew/Utils/location_picker.dart';
 import 'package:letzrentnew/Utils/widgets.dart';
 import 'package:letzrentnew/providers/car_provider.dart';
@@ -52,6 +53,8 @@ class _HomePageState extends State<HomePage> {
   bool isSelfDrive = true;
   final ScrollController _controller = ScrollController();
   double indicatorPosition = 0;
+    int index = 0;
+
 
   final steps = [
     StepModel(
@@ -178,539 +181,906 @@ class _HomePageState extends State<HomePage> {
                   }
 
                   //final list = [Colors.white, Colors.white];
+
+                final list = [Color(0xff303030), Color(0xff303030)];
+
                   return DefaultTabController(
                     length: AppData.Categories.length,
-                    child: Scaffold(
-                      backgroundColor: Colors.black,
-                      appBar: PreferredSize(
-                        preferredSize: Size.fromHeight(80),
-                        child: AppBar(
-                          flexibleSpace: Container(
-                            color: Colors.black,
-                          ),
-                          automaticallyImplyLeading: false,
-                          titleSpacing: 0,
-                          title: Row(
-                            children: [
-                              SizedBox(
-                                height: 30,
+                    child:  Scaffold(
+                    backgroundColor: Colors.black,
+                    appBar: PreferredSize(
+                      preferredSize: Size.fromHeight(80),
+                      child: AppBar(
+                        flexibleSpace: Container(
+                          color: Colors.black,
+                        ),
+                        automaticallyImplyLeading: false,
+                        titleSpacing: 0,
+                        title: Row(
+                          children: [
+                            SizedBox(
+                              height: 30,
+                            ),
+                            Container(
+                              margin: const EdgeInsets.only(left: 20.0),
+                              height: 100,
+                              width: 100,
+                              child: Image.asset(
+                                height: 80,
+                                width: 80,
+                                'assets/images/guide/finallogo.png',
+                                fit: BoxFit.contain,
                               ),
-                              Container(
-                                margin: const EdgeInsets.only(left: 20.0),
-                                height: 100,
-                                width: 100,
-                                child: Image.asset(
-                                  height: 80,
-                                  width: 80,
-                                  'assets/images/guide/finallogo.png',
-                                  fit: BoxFit.contain,
-                                ),
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
+                    ),
                       endDrawer: Drawer(child: UserProfile()),
+
+                      // Scaffold(
+                    //   backgroundColor: Colors.black,
+                    //   appBar: PreferredSize(
+                    //     preferredSize: Size.fromHeight(80),
+                    //     child: AppBar(
+                    //       flexibleSpace: Container(
+                    //         color: Colors.black,
+                    //       ),
+                    //       automaticallyImplyLeading: false,
+                    //       titleSpacing: 0,
+                    //       title: Row(
+                    //         children: [
+                    //           SizedBox(
+                    //             height: 30,
+                    //           ),
+                    //           Container(
+                    //             margin: const EdgeInsets.only(left: 20.0),
+                    //             height: 100,
+                    //             width: 100,
+                    //             child: Image.asset(
+                    //               height: 80,
+                    //               width: 80,
+                    //               'assets/images/guide/finallogo.png',
+                    //               fit: BoxFit.contain,
+                    //             ),
+                    //           ),
+                    //         ],
+                    //       ),
+                    //     ),
+                    //   ),
+                    //   endDrawer: Drawer(child: UserProfile()),
                       body: SingleChildScrollView(
                         child: Container(
                           color: Colors.black,
                           child: Column(
                             children: [
+//                               Container(
+//                                 color: Colors.black,
+//                                 child: Stack(
+//                                   children: [
+//                                     // ─── Background Video ─────────────────────────────────────────────
+//                                     /*if (_videoController.value.isInitialized)
+//                                                 SizedBox.expand(
+//                                                   child: FittedBox(
+//                                                     fit: BoxFit.cover,
+//                                                     child: SizedBox(
+//                                                       width: _videoController.value.size.width,
+//                                                       height: _videoController.value.size.height,
+//                                                       child: VideoPlayer(_videoController),
+//                                                     ),
+//                                                   ),
+//                                                 )
+//                                               else*/
+//                                     Container(color: Colors.black),
+
+//                                     SafeArea(
+//                                       child: Padding(
+//                                         padding: const EdgeInsets.symmetric(
+//                                             horizontal: 24, vertical: 16),
+//                                         child: Column(
+//                                           crossAxisAlignment:
+//                                               CrossAxisAlignment.center,
+//                                           children: [
+//                                             // 1. Title + Subtitle
+//                                             const Text('Your Ride. Your Way.',
+//                                                 style: TextStyle(
+//                                                   color: Colors.white,
+//                                                   fontSize: 28,
+//                                                   fontWeight: FontWeight.bold,
+//                                                 )),
+//                                             const SizedBox(height: 8),
+//                                             const Text('Tap. Book. Drive.',
+//                                                 style: TextStyle(
+//                                                     color: Colors.white,
+//                                                     fontSize: 20,
+//                                                     fontWeight:
+//                                                         FontWeight.bold)),
+//                                             const SizedBox(height: 14),
+//                                             const Text(
+//                                                 'Self-drive rentals made seamless with Zymo.',
+//                                                 style: TextStyle(
+//                                                   color: Colors.white70,
+//                                                   fontSize: 14,
+//                                                 )),
+//                                             const SizedBox(height: 36),
+
+//                                             // 2. Smart badge
+//                                             Container(
+//                                               padding:
+//                                                   const EdgeInsets.symmetric(
+//                                                       vertical: 6,
+//                                                       horizontal: 12),
+//                                               decoration: BoxDecoration(
+//                                                 color: Colors.white24,
+//                                                 borderRadius:
+//                                                     BorderRadius.circular(20),
+//                                               ),
+//                                               child: const Text(
+//                                                   '✨ Smart rentals, easy driving ✨',
+//                                                   textAlign: TextAlign.center,
+//                                                   style: TextStyle(
+//                                                       color: Colors.white,
+//                                                       fontWeight:
+//                                                           FontWeight.w500)),
+//                                             ),
+//                                             const SizedBox(height: 24),
+
+//                                             // 3. BOOK NOW tabs
+//                                             const Padding(
+//                                               padding: EdgeInsets.symmetric(
+//                                                   vertical: 6, horizontal: 12),
+//                                               child: Row(
+//                                                 mainAxisAlignment:
+//                                                     MainAxisAlignment
+//                                                         .spaceEvenly,
+//                                                 children: [
+//                                                   Text('────────',
+//                                                       textAlign:
+//                                                           TextAlign.center,
+//                                                       style: TextStyle(
+//                                                           fontSize: 15,
+//                                                           color: Colors.white,
+//                                                           fontWeight:
+//                                                               FontWeight.bold)),
+//                                                   Text('BOOK NOW',
+//                                                       textAlign:
+//                                                           TextAlign.center,
+//                                                       style: TextStyle(
+//                                                           fontSize: 18,
+//                                                           fontWeight:
+//                                                               FontWeight.bold,
+//                                                           color: Colors.white,
+//                                                           letterSpacing: 1.2)),
+//                                                   Text('────────',
+//                                                       textAlign:
+//                                                           TextAlign.center,
+//                                                       style: TextStyle(
+//                                                           fontSize: 15,
+//                                                           color: Colors.white,
+//                                                           fontWeight:
+//                                                               FontWeight.bold)),
+//                                                 ],
+//                                               ),
+//                                             ),
+//                                             const SizedBox(height: 8),
+//                                             Row(
+//                                               mainAxisAlignment:
+//                                                   MainAxisAlignment.center,
+//                                               children: [
+//                                                 'Rent',
+//                                                 'Subscribe',
+//                                                 'Buy'
+//                                               ].map((label) {
+//                                                 return GestureDetector(
+//                                                   onTap: () {
+//                                                     if (label == 'Rent') {
+//                                                       setState(() {
+//                                                         selectedTab = label;
+//                                                         isSelfDrive = true;
+//                                                       });
+//                                                     } else if (label ==
+//                                                         'Subscribe') {
+//                                                       setState(() {
+//                                                         selectedTab = label;
+//                                                         isSelfDrive = false;
+//                                                       });
+//                                                     }
+//                                                     // No action on 'Buy'
+//                                                   },
+//                                                   child: Padding(
+//                                                     padding: const EdgeInsets
+//                                                         .symmetric(
+//                                                         horizontal: 12),
+//                                                     child: Text(
+//                                                       label,
+//                                                       style: TextStyle(
+//                                                         color: selectedTab ==
+//                                                                 label
+//                                                             ? Colors.white
+//                                                             : Colors.white54,
+//                                                         fontSize: 18,
+//                                                         fontWeight:
+//                                                             selectedTab == label
+//                                                                 ? FontWeight
+//                                                                     .bold
+//                                                                 : FontWeight
+//                                                                     .normal,
+//                                                       ),
+//                                                     ),
+//                                                   ),
+//                                                 );
+//                                               }).toList(),
+//                                             ),
+//                                             const SizedBox(height: 24),
+//                                             Container(
+//                                               margin: EdgeInsets.symmetric(
+//                                                   horizontal: 12),
+//                                               decoration: BoxDecoration(
+//                                                 color: Colors.transparent,
+//                                                 borderRadius:
+//                                                     BorderRadius.circular(12),
+//                                                 border: Border.all(
+//                                                     color: Colors.white54,
+//                                                     width: 1.2),
+//                                               ),
+//                                               padding:
+//                                                   const EdgeInsets.symmetric(
+//                                                       horizontal: 12,
+//                                                       vertical: 14),
+//                                               child: InkWell(
+//                                                 child: Row(
+//                                                   children: [
+//                                                     Icon(
+//                                                         Icons
+//                                                             .location_on_outlined,
+//                                                         color: Colors.white70),
+//                                                     const SizedBox(width: 12),
+//                                                     Expanded(
+//                                                       child: Text(
+//                                                           CommonFunctions
+//                                                               .getLocation(
+//                                                                   snapshot
+//                                                                       .data!),
+//                                                           style:
+//                                                               const TextStyle(
+//                                                                   color: Colors
+//                                                                       .white,
+//                                                                   fontSize:
+//                                                                       16)),
+//                                                     ),
+//                                                     const Icon(
+//                                                         Icons.my_location),
+//                                                   ],
+//                                                 ),
+//                                                 onTap: () async =>
+//                                                     CommonFunctions.navigateTo(
+//                                                         context,
+//                                                         LocationPicker()),
+//                                               ),
+//                                             ),
+//                                             /*Container(
+//                                               color: Colors.white,
+//                                               child: TextField(
+//                                                 decoration: InputDecoration(
+//                                                   iconColor: Colors.white,
+//                                                   suffixIcon: Icon(Icons.location_on_outlined),
+//                                                   hintText: CommonFunctions.getLocation(snapshot.data!),
+//                                                 ),
+//                                                 onTap: () async => CommonFunctions.navigateTo(context, LocationPicker()),
+//                                               ),
+//                                             )*/
+// /*
+//                                             // 4. Location field
+//                                             /*_buildField(
+//                                               icon: Icons.location_on_outlined,
+//                                               hint: 'Enter a location',
+//                                             ),
+//                                             const SizedBox(height: 12),
+
+//                                             // 5. Start date picker
+//                                             _buildField(
+//                                               icon: Icons.calendar_today_outlined,
+//                                               hint: 'May 24, 2025, 12:30 PM',
+//                                               filledColor: Colors.yellow.shade100,
+//                                             ),
+//                                             const SizedBox(height: 12),
+
+//                                             // 6. End date picker
+//                                             _buildField(
+//                                               icon: Icons.calendar_today_outlined,
+//                                               hint: 'Select End Date',
+//                                             ),*/
+//                                             const SizedBox(height: 12),
+
+//                                             // 7. Trip Duration
+//                                             Padding(
+//                                               padding: const EdgeInsets.symmetric(horizontal: 12),
+//                                               child: Container(
+//                                                 width: double.infinity,
+//                                                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+//                                                 decoration: BoxDecoration(
+//                                                   color: Colors.grey[800],
+//                                                   borderRadius: BorderRadius.circular(12),
+//                                                 ),
+//                                                 child: const Column(
+//                                                   mainAxisAlignment: MainAxisAlignment.center,
+//                                                   children: [
+//                                                     Text(
+//                                                       'Trip Duration',
+//                                                       textAlign: TextAlign.center,
+//                                                       style: TextStyle(fontSize: 16,color: Colors.white30, fontWeight: FontWeight.bold),
+//                                                     ),
+//                                                     Text(
+//                                                       'Select both dates',
+//                                                       textAlign: TextAlign.center,
+//                                                       style: TextStyle(fontSize: 20,color: Colors.white),
+//                                                     ),
+//                                                   ],
+//                                                 ),
+//                                               ),
+//                                             ),
+
+//                                             const SizedBox(height: 16),
+
+//                                             // 8. SEARCH button
+//                                             Padding(
+//                                               padding: const EdgeInsets.symmetric(horizontal: 12),
+//                                               child: SizedBox(
+//                                                 width: double.infinity,
+//                                                 child: ElevatedButton(
+//                                                   style: ElevatedButton.styleFrom(
+//                                                     foregroundColor: Colors.black,
+//                                                     backgroundColor: Colors.yellow.shade100,
+//                                                     padding: const EdgeInsets.symmetric(vertical: 16),
+//                                                     textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+//                                                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+//                                                   ),
+//                                                   onPressed: () {
+//                                                     // Your search logic
+//                                                   },
+//                                                   child: const Text('Search'),
+//                                                 ),
+//                                               ),
+//                                             ),*/
+//                                           ],
+//                                         ),
+//                                       ),
+//                                     ),
+//                                   ],
+//                                 ),
+//                               ),
+//                               Stack(
+//                                 children: [
+//                                   /*Container(
+//                                     height:
+//                                     MediaQuery.of(context).size.height * .5,
+//                                     decoration: BoxDecoration(
+//                                         gradient: LinearGradient(
+//                                             colors: gradientColors),
+//                                         borderRadius: const BorderRadius.vertical(
+//                                             bottom: Radius.circular(40))),
+//                                   ),*/
+//                                   Padding(
+//                                     padding: const EdgeInsets.symmetric(
+//                                         horizontal: 20.0),
+//                                     child: Column(
+//                                       children: [
+//                                         /*Padding(
+//                                           padding: EdgeInsets.all(8),
+//                                           child: bannerWidget(),
+//                                         ),
+//                                         Padding(
+//                                           padding: const EdgeInsets.all(12.0),
+//                                           child: Container(
+//                                             decoration: BoxDecoration(
+//                                               color: Colors.white,
+//                                               borderRadius:
+//                                                   BorderRadius.circular(15),
+//                                             ),
+//                                             padding: const EdgeInsets.all(8),
+//                                             child: Row(
+//                                               children: [
+//                                                 Expanded(
+//                                                   child: Container(
+//                                                     decoration: BoxDecoration(
+//                                                         borderRadius:
+//                                                             BorderRadius.circular(
+//                                                                 15),
+//                                                         gradient: LinearGradient(
+//                                                             colors: isSelfDrive
+//                                                                 ? gradientColors
+//                                                                 : list)),
+//                                                     child: InkWell(
+//                                                       onTap: () {
+//                                                         setState(() {
+//                                                           isSelfDrive = true;
+//                                                         });
+//                                                       },
+//                                                       child: Padding(
+//                                                         padding:
+//                                                             const EdgeInsets.all(
+//                                                                 18.0),
+//                                                         child: Text(
+//                                                           'For Hours Or Days',
+//                                                           textAlign:
+//                                                               TextAlign.center,
+//                                                           style: isSelfDrive
+//                                                               ? whiteTitleStyle
+//                                                               : titleStyle,
+//                                                         ),
+//                                                       ),
+//                                                     ),
+//                                                   ),
+//                                                 ),
+//                                                 const SizedBox(
+//                                                   width: 5,
+//                                                 ),
+//                                                 Expanded(
+//                                                     child: Container(
+//                                                   decoration: BoxDecoration(
+//                                                       borderRadius:
+//                                                           BorderRadius.circular(
+//                                                               15),
+//                                                       gradient: LinearGradient(
+//                                                           colors: !isSelfDrive
+//                                                               ? gradientColors
+//                                                               : list)),
+//                                                   child: InkWell(
+//                                                     onTap: () {
+//                                                       setState(() {
+//                                                         isSelfDrive = false;
+//                                                       });
+//                                                     },
+//                                                     child: Padding(
+//                                                       padding:
+//                                                           const EdgeInsets.all(
+//                                                               18.0),
+//                                                       child: Text(
+//                                                         'Monthly Rental',
+//                                                         textAlign:
+//                                                             TextAlign.center,
+//                                                         style: !isSelfDrive
+//                                                             ? whiteTitleStyle
+//                                                             : titleStyle,
+//                                                       ),
+//                                                     ),
+//                                                   ),
+//                                                 )),
+//                                               ],
+//                                             ),
+//                                           ),
+//                                         ),*/
+//                                         Consumer<CarProvider>(
+//                                             builder: (BuildContext context,
+//                                                     value, Widget? child) =>
+//                                                 Column(children: [
+//                                                   Padding(
+//                                                     padding: const EdgeInsets
+//                                                         .symmetric(
+//                                                         horizontal: 0.0),
+//                                                     child: Column(
+//                                                       children: [
+//                                                         Card(
+//                                                           color: Colors
+//                                                               .transparent,
+//                                                           child: Padding(
+//                                                             padding:
+//                                                                 const EdgeInsets
+//                                                                     .all(0.0),
+//                                                             child:
+//                                                                 AnimatedSwitcher(
+//                                                               duration:
+//                                                                   const Duration(
+//                                                                       milliseconds:
+//                                                                           480),
+//                                                               child:
+//                                                                   KeyedSubtree(
+//                                                                 key: ValueKey<
+//                                                                         bool>(
+//                                                                     isSelfDrive),
+//                                                                 child: isSelfDrive
+//                                                                     ? durationPicker(
+//                                                                         context,
+//                                                                         value)
+//                                                                     : atDurationPicker(
+//                                                                         context,
+//                                                                         value),
+//                                                               ),
+//                                                               transitionBuilder:
+//                                                                   (child,
+//                                                                       animation) {
+//                                                                 return FadeTransition(
+//                                                                     opacity:
+//                                                                         animation,
+//                                                                     child:
+//                                                                         child);
+//                                                               },
+//                                                             ),
+//                                                           ),
+//                                                         ),
+//                                                         SizedBox(
+//                                                           height: .01.sh,
+//                                                         ),
+//                                                         TripDurationWidget(
+//                                                             duration: isSelfDrive
+//                                                                 ? value
+//                                                                     .getTripDuration()
+//                                                                 : "30 Days"),
+//                                                       ],
+//                                                     ),
+//                                                   ),
+//                                                   SizedBox(
+//                                                     height: .02.sh,
+//                                                   ),
+//                                                   SizedBox(
+//                                                       height: .06.sh,
+//                                                       child: value.isLoading
+//                                                           ? spinkit
+//                                                           : Padding(
+//                                                               padding:
+//                                                                   const EdgeInsets
+//                                                                       .symmetric(
+//                                                                       horizontal:
+//                                                                           8.0),
+//                                                               child: AppButton(
+//                                                                   color:
+//                                                                       accentColor,
+//                                                                   textSize: 20,
+//                                                                   title: 'Search'
+//                                                                       .toUpperCase(),
+//                                                                   screenHeight:
+//                                                                       1.sh,
+//                                                                   function: () => isSelfDrive
+//                                                                       ? CarFunctions()
+//                                                                           .selfDriveNavigate(
+//                                                                               context)
+//                                                                       : CarFunctions()
+//                                                                           .monthlyRentalNavigate(
+//                                                                               context)),
+//                                                             )),
+//                                                   SizedBox(
+//                                                     height: .01.sh,
+//                                                   ),
+//                                                   RecentSearches(
+//                                                       provider: value)
+//                                                 ])),
+//                                       ],
+//                                     ),
+//                                   ),
+//                                 ],
+//                               ),
+                          Stack(
+                            children: [
+                              // Banner widget
                               Container(
-                                color: Colors.black,
-                                child: Stack(
+                                height: Dimensions.screenHeight(context) * 0.5,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      image: AssetImage(
+                                          'assets/images/HeroImages/hero_car.jpg'),
+                                      fit: BoxFit.cover
+                                  ),
+                                    // gradient:
+                                    //     LinearGradient(colors: gradientColors),
+                                    color: Colors.grey[850],
+                                    borderRadius: BorderRadius.vertical(
+                                        bottom: Radius.circular(40))),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20.0),
+                                child: Column(
                                   children: [
-                                    // ─── Background Video ─────────────────────────────────────────────
-                                    /*if (_videoController.value.isInitialized)
-                                                SizedBox.expand(
-                                                  child: FittedBox(
-                                                    fit: BoxFit.cover,
-                                                    child: SizedBox(
-                                                      width: _videoController.value.size.width,
-                                                      height: _videoController.value.size.height,
-                                                      child: VideoPlayer(_videoController),
-                                                    ),
-                                                  ),
-                                                )
-                                              else*/
-                                    Container(color: Colors.black),
+                                    Padding(
+                                      padding: EdgeInsets.all(8),
+                                      // child: bannerWidget(),
+                                      child: Container(
+                                        color: const Color.fromARGB(132, 0, 0, 0),
+                                        height: Dimensions.screenHeight(context)* 0.3,
+                                        width: Dimensions.screenWidth(context)* 0.8,
+                                        child: Expanded(child:
+                                        Center(
+                                          child: Text(
+                                            'Your Ride. Your Way. Tap. Book. Drive.',
+                                            style: bigTitleStyle.copyWith(
+                                              color: Colors.white,
+                                            ),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        )),
 
-                                    SafeArea(
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 24, vertical: 16),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(12.0),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.black,
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                        ),
+                                        padding: EdgeInsets.all(8),
+                                        child: Row(
                                           children: [
-                                            // 1. Title + Subtitle
-                                            const Text('Your Ride. Your Way.',
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 28,
-                                                  fontWeight: FontWeight.bold,
-                                                )),
-                                            const SizedBox(height: 8),
-                                            const Text('Tap. Book. Drive.',
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 20,
-                                                    fontWeight:
-                                                        FontWeight.bold)),
-                                            const SizedBox(height: 14),
-                                            const Text(
-                                                'Self-drive rentals made seamless with Zymo.',
-                                                style: TextStyle(
-                                                  color: Colors.white70,
-                                                  fontSize: 14,
-                                                )),
-                                            const SizedBox(height: 36),
-
-                                            // 2. Smart badge
-                                            Container(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      vertical: 6,
-                                                      horizontal: 12),
-                                              decoration: BoxDecoration(
-                                                color: Colors.white24,
-                                                borderRadius:
-                                                    BorderRadius.circular(20),
-                                              ),
-                                              child: const Text(
-                                                  '✨ Smart rentals, easy driving ✨',
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.w500)),
-                                            ),
-                                            const SizedBox(height: 24),
-
-                                            // 3. BOOK NOW tabs
-                                            const Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                  vertical: 6, horizontal: 12),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceEvenly,
-                                                children: [
-                                                  Text('────────',
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      style: TextStyle(
-                                                          fontSize: 15,
-                                                          color: Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.bold)),
-                                                  Text('BOOK NOW',
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      style: TextStyle(
-                                                          fontSize: 18,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          color: Colors.white,
-                                                          letterSpacing: 1.2)),
-                                                  Text('────────',
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      style: TextStyle(
-                                                          fontSize: 15,
-                                                          color: Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.bold)),
-                                                ],
-                                              ),
-                                            ),
-                                            const SizedBox(height: 8),
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                'Rent',
-                                                'Subscribe',
-                                                'Buy'
-                                              ].map((label) {
-                                                return GestureDetector(
+                                            Expanded(
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(15),
+                                                  color: index == 0
+                                                      ? accentColor
+                                                      : list[0],
+                                                ),
+                                                child: InkWell(
                                                   onTap: () {
-                                                    if (label == 'Rent') {
-                                                      setState(() {
-                                                        selectedTab = label;
-                                                        isSelfDrive = true;
-                                                      });
-                                                    } else if (label ==
-                                                        'Subscribe') {
-                                                      setState(() {
-                                                        selectedTab = label;
-                                                        isSelfDrive = false;
-                                                      });
-                                                    }
-                                                    // No action on 'Buy'
+                                                    setState(() {
+                                                      index = 0;
+                                                    });
                                                   },
                                                   child: Padding(
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                        horizontal: 12),
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            12.0),
                                                     child: Text(
-                                                      label,
-                                                      style: TextStyle(
-                                                        color: selectedTab ==
-                                                                label
-                                                            ? Colors.white
-                                                            : Colors.white54,
-                                                        fontSize: 18,
-                                                        fontWeight:
-                                                            selectedTab == label
-                                                                ? FontWeight
-                                                                    .bold
-                                                                : FontWeight
-                                                                    .normal,
+                                                      'Rent',
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: index == 0
+                                                          ? titleStyle
+                                                          : whiteTitleStyle,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 5,
+                                            ),
+                                            Expanded(
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(15),
+                                                  color: index == 1
+                                                      ? accentColor
+                                                      : list[0],
+                                                ),
+                                                child: InkWell(
+                                                  onTap: () {
+                                                    setState(() {
+                                                      index = 1;
+                                                    });
+                                                  },
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            12.0),
+                                                    child: FittedBox(
+                                                      child: Text(
+                                                        'Subscribe',
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        style: index == 1
+                                                            // ? whiteTitleStyle
+                                                            // : titleStyle,
+                                                                                                                      ? titleStyle
+                                                          : whiteTitleStyle,
+
                                                       ),
                                                     ),
                                                   ),
-                                                );
-                                              }).toList(),
-                                            ),
-                                            const SizedBox(height: 24),
-                                            Container(
-                                              margin: EdgeInsets.symmetric(
-                                                  horizontal: 12),
-                                              decoration: BoxDecoration(
-                                                color: Colors.transparent,
-                                                borderRadius:
-                                                    BorderRadius.circular(12),
-                                                border: Border.all(
-                                                    color: Colors.white54,
-                                                    width: 1.2),
+                                                ),
                                               ),
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 12,
-                                                      vertical: 14),
-                                              child: InkWell(
-                                                child: Row(
-                                                  children: [
-                                                    Icon(
-                                                        Icons
-                                                            .location_on_outlined,
-                                                        color: Colors.white70),
-                                                    const SizedBox(width: 12),
-                                                    Expanded(
-                                                      child: Text(
-                                                          CommonFunctions
-                                                              .getLocation(
-                                                                  snapshot
-                                                                      .data!),
-                                                          style:
-                                                              const TextStyle(
-                                                                  color: Colors
-                                                                      .white,
-                                                                  fontSize:
-                                                                      16)),
+                                            ),
+                                            SizedBox(
+                                              width: 5,
+                                            ),
+                                            Expanded(
+                                              child: Stack(
+                                                children: [
+                                                  Container(
+                                                    width: 150,
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              15),
+                                                      color: index == 2
+                                                          ? accentColor
+                                                          : list[0],
                                                     ),
-                                                    const Icon(
-                                                        Icons.my_location),
-                                                  ],
-                                                ),
-                                                onTap: () async =>
-                                                    CommonFunctions.navigateTo(
-                                                        context,
-                                                        LocationPicker()),
-                                              ),
-                                            ),
-                                            /*Container(
-                                              color: Colors.white,
-                                              child: TextField(
-                                                decoration: InputDecoration(
-                                                  iconColor: Colors.white,
-                                                  suffixIcon: Icon(Icons.location_on_outlined),
-                                                  hintText: CommonFunctions.getLocation(snapshot.data!),
-                                                ),
-                                                onTap: () async => CommonFunctions.navigateTo(context, LocationPicker()),
-                                              ),
-                                            )*/
-/*
-                                            // 4. Location field
-                                            /*_buildField(
-                                              icon: Icons.location_on_outlined,
-                                              hint: 'Enter a location',
-                                            ),
-                                            const SizedBox(height: 12),
+                                                    child: InkWell(
+                                                      onTap: () {
+                                                        setState(() {
+                                                          index = 2;
+                                                        });
+                                                      },
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(12.0),
+                                                        child: Stack(
+                                                          alignment:
+                                                              Alignment.center,
+                                                          children: [
+                                                            FittedBox(
+                                                              child: Text(
+                                                                'Buy',
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .center,
+                                                                style: index ==
+                                                                        2
+                                                                    // ? whiteTitleStyle
+                                                                    // : titleStyle,
+                                                                                                                              ? titleStyle
+                                                          : whiteTitleStyle,
 
-                                            // 5. Start date picker
-                                            _buildField(
-                                              icon: Icons.calendar_today_outlined,
-                                              hint: 'May 24, 2025, 12:30 PM',
-                                              filledColor: Colors.yellow.shade100,
-                                            ),
-                                            const SizedBox(height: 12),
-
-                                            // 6. End date picker
-                                            _buildField(
-                                              icon: Icons.calendar_today_outlined,
-                                              hint: 'Select End Date',
-                                            ),*/
-                                            const SizedBox(height: 12),
-
-                                            // 7. Trip Duration
-                                            Padding(
-                                              padding: const EdgeInsets.symmetric(horizontal: 12),
-                                              child: Container(
-                                                width: double.infinity,
-                                                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-                                                decoration: BoxDecoration(
-                                                  color: Colors.grey[800],
-                                                  borderRadius: BorderRadius.circular(12),
-                                                ),
-                                                child: const Column(
-                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: [
-                                                    Text(
-                                                      'Trip Duration',
-                                                      textAlign: TextAlign.center,
-                                                      style: TextStyle(fontSize: 16,color: Colors.white30, fontWeight: FontWeight.bold),
+                                                              ),
+                                                            ),
+                                                            // Positioned(
+                                                            //   top: -10,
+                                                            //   right: 0,
+                                                            //   child: Container(
+                                                            //     padding: EdgeInsets
+                                                            //         .symmetric(
+                                                            //       horizontal: 8,
+                                                            //       vertical: 4,
+                                                            //     ),
+                                                            //     decoration:
+                                                            //         BoxDecoration(
+                                                            //       color: Color
+                                                            //           .fromARGB(
+                                                            //               255,
+                                                            //               230,
+                                                            //               12,
+                                                            //               12),
+                                                            //       borderRadius:
+                                                            //           BorderRadius
+                                                            //               .circular(
+                                                            //                   10),
+                                                            //     ),
+                                                            //     child: Text(
+                                                            //       'Coming Soon',
+                                                            //       style:
+                                                            //           TextStyle(
+                                                            //         fontSize: 8,
+                                                            //         fontWeight:
+                                                            //             FontWeight
+                                                            //                 .w800,
+                                                            //         color: Colors
+                                                            //             .white,
+                                                            //       ),
+                                                            //     ),
+                                                            //   ),
+                                                            // ),
+                                                          ],
+                                                        ),
+                                                      ),
                                                     ),
-                                                    Text(
-                                                      'Select both dates',
-                                                      textAlign: TextAlign.center,
-                                                      style: TextStyle(fontSize: 20,color: Colors.white),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-
-                                            const SizedBox(height: 16),
-
-                                            // 8. SEARCH button
-                                            Padding(
-                                              padding: const EdgeInsets.symmetric(horizontal: 12),
-                                              child: SizedBox(
-                                                width: double.infinity,
-                                                child: ElevatedButton(
-                                                  style: ElevatedButton.styleFrom(
-                                                    foregroundColor: Colors.black,
-                                                    backgroundColor: Colors.yellow.shade100,
-                                                    padding: const EdgeInsets.symmetric(vertical: 16),
-                                                    textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                                                   ),
-                                                  onPressed: () {
-                                                    // Your search logic
-                                                  },
-                                                  child: const Text('Search'),
-                                                ),
+                                                ],
                                               ),
-                                            ),*/
+                                            ),
                                           ],
                                         ),
+                                      ),
+                                    ),
+                                    Consumer<CarProvider>(
+                                      builder: (BuildContext context, value,
+                                              Widget? child) =>
+                                          Column(
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 8.0),
+                                            child: Column(
+                                              children: [
+                                                // SizedBox(
+                                                //   height: .01.sh,
+                                                // ),
+                                                // PickLocationWidget(),
+                                                Card(
+                                                  color: const Color.fromARGB(255, 52, 52, 52),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15),
+                                                  ),
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: AnimatedSwitcher(
+                                                      duration: Duration(
+                                                          milliseconds: 480),
+                                                      child: KeyedSubtree(
+                                                        key: ValueKey<bool>(
+                                                            index == 0),
+                                                        child: index == 0
+                                                            ? durationPicker(
+                                                                context, value)
+                                                            : index == 1
+                                                                ? atDurationPicker(
+                                                                    context,
+                                                                    value)
+                                                                : ShowBuyOption(),
+                                                      ),
+                                                      transitionBuilder:
+                                                          (child, animation) {
+                                                        return FadeTransition(
+                                                            opacity: animation,
+                                                            child: child);
+                                                      },
+                                                    ),
+                                                  ),
+                                                ),
+
+                                                SizedBox(
+                                                  height: .01.sh,
+                                                ),
+                                                index == 2
+                                                    ? Container()
+                                                    : TripDurationWidget(
+                                                        duration: index == 0
+                                                            ? value
+                                                                .getTripDuration()
+                                                            : "30 Days",
+                                                      ),
+                                              ],
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: .02.sh,
+                                          ),
+                                          index == 2
+                                              ? Container()
+                                              : SizedBox(
+                                                  height: .06.sh,
+                                                  child: value.isLoading
+                                                      ? spinkit
+                                                      : Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .symmetric(
+                                                                  horizontal:
+                                                                      8.0),
+                                                          child: AppButton(
+                                                            color: accentColor,
+                                                            textSize: 20,
+                                                            title: 'Search'
+                                                                .toUpperCase(),
+                                                            // screenWidth: screenWidth * 1.8,
+                                                            screenHeight: 1.sh,
+                                                            function: () => index ==
+                                                                    0
+                                                                ? CarFunctions()
+                                                                    .selfDriveNavigate(
+                                                                    context,
+                                                                  )
+                                                                : CarFunctions()
+                                                                    .monthlyRentalNavigate(
+                                                                    context,
+                                                                  ),
+                                                          ),
+                                                        ),
+                                                ),
+                                          index == 2
+                                              ? Container()
+                                              : SizedBox(
+                                                  height: .01.sh,
+                                                ),
+                                          index == 2
+                                              ? Container()
+                                              : RecentSearches(provider: value)
+                                        ],
                                       ),
                                     ),
                                   ],
                                 ),
                               ),
-                              Stack(
-                                children: [
-                                  /*Container(
-                                    height:
-                                    MediaQuery.of(context).size.height * .5,
-                                    decoration: BoxDecoration(
-                                        gradient: LinearGradient(
-                                            colors: gradientColors),
-                                        borderRadius: const BorderRadius.vertical(
-                                            bottom: Radius.circular(40))),
-                                  ),*/
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 20.0),
-                                    child: Column(
-                                      children: [
-                                        /*Padding(
-                                          padding: EdgeInsets.all(8),
-                                          child: bannerWidget(),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(12.0),
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius:
-                                                  BorderRadius.circular(15),
-                                            ),
-                                            padding: const EdgeInsets.all(8),
-                                            child: Row(
-                                              children: [
-                                                Expanded(
-                                                  child: Container(
-                                                    decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                                15),
-                                                        gradient: LinearGradient(
-                                                            colors: isSelfDrive
-                                                                ? gradientColors
-                                                                : list)),
-                                                    child: InkWell(
-                                                      onTap: () {
-                                                        setState(() {
-                                                          isSelfDrive = true;
-                                                        });
-                                                      },
-                                                      child: Padding(
-                                                        padding:
-                                                            const EdgeInsets.all(
-                                                                18.0),
-                                                        child: Text(
-                                                          'For Hours Or Days',
-                                                          textAlign:
-                                                              TextAlign.center,
-                                                          style: isSelfDrive
-                                                              ? whiteTitleStyle
-                                                              : titleStyle,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                const SizedBox(
-                                                  width: 5,
-                                                ),
-                                                Expanded(
-                                                    child: Container(
-                                                  decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              15),
-                                                      gradient: LinearGradient(
-                                                          colors: !isSelfDrive
-                                                              ? gradientColors
-                                                              : list)),
-                                                  child: InkWell(
-                                                    onTap: () {
-                                                      setState(() {
-                                                        isSelfDrive = false;
-                                                      });
-                                                    },
-                                                    child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              18.0),
-                                                      child: Text(
-                                                        'Monthly Rental',
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                        style: !isSelfDrive
-                                                            ? whiteTitleStyle
-                                                            : titleStyle,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                )),
-                                              ],
-                                            ),
-                                          ),
-                                        ),*/
-                                        Consumer<CarProvider>(
-                                            builder: (BuildContext context,
-                                                    value, Widget? child) =>
-                                                Column(children: [
-                                                  Padding(
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                        horizontal: 0.0),
-                                                    child: Column(
-                                                      children: [
-                                                        Card(
-                                                          color: Colors
-                                                              .transparent,
-                                                          child: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(0.0),
-                                                            child:
-                                                                AnimatedSwitcher(
-                                                              duration:
-                                                                  const Duration(
-                                                                      milliseconds:
-                                                                          480),
-                                                              child:
-                                                                  KeyedSubtree(
-                                                                key: ValueKey<
-                                                                        bool>(
-                                                                    isSelfDrive),
-                                                                child: isSelfDrive
-                                                                    ? durationPicker(
-                                                                        context,
-                                                                        value)
-                                                                    : atDurationPicker(
-                                                                        context,
-                                                                        value),
-                                                              ),
-                                                              transitionBuilder:
-                                                                  (child,
-                                                                      animation) {
-                                                                return FadeTransition(
-                                                                    opacity:
-                                                                        animation,
-                                                                    child:
-                                                                        child);
-                                                              },
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        SizedBox(
-                                                          height: .01.sh,
-                                                        ),
-                                                        TripDurationWidget(
-                                                            duration: isSelfDrive
-                                                                ? value
-                                                                    .getTripDuration()
-                                                                : "30 Days"),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  SizedBox(
-                                                    height: .02.sh,
-                                                  ),
-                                                  SizedBox(
-                                                      height: .06.sh,
-                                                      child: value.isLoading
-                                                          ? spinkit
-                                                          : Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .symmetric(
-                                                                      horizontal:
-                                                                          8.0),
-                                                              child: AppButton(
-                                                                  color:
-                                                                      accentColor,
-                                                                  textSize: 20,
-                                                                  title: 'Search'
-                                                                      .toUpperCase(),
-                                                                  screenHeight:
-                                                                      1.sh,
-                                                                  function: () => isSelfDrive
-                                                                      ? CarFunctions()
-                                                                          .selfDriveNavigate(
-                                                                              context)
-                                                                      : CarFunctions()
-                                                                          .monthlyRentalNavigate(
-                                                                              context)),
-                                                            )),
-                                                  SizedBox(
-                                                    height: .01.sh,
-                                                  ),
-                                                  RecentSearches(
-                                                      provider: value)
-                                                ])),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
+                            ],
+                          ),
+
                               SizedBox(
                                 height: .01.sh,
                               ),
@@ -1483,6 +1853,127 @@ class CategoryWidget extends StatelessWidget {
           );
         }
       },
+    );
+  }
+}
+class ShowBuyOption extends StatefulWidget {
+  const ShowBuyOption({Key? key}) : super(key: key);
+
+  @override
+  State<ShowBuyOption> createState() => _ShowBuyOptionState();
+}
+
+class _ShowBuyOptionState extends State<ShowBuyOption> {
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Expanded(
+          child: InkWell(
+            onTap: () {
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(builder: (context) => TataNexonCars()),
+              // );
+            },
+            // child: BuyOptionConatiner(
+            //   desc: AppData.buyOptions[0]['description']!,
+            //   imageUrl: AppData.buyOptions[0]['imageUrl']!,
+            //   title: AppData.buyOptions[0]['title']!,
+            // ),
+          ),
+        ),
+        SizedBox(
+          width: 5,
+        ),
+        Expanded(
+          child: InkWell(
+            onTap: () {},
+            // child: BuyOptionConatiner(
+            //   desc: AppData.buyOptions[1]['description']!,
+            //   imageUrl: AppData.buyOptions[1]['imageUrl']!,
+            //   title: AppData.buyOptions[1]['title']!,
+            // ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class BuyOptionConatiner extends StatelessWidget {
+  final String title;
+  final String imageUrl;
+  final String desc;
+  const BuyOptionConatiner(
+      {required this.desc,
+        required this.imageUrl,
+        required this.title,
+        Key? key})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      color: Colors.black,
+      elevation: 5,
+      child: Container(
+        padding: EdgeInsets.all(10),
+        height: 200,
+        width: 160,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              height: 100,
+              width: 160,
+              child: Image(
+                image: AssetImage(imageUrl),
+                fit: BoxFit.fill,
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Container(
+              padding: EdgeInsets.all(5),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          title.toUpperCase(),
+                          style: contentStyle.copyWith(fontSize: 12),
+                        ),
+                        // Text(
+                        //   desc,
+                        //   style: contentStyle.copyWith(fontSize: 9),
+                        // )
+                      ],
+                    ),
+                  ),
+                  Icon(
+                    Icons.arrow_forward,
+                    color: accentColor,
+                    size: 20,
+                  )
+                ],
+              ),
+            ),
+            Center(
+              child: Text(
+                'Coming Soon!',
+                style: contentStyle.copyWith(fontSize: 12, color: accentColor),
+                textAlign: TextAlign.center,
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 }
