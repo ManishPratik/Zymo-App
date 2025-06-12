@@ -254,7 +254,7 @@ class _UserBookingScreenState extends State<UserBookingScreen> {
                 SizedBox(height: .01.sh),
                 if (!isAdvancePay) rentBreakdown(context, carModel),
                 SizedBox(height: .01.sh),
-                if (!hasUser)
+                if (hasUser)
                   Padding(
                     padding: const EdgeInsets.all(14.0),
                     child: ElevatedButton.icon(

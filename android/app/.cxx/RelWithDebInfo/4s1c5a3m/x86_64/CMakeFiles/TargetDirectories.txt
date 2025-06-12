@@ -1,0 +1,2 @@
+C:/Users/moham/internworkproject/updatedZymoApp/android/app/.cxx/RelWithDebInfo/4s1c5a3m/x86_64/CMakeFiles/edit_cache.dir
+C:/Users/moham/internworkproject/updatedZymoApp/android/app/.cxx/RelWithDebInfo/4s1c5a3m/x86_64/CMakeFiles/rebuild_cache.dir
