@@ -926,17 +926,66 @@ class _CarTileState extends State<CarTile> with SingleTickerProviderStateMixin {
           elevation: 15,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
           child: InkWell(
-            onTap: _toggleExpand,
+            // onTap: _toggleExpand,
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
                 color: const Color.fromARGB(255, 32, 32, 32),
               ),
-              height: _heightAnimation.value,
-              child: Stack(
+              // height: _heightAnimation.value,
+              height: 450,
+
+              child: Column(
                 children: [
                   // Always visible elements
+
                   // Car Image
+
+                   Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  carName(context, widget.carModelList.first.name),
+                                    featureRow(widget.carModelList),
+                              
+                                  // Features and Price
+                                  // Row(
+                                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  //   children: [
+                                  //   ],
+                                  // ),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    //crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      // VendorImages(vendorImages: vendorImages),
+                              
+                                      // Distance
+                                      // Text(
+                                      //   '${widget.carModelList.first.pickups?.first.distanceFromUser != null ? widget.carModelList.first.pickups?.first.distanceFromUser : 0.0} KMs away',
+                                      //   style: itleStyle,
+                                      // ),
+                              
+                                      // Booking Fast Widget
+                                      if (bookingFastList
+                                          .where((element) =>
+                                          element.startsWith(widget.carModelList.first.name))
+                                          .isNotEmpty)
+                                        bookingFastWidget()
+                              
+                                    ],
+                                  )
+                                ],
+                              ),
+                                                                    startingAt(lowestPrice!),
+
+                            ],
+                          ),
+                        ),
                   Positioned(
                     top: 0,
                     left: 0,
@@ -963,21 +1012,23 @@ class _CarTileState extends State<CarTile> with SingleTickerProviderStateMixin {
                   //     carName(context, widget.carModelList.first.name),
                   //   ],
                   // ),
-                  Positioned(
-                    top: 225,
-                    left: 12,
-                    right: 12,
-                    child: carName(context, widget.carModelList.first.name),
-                  ),
+                  // Positioned(
+                  //   top: 225,
+                  //   left: 12,
+                  //   right: 12,
+                  //   child: carName(context, widget.carModelList.first.name),
+                  // ),
 
                   // Details that appear on expansion
-                  if (_heightAnimation.value > 300) // Only show when expanded enough
+                  // if (_heightAnimation.value > 300) // Only show when expanded enough
                     Positioned(
-                      top: 240,
+                      top: 0,
                       left: 0,
                       right: 0,
                       child: Opacity(
-                        opacity: _opacityAnimation.value,
+                        // opacity: _opacityAnimation.value,
+                                                opacity: 1,
+
                         child: Padding(
                           padding: const EdgeInsets.all(12.0),
                           child: Column(
@@ -986,28 +1037,45 @@ class _CarTileState extends State<CarTile> with SingleTickerProviderStateMixin {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  featureRow(widget.carModelList),
-                                  startingAt(lowestPrice!),
+                                  // featureRow(widget.carModelList),
+                                  // startingAt(lowestPrice!),
                                 ],
                               ),
-                              Column(
+                              Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 //crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  VendorImages(vendorImages: vendorImages),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      VendorImages(vendorImages: vendorImages),
+                                      SizedBox(height: 8),
+                                                                            Text(
+                                        '${widget.carModelList.first.pickups?.first.distanceFromUser != null ? widget.carModelList.first.pickups?.first.distanceFromUser : 0.0} KMs away',
+                                        style: itleStyle,
+                                      ),
 
-                                  // Distance
-                                  Text(
-                                    '${widget.carModelList.first.pickups?.first.distanceFromUser != null ? widget.carModelList.first.pickups?.first.distanceFromUser : 0.0} KMs away',
-                                    style: itleStyle,
+                                    ],
                                   ),
 
+                                  // Distance
+                                  // Text(
+                                  //   '${widget.carModelList.first.pickups?.first.distanceFromUser != null ? widget.carModelList.first.pickups?.first.distanceFromUser : 0.0} KMs away',
+                                  //   style: itleStyle,
+                                  // ),
+
                                   // Booking Fast Widget
-                                  if (bookingFastList
-                                      .where((element) =>
-                                      element.startsWith(widget.carModelList.first.name))
-                                      .isNotEmpty)
-                                    bookingFastWidget()
+                                  // if (bookingFastList
+                                  //     .where((element) =>
+                                  //     element.startsWith(widget.carModelList.first.name))
+                                  //     .isNotEmpty)
+                                  //   bookingFastWidget(),
+                                  
+                                  FloatingActionButton(
+                        backgroundColor: Colors.black,
+                        onPressed: () => openCarPopup(widget.carModelList, context),
+                        child: const Icon(Icons.arrow_forward, color: Colors.white,),
+                      ),
 
                                 ],
                               )
@@ -1018,16 +1086,16 @@ class _CarTileState extends State<CarTile> with SingleTickerProviderStateMixin {
                     ),
 
                   // Floating action button for popup (shown when expanded)
-                  if (_isExpanded)
-                    Positioned(
-                      bottom: 12,
-                      right: 12,
-                      child: FloatingActionButton(
-                        backgroundColor: Colors.black,
-                        onPressed: () => openCarPopup(widget.carModelList, context),
-                        child: const Icon(Icons.arrow_forward, color: Colors.white,),
-                      ),
-                    ),
+                  // if (_isExpanded)
+                    // Positioned(
+                    //   bottom: 12,
+                    //   right: 12,
+                    //   child: FloatingActionButton(
+                    //     backgroundColor: Colors.black,
+                    //     onPressed: () => openCarPopup(widget.carModelList, context),
+                    //     child: const Icon(Icons.arrow_forward, color: Colors.white,),
+                    //   ),
+                    // ),
                 ],
               ),
             ),
@@ -1243,7 +1311,7 @@ class VendorImages extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: .04.sh,
-      width: .8.sw,
+      width: .7.sw,
       child: Row(
         children: [
           Expanded(
