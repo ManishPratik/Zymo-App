@@ -1,8 +1,8 @@
 class DocumentModel {
-  late String aadhaarFront;
-  late String aadhaarBack;
-  late String licenseFront;
-  late String licenseBack;
+  String? aadhaarFront;
+  String? aadhaarBack;
+  String? licenseFront;
+  String? licenseBack;
 
   DocumentModel(
       {required this.aadhaarFront,

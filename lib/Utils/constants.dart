@@ -263,6 +263,7 @@ Future buildShowDialog(BuildContext context, String title, String body) {
   return showDialog(
     context: context,
     builder: (ctx) => Dialog(
+      backgroundColor: accentColor,
       shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(20.0))),
       child: SizedBox(
@@ -282,7 +283,7 @@ Future buildShowDialog(BuildContext context, String title, String body) {
                   body,
                   textAlign: TextAlign.center,
                   style: const TextStyle(
-                      fontSize: 14, fontWeight: FontWeight.w400),
+                      fontSize: 14, fontWeight: FontWeight.w400, color: accentColor),
                 ),
                 AppButton(
                   title: 'Okay',
@@ -291,6 +292,7 @@ Future buildShowDialog(BuildContext context, String title, String body) {
                   screenWidth: 1.sw,
                   textSize: 12,
                   color: Colors.black,
+                  textColor: accentColor,
                 )
               ],
             ),
@@ -972,7 +974,7 @@ class AllDocumentsWidget extends StatelessWidget {
       builder: (BuildContext context, value, Widget? child) {
         // Check if the documents are null
         if (documents == null) {
-          return Center(child: Text('No documents available'));
+          return Center(child: Text('No documents available', style: TextStyle(color: accentColor),));
         }
 
         return Column(
@@ -1092,7 +1094,7 @@ class NoteWidget extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(12.0),
         child: Center(
-          child: Text(text, textAlign: TextAlign.center, style: contentStyle),
+          child: Text(text, textAlign: TextAlign.center, style: TextStyle(fontSize: 15, color: accentColor, fontWeight: FontWeight.w600)),
         ),
       ),
     );

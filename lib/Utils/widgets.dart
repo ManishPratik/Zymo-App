@@ -623,7 +623,6 @@ class DocumentsUploader extends StatelessWidget {
 
         final userData =
             UserModel.fromJson(snapshot.data!.data() as Map<String, dynamic>);
-        print("INSIDE DOCUMENT UPLOADER : userdata : $userData");
         return Consumer<HomeProvider>(
           builder: (BuildContext context, value, Widget? child) => Column(
             crossAxisAlignment: CrossAxisAlignment.center,
