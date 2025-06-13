@@ -108,25 +108,25 @@ class _CarsViewState extends State<CarsView> {
             style: const TextStyle(
                 fontWeight: FontWeight.w600, fontSize: 20, color: Colors.white),
           ),
-          actions: [
-            if (widget.model.city!.isNotEmpty)
-              Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Row(
-                  children: [
-                    const Icon(
-                      Icons.location_on_outlined,
-                      size: 25,
-                    ),
-                    Text(widget.model.city!,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        )),
-                  ],
-                ),
-              )
-          ],
+          // actions: [
+          //   if (widget.model.city!.isNotEmpty)
+          //     Padding(
+          //       padding: const EdgeInsets.all(12.0),
+          //       child: Row(
+          //         children: [
+          //           const Icon(
+          //             Icons.location_on_outlined,
+          //             size: 25,
+          //           ),
+          //           Text(widget.model.city!,
+          //               style: const TextStyle(
+          //                 fontSize: 18,
+          //                 fontWeight: FontWeight.bold,
+          //               )),
+          //         ],
+          //       ),
+          //     )
+          // ],
         ),
         body: Column(
           children: [
@@ -922,6 +922,7 @@ class _CarTileState extends State<CarTile> with SingleTickerProviderStateMixin {
       animation: _controller,
       builder: (context, child) {
         return Card(
+          margin: const EdgeInsets.only(top: 12, left: 12, right: 12),
           elevation: 15,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
           child: InkWell(
@@ -929,7 +930,7 @@ class _CarTileState extends State<CarTile> with SingleTickerProviderStateMixin {
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
-                color: const Color.fromARGB(255, 34, 34, 34),
+                color: const Color.fromARGB(255, 32, 32, 32),
               ),
               height: _heightAnimation.value,
               child: Stack(
@@ -942,12 +943,13 @@ class _CarTileState extends State<CarTile> with SingleTickerProviderStateMixin {
                     right: 0,
                     child: Center(
                       child: Container(
-                        height: 230,
+                        margin: const EdgeInsets.all(22),
+                        height:190,
                         width: double.infinity,
                         decoration: BoxDecoration(
-                          color: Colors.transparent,
+                          color: const Color.fromARGB(0, 247, 248, 162),
                           borderRadius: BorderRadius.circular(12),
-                          border: Border.all(style: BorderStyle.solid, width: 10, color: accentColor),
+                          border: Border.all(style: BorderStyle.solid, width: 10, color: Colors.transparent),
                         ),
                         child: carImage(widget.carModelList.first.imageUrl, context),
                       ),
@@ -955,8 +957,14 @@ class _CarTileState extends State<CarTile> with SingleTickerProviderStateMixin {
                   ),
 
                   // Car Name (always visible)
+                  // Column(
+                  //   mainAxisAlignment: MainAxisAlignment.end,
+                  //   children: [
+                  //     carName(context, widget.carModelList.first.name),
+                  //   ],
+                  // ),
                   Positioned(
-                    top: 240,
+                    top: 225,
                     left: 12,
                     right: 12,
                     child: carName(context, widget.carModelList.first.name),
@@ -1015,9 +1023,9 @@ class _CarTileState extends State<CarTile> with SingleTickerProviderStateMixin {
                       bottom: 12,
                       right: 12,
                       child: FloatingActionButton(
-                        backgroundColor: accentColor,
+                        backgroundColor: Colors.black,
                         onPressed: () => openCarPopup(widget.carModelList, context),
-                        child: const Icon(Icons.arrow_forward, color: Colors.black,),
+                        child: const Icon(Icons.arrow_forward, color: Colors.white,),
                       ),
                     ),
                 ],
@@ -1131,15 +1139,33 @@ class _CarTileState extends State<CarTile> with SingleTickerProviderStateMixin {
     );
   }
 
-  SizedBox carName(BuildContext context, String name) {
-    return SizedBox(
-      width: 0.5.sw,
-      child: Text(name,
-          style: const TextStyle(
-              fontSize: 18, fontWeight: FontWeight.w900, color: accentColor),
-          softWrap: true,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis),
+  Container carName(BuildContext context, String name) {
+    return 
+    // SizedBox(
+    //   width: 0.55.sw,
+    //   child:
+       Container(
+        // margin: const EdgeInsets.only( left: 8,bottom: 4.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Container(
+              // margin: const EdgeInsets.only(bottom: 18.0),
+              // color: Colors.black54,
+              padding: const EdgeInsets.all(8.0),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  color: Colors.black54),
+              child: Text(name,
+                  style: const TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.w900, color: Colors.white),
+                  softWrap: true,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis),
+            ),
+          ],
+        ),
+      // ),
     );
   }
 

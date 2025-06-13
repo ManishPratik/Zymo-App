@@ -44,27 +44,35 @@ class _LocationPickerState extends State<LocationPicker> {
       builder: (BuildContext context, value, Widget? child) => Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
-          title: Text('Location Selection'), // You can customize the title
+          backgroundColor: Colors.black,
+          title: Text('Location Selection', style: TextStyle(color: accentColor),), // You can customize the title
         ),
         body: Padding(
           padding: const EdgeInsets.all(14.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Select your location', style: bigTitleStyle),
+              Text('Select your location', style: whiteTitleStyle),
               SizedBox(
                 height: .03.sh,
               ),
               // Search TextField with onChanged functionality
               TextField(
+                style: TextStyle(color: Colors.white),
                 decoration: const InputDecoration(
-                  prefixIcon: Icon(Icons.search),
+                  
+                  filled: true,
+                  fillColor: Color.fromARGB(255, 55, 55, 55),
+                  prefixIcon: Icon(Icons.search, color: Color.fromARGB(255, 255, 255, 255)),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.all(
                       Radius.circular(25.0),
                     ),
                   ),
                   labelText: 'Search',
+                  labelStyle: TextStyle(
+                    color: Colors.grey,
+                  ),
                 ),
                 onChanged: (val) {
                   value.setSearchString(val);

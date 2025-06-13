@@ -188,35 +188,155 @@ class _HomePageState extends State<HomePage> {
                     length: AppData.Categories.length,
                     child:  Scaffold(
                     backgroundColor: Colors.black,
-                    appBar: PreferredSize(
-                      preferredSize: Size.fromHeight(80),
-                      child: AppBar(
-                        flexibleSpace: Container(
-                          color: Colors.black,
-                        ),
-                        automaticallyImplyLeading: false,
-                        titleSpacing: 0,
-                        title: Row(
-                          children: [
-                            SizedBox(
-                              height: 30,
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(left: 20.0),
-                              height: 100,
-                              width: 100,
-                              child: Image.asset(
-                                height: 80,
-                                width: 80,
-                                'assets/images/guide/finallogo.png',
-                                fit: BoxFit.contain,
-                              ),
-                            ),
-                          ],
+                                        appBar: AppBar(
+                      centerTitle: true,
+                      title: Container(
+                        margin: EdgeInsets.only(left: 45),
+                        height: 50,
+                        // decoration: BoxDecoration(
+                        //   image: DecorationImage(image: AssetImage(
+                        //     'assets/images/guide/finallogo.png'
+                        //   )),
+                        // ),
+                      ),
+                      // toolbarHeight: 67.5,
+                      toolbarHeight: Dimensions.screenHeight(context) * 0.095,
+
+
+                      // bottom: PreferredSize.,
+                      flexibleSpace: Container(
+                        decoration: BoxDecoration(
+                          color: const Color.fromARGB(255, 0, 0, 0),
+                          // gradient: LinearGradient(colors: gradientColors),
                         ),
                       ),
+                      leading: Builder(
+                        builder: (context) => GestureDetector(
+                          onTap: () {
+                            Scaffold.of(context)
+                                .openDrawer(); // Opens the drawer
+                          },
+                          child: Container(
+                            margin: const EdgeInsets.fromLTRB(
+                                6, 12, 0, 12), // Adjust spacing
+                            decoration: BoxDecoration(
+                              color: Colors.grey[900],
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Icon(Icons.menu,
+                                color: Colors.white), // Drawer icon
+                          ),
+                        ),
+                      ),
+                      actions: [
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 8, 8, 8),
+                          child: InkWell(
+                            onTap: () async => CommonFunctions.navigateTo(
+                                context, LocationPicker()),
+                            child: SizedBox(
+                              child: Container(
+                                // margin: const EdgeInsets.all(4), // Adjust spacing
+                                padding: const EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[900],
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Row(
+
+                                      children: [
+                                        Icon(
+                                          Icons.location_pin,
+                                          color: accentColor,
+                                          size: 18,
+                                        ),
+                                          SizedBox(
+                                      width: 5,
+                                    ),
+
+                                      
+                                       Text(
+                                        CommonFunctions.getCityFromLocation(
+                                            snapshot.data!),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16),
+                                      ),
+                                    
+
+                                        // Text(
+                                        //   'Location',
+                                        //   maxLines: 1,
+                                        //   style: TextStyle(
+                                        //     fontFamily: 'Poppins',
+                                        //       color: Colors.white,
+                                        //       fontWeight: FontWeight.bold,
+                                        //       fontSize: 14
+                                        //       ),
+                                        // ),
+                                      ],
+                                    ),
+                                    // SizedBox(
+                                    //   height: 3,
+                                    // ),
+                                    // Expanded(
+                                    //   child: Text(
+                                    //     CommonFunctions.getCityFromLocation(
+                                    //         snapshot.data!),
+                                    //     maxLines: 1,
+                                    //     overflow: TextOverflow.ellipsis,
+                                    //     style: const TextStyle(
+                                    //         color: Colors.white,
+                                    //         fontWeight: FontWeight.bold,
+                                    //         fontSize: 16),
+                                    //   ),
+                                    // )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                      endDrawer: Drawer(child: UserProfile()),
+                    drawer: Drawer(child: UserProfile()),
+
+                    // appBar: PreferredSize(
+                    //   preferredSize: Size.fromHeight(80),
+                    //   child: AppBar(
+                    //     flexibleSpace: Container(
+                    //       color: Colors.black,
+                    //     ),
+                    //     automaticallyImplyLeading: false,
+                    //     titleSpacing: 0,
+                    //     title: Row(
+                    //       children: [
+                    //         SizedBox(
+                    //           height: 30,
+                    //         ),
+                    //         Container(
+                    //           margin: const EdgeInsets.only(left: 20.0),
+                    //           height: 100,
+                    //           width: 100,
+                    //           child: Image.asset(
+                    //             height: 80,
+                    //             width: 80,
+                    //             'assets/images/guide/finallogo.png',
+                    //             fit: BoxFit.contain,
+                    //           ),
+                    //         ),
+                    //       ],
+                    //     ),
+                    //   ),
+                    // ),
+                    //   endDrawer: Drawer(child: UserProfile()),
 
                       // Scaffold(
                     //   backgroundColor: Colors.black,
