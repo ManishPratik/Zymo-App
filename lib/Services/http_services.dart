@@ -80,33 +80,33 @@ class HttpServices {
     return true;
   }
 
-  // static Future<bool> createMyChoizeBooking(Map bodyMap) async {
-  //
-  //   try {
-  //     const String getTokenUrl = '${firebaseUrl}createMyChoize';
-  //     const Map<String, String> headers = {
-  //       'Content-Type': 'application/json',
-  //     };
-  //     final Map body = bodyMap;
-  //     final Response response = await http.post(Uri.parse(getTokenUrl),
-  //         headers: headers, body: jsonEncode(body));
-  //     final Map data = jsonDecode(response.body);
-  //     print(data);
-  //     if (!data['status']) {
-  //       mixpanel.track('MyChoize API Request Failed', properties: {
-  //         'BookingId': bodyMap['bookingId'],
-  //         'Error': 'false returned'
-  //       });
-  //     }
-  //   } catch (e) {
-  //     mixpanel.track('MyChoize API Cancellation Request Failed', properties: {
-  //       'BookingId': bodyMap['bookingId'],
-  //       'Error': e.toString()
-  //     });
-  //     return false;
-  //   }
-  //   return true;
-  // }
+  static Future<bool> createMyChoizeBooking(Map bodyMap) async {
+  
+    try {
+      const String getTokenUrl = '${firebaseUrl}createMyChoize';
+      const Map<String, String> headers = {
+        'Content-Type': 'application/json',
+      };
+      final Map body = bodyMap;
+      final Response response = await http.post(Uri.parse(getTokenUrl),
+          headers: headers, body: jsonEncode(body));
+      final Map data = jsonDecode(response.body);
+      print(data);
+      if (!data['status']) {
+        mixpanel.track('MyChoize API Request Failed', properties: {
+          'BookingId': bodyMap['bookingId'],
+          'Error': 'false returned'
+        });
+      }
+    } catch (e) {
+      mixpanel.track('MyChoize API Cancellation Request Failed', properties: {
+        'BookingId': bodyMap['bookingId'],
+        'Error': e.toString()
+      });
+      return false;
+    }
+    return true;
+  }
 
   static Future<List<CarModel>> getMonthlyRentalCars(DriveModel model) async {
     final List<CarModel> cars = [];

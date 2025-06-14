@@ -283,7 +283,7 @@ Future buildShowDialog(BuildContext context, String title, String body) {
                   body,
                   textAlign: TextAlign.center,
                   style: const TextStyle(
-                      fontSize: 14, fontWeight: FontWeight.w400, color: accentColor),
+                      fontSize: 14, fontWeight: FontWeight.w400,),
                 ),
                 AppButton(
                   title: 'Okay',
@@ -963,8 +963,203 @@ class PickLocationWidget extends StatelessWidget {
   }
 }
 
+// class AllDocumentsWidget extends StatelessWidget {
+//   final DocumentModel? documents; // Make documents nullable for safety
+
+//   const AllDocumentsWidget({Key? key, this.documents}) : super(key: key);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Consumer<HomeProvider>(
+//       builder: (BuildContext context, value, Widget? child) {
+//         // Check if the documents are null
+//         if (documents == null) {
+//           return Center(child: Text('No documents available', style: TextStyle(color: accentColor),));
+//         }
+
+//         return Column(
+//           children: <Widget>[
+//             // Front page driving license
+//             DocumentWidget(
+//               title: 'front_page_driving_license',
+//               description: 'Uploaded Driving License Front Page',
+//               link: documents?.licenseFront ?? '',
+//               image: value.licenseFront ?? File(''),
+//               function: (x) async {
+//                 final File? file = await pickImage(x);
+//                 if (file != null) {
+//                 value.setImage(file, DocumentEnum.LF);
+//                 }
+//                 else {
+//     // Optionally show an error/snackbar
+//     print('No file selected');
+//   }
+//               },
+//               clearImage: () => value.clearImage(DocumentEnum.LF),
+//             ),
+//             const Divider(),
+//             const Divider(),
+
+//             // Back page driving license
+//             DocumentWidget(
+//               title: 'back_page_driving_license',
+//               description: 'Uploaded Driving License Back Page',
+//               link: documents?.licenseBack ?? '',
+//               image: value.licenseBack ?? File(''),
+//               function: (x) async {
+//                 final File? file = await pickImage(x);
+//                 if (file != null) {
+//                   value.setImage(file, DocumentEnum.LB);
+//                 }
+//                 else {
+//     // Optionally show an error/snackbar
+//     print('No file selected');
+//   }
+//               },
+//               clearImage: () => value.clearImage(DocumentEnum.LB),
+//             ),
+//             const Divider(),
+//             const Divider(),
+
+//             // Front page Aadhaar card
+//             DocumentWidget(
+//               title: 'front_page_aadhaar_card',
+//               description: 'Uploaded Aadhaar card Front Page',
+//               link: documents?.aadhaarFront ?? '',
+//               image: value.aadhaarFront ?? File(''),
+//               function: (x) async {
+//                 final File? file = await pickImage(x);
+//                                 if (file != null) {
+//                   value.setImage(file, DocumentEnum.AF);
+//                 }
+//                 else {
+//     // Optionally show an error/snackbar
+//     print('No file selected');
+//   }
+
+//               },
+//               clearImage: () => value.clearImage(DocumentEnum.AF),
+//             ),
+//             const Divider(),
+//             const Divider(),
+
+//             // Back page Aadhaar card
+//             DocumentWidget(
+//               title: 'back_page_aadhaar_card',
+//               description: 'Uploaded Aadhaar card back page',
+//               link: documents?.aadhaarBack ?? '',
+//               image:  value.aadhaarBack ?? File(''),
+//               function: (x) async {
+//                 final File? file = await pickImage(x);
+//                 if (file != null) {
+//                   value.setImage(file, DocumentEnum.AB);
+//                 }
+//                 else {
+//     // Optionally show an error/snackbar
+//     print('No file selected');
+//   }
+//               },
+//               clearImage: () => value.clearImage(DocumentEnum.AB),
+//             ),
+//           ],
+//         );
+//       },
+//     );
+//   }
+// }
+
+// class AllDocumentsWidget extends StatelessWidget {
+//   final DocumentModel? documents;
+
+//   const AllDocumentsWidget({Key? key, this.documents}) : super(key: key);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Consumer<HomeProvider>(
+//       builder: (BuildContext context, value, Widget? child) {
+//         if (documents == null) {
+//           return Center(
+//             child: Text('No documents available', style: TextStyle(color: accentColor)),
+//           );
+//         }
+
+//         return Column(
+//           children: <Widget>[
+//             // Driving License Front
+//             DocumentWidget(
+//               title: 'front_page_driving_license',
+//               description: 'Uploaded Driving License Front Page',
+//               link: documents!.licenseFront ?? '',
+//               // image: value.licenseFront ?? File(''), //  Safe fallback
+//                     image: value.licenseFront, //  Safe fallback
+//               function: (x) async {
+//                 final file = await pickImage(x);
+//                 if (file != null) {
+//                   value.setImage(file, DocumentEnum.LF);
+//                 }
+//               },
+//               clearImage: () => value.clearImage(DocumentEnum.LF),
+//             ),
+//             const Divider(),
+
+//             // Driving License Back
+//             DocumentWidget(
+//               title: 'back_page_driving_license',
+//               description: 'Uploaded Driving License Back Page',
+//               link: documents!.licenseBack ?? '',
+//               // image: value.licenseBack ?? File(''),
+//                             image: value.licenseBack,
+//               function: (x) async {
+//                 final file = await pickImage(x);
+//                 if (file != null) {
+//                   value.setImage(file, DocumentEnum.LB);
+//                 }
+//               },
+//               clearImage: () => value.clearImage(DocumentEnum.LB),
+//             ),
+//             const Divider(),
+
+//             // Aadhaar Front
+//             DocumentWidget(
+//               title: 'front_page_aadhaar_card',
+//               description: 'Uploaded Aadhaar card Front Page',
+//               link: documents!.aadhaarFront ?? '',
+//               // image: value.aadhaarFront ?? File(''),
+//                             image: value.aadhaarFront,
+//               function: (x) async {
+//                 final file = await pickImage(x);
+//                 if (file != null) {
+//                   value.setImage(file, DocumentEnum.AF);
+//                 }
+//               },
+//               clearImage: () => value.clearImage(DocumentEnum.AF),
+//             ),
+//             const Divider(),
+
+//             // Aadhaar Back
+//             DocumentWidget(
+//               title: 'back_page_aadhaar_card',
+//               description: 'Uploaded Aadhaar card back page',
+//               link: documents!.aadhaarBack ?? '',
+//               // image: value.aadhaarBack ?? File(''),
+//                             image: value.aadhaarBack,
+//               function: (x) async {
+//                 final file = await pickImage(x);
+//                 if (file != null) {
+//                   value.setImage(file, DocumentEnum.AB);
+//                 }
+//               },
+//               clearImage: () => value.clearImage(DocumentEnum.AB),
+//             ),
+//           ],
+//         );
+//       },
+//     );
+//   }
+// }
+
 class AllDocumentsWidget extends StatelessWidget {
-  final DocumentModel? documents; // Make documents nullable for safety
+  final DocumentModel? documents;
 
   const AllDocumentsWidget({Key? key, this.documents}) : super(key: key);
 
@@ -972,67 +1167,69 @@ class AllDocumentsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<HomeProvider>(
       builder: (BuildContext context, value, Widget? child) {
-        // Check if the documents are null
         if (documents == null) {
-          return Center(child: Text('No documents available', style: TextStyle(color: accentColor),));
+          return Center(
+            child: Text('No documents available', style: TextStyle(color: accentColor)),
+          );
         }
 
         return Column(
           children: <Widget>[
-            // Front page driving license
             DocumentWidget(
               title: 'front_page_driving_license',
               description: 'Uploaded Driving License Front Page',
-              link: documents?.licenseFront ?? '',
-              image: value.licenseFront as File,
+              link: documents!.licenseFront ?? '',
+              image: value.licenseFront,
               function: (x) async {
-                final File? file = await pickImage(x);
-                value.setImage(file!, DocumentEnum.LF);
+                final file = await pickImage(x);
+                if (file != null) {
+                  value.setImage(file, DocumentEnum.LF);
+                }
               },
               clearImage: () => value.clearImage(DocumentEnum.LF),
             ),
             const Divider(),
-            const Divider(),
 
-            // Back page driving license
             DocumentWidget(
               title: 'back_page_driving_license',
               description: 'Uploaded Driving License Back Page',
-              link: documents?.licenseBack ?? '',
-              image: value.licenseBack as File,
+              link: documents!.licenseBack ?? '',
+              image: value.licenseBack,
               function: (x) async {
-                final File? file = await pickImage(x);
-                value.setImage(file!, DocumentEnum.LB);
+                final file = await pickImage(x);
+                if (file != null) {
+                  value.setImage(file, DocumentEnum.LB);
+                }
               },
               clearImage: () => value.clearImage(DocumentEnum.LB),
             ),
             const Divider(),
-            const Divider(),
 
-            // Front page Aadhaar card
             DocumentWidget(
               title: 'front_page_aadhaar_card',
               description: 'Uploaded Aadhaar card Front Page',
-              link: documents?.aadhaarFront ?? '',
-              image: value.aadhaarFront as File,
+              link: documents!.aadhaarFront ?? '',
+              image: value.aadhaarFront,
               function: (x) async {
-                final File? file = await pickImage(x);
-                value.setImage(file!, DocumentEnum.AF);
+                final file = await pickImage(x);
+                if (file != null) {
+                  value.setImage(file, DocumentEnum.AF);
+                }
               },
               clearImage: () => value.clearImage(DocumentEnum.AF),
             ),
             const Divider(),
-            const Divider(),
 
-            // Back page Aadhaar card
             DocumentWidget(
               title: 'back_page_aadhaar_card',
               description: 'Uploaded Aadhaar card back page',
-              link: documents?.aadhaarBack ?? '',
-              image: value.aadhaarBack as File,
+              link: documents!.aadhaarBack ?? '',
+              image: value.aadhaarBack,
               function: (x) async {
-                final File? file = await pickImage(x);
-                value.setImage(file!, DocumentEnum.AB);
+                final file = await pickImage(x);
+                if (file != null) {
+                  value.setImage(file, DocumentEnum.AB);
+                }
               },
               clearImage: () => value.clearImage(DocumentEnum.AB),
             ),
@@ -1043,15 +1240,18 @@ class AllDocumentsWidget extends StatelessWidget {
   }
 }
 
+
+
 Future<File?> pickImage(ImageSource source) async {
   final picker = ImagePicker();
   final selected =
       await picker.pickImage(source: source, maxHeight: 900, maxWidth: 900);
-  if (selected?.path != null) {
-    return File(selected!.path);
+  if (selected != null) {
+    return File(selected.path);
   } else {
-    return null;
+    return null; // Return null if no image was selected
   }
+
 }
 
 Future<String?> uploadFunction(
@@ -1090,7 +1290,7 @@ class NoteWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.blue[50],
+      color: const Color.fromARGB(255, 20, 20, 20),
       child: Padding(
         padding: const EdgeInsets.all(12.0),
         child: Center(

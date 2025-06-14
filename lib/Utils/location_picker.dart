@@ -134,7 +134,8 @@ class _LocationPickerState extends State<LocationPicker> {
     if (value.isLocationLoading)
       return Center(child: spinkit);
     else if (suggestions.isNotEmpty &&
-        suggestions.first.autoCompleteItem.text!.isEmpty &&
+        
+        (suggestions.first.autoCompleteItem.text ?? '').isEmpty &&
         hasSearchTerm)
       return Center(
           child: Text(
@@ -176,7 +177,7 @@ class _LocationPickerState extends State<LocationPicker> {
           "key=$GoogleApiKey&"
           "input={$place}"
           "&components=country:in"
-          "&types=sublocality"
+          // "&types=sublocality"
           ;
 
       endpoint += "&location=${this.locationResult?.latLng?.latitude}," +

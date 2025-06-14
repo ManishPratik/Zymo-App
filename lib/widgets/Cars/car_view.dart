@@ -909,8 +909,203 @@ class _CarTileState extends State<CarTile> with SingleTickerProviderStateMixin {
   }
 
   @override
+  // Widget build(BuildContext context) {
+  //   final double? lowestPrice = widget.carModelList.first.finalPrice != null
+  //       ? widget.carModelList.first.finalPrice
+  //       : 0.0;
+  //   final List<String> vendorImages = widget.carModelList
+  //       .map((element) => element.vendor!.imageUrl!)
+  //       .toSet()
+  //       .toList();
+
+  //   return AnimatedBuilder(
+  //     animation: _controller,
+  //     builder: (context, child) {
+  //       return Card(
+  //         margin: const EdgeInsets.only(top: 12, left: 12, right: 12),
+  //         elevation: 15,
+  //         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+  //         child: InkWell(
+  //           // onTap: _toggleExpand,
+  //           child: Container(
+  //             decoration: BoxDecoration(
+  //               borderRadius: BorderRadius.circular(12),
+  //               color: const Color.fromARGB(255, 32, 32, 32),
+  //             ),
+  //             // height: _heightAnimation.value,
+  //             height: 450,
+
+  //             child: Column(
+  //               children: [
+  //                 // Always visible elements
+
+  //                 // Car Image
+
+  //                  Padding(
+  //                         padding: const EdgeInsets.all(12.0),
+  //                         child: Row(
+  //                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //                           children: [
+  //                             Column(
+  //                               crossAxisAlignment: CrossAxisAlignment.start,
+  //                               children: [
+  //                                 carName(context, widget.carModelList.first.name),
+  //                                   featureRow(widget.carModelList),
+                              
+  //                                 // Features and Price
+  //                                 // Row(
+  //                                 //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //                                 //   children: [
+  //                                 //   ],
+  //                                 // ),
+  //                                 Column(
+  //                                   mainAxisAlignment: MainAxisAlignment.start,
+  //                                   //crossAxisAlignment: CrossAxisAlignment.start,
+  //                                   children: [
+  //                                     // VendorImages(vendorImages: vendorImages),
+                              
+  //                                     // Distance
+  //                                     // Text(
+  //                                     //   '${widget.carModelList.first.pickups?.first.distanceFromUser != null ? widget.carModelList.first.pickups?.first.distanceFromUser : 0.0} KMs away',
+  //                                     //   style: itleStyle,
+  //                                     // ),
+                              
+  //                                     // Booking Fast Widget
+  //                                     if (bookingFastList
+  //                                         .where((element) =>
+  //                                         element.startsWith(widget.carModelList.first.name))
+  //                                         .isNotEmpty)
+  //                                       bookingFastWidget()
+                              
+  //                                   ],
+  //                                 )
+  //                               ],
+  //                             ),
+  //                                                                   startingAt(lowestPrice!),
+
+  //                           ],
+  //                         ),
+  //                       ),
+  //                 Positioned(
+  //                   top: 0,
+  //                   left: 0,
+  //                   right: 0,
+  //                   child: Center(
+  //                     child: Container(
+  //                       margin: const EdgeInsets.all(22),
+  //                       height:190,
+  //                       width: double.infinity,
+  //                       decoration: BoxDecoration(
+  //                         color: const Color.fromARGB(0, 247, 248, 162),
+  //                         borderRadius: BorderRadius.circular(12),
+  //                         border: Border.all(style: BorderStyle.solid, width: 10, color: Colors.transparent),
+  //                       ),
+  //                       child: carImage(widget.carModelList.first.imageUrl, context),
+  //                     ),
+  //                   ),
+  //                 ),
+
+  //                 // Car Name (always visible)
+  //                 // Column(
+  //                 //   mainAxisAlignment: MainAxisAlignment.end,
+  //                 //   children: [
+  //                 //     carName(context, widget.carModelList.first.name),
+  //                 //   ],
+  //                 // ),
+  //                 // Positioned(
+  //                 //   top: 225,
+  //                 //   left: 12,
+  //                 //   right: 12,
+  //                 //   child: carName(context, widget.carModelList.first.name),
+  //                 // ),
+
+  //                 // Details that appear on expansion
+  //                 // if (_heightAnimation.value > 300) // Only show when expanded enough
+  //                   Positioned(
+  //                     top: 0,
+  //                     left: 0,
+  //                     right: 0,
+  //                     child: Opacity(
+  //                       // opacity: _opacityAnimation.value,
+  //                                               opacity: 1,
+
+  //                       child: Padding(
+  //                         padding: const EdgeInsets.all(12.0),
+  //                         child: Column(
+  //                           children: [
+  //                             // Features and Price
+  //                             Row(
+  //                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //                               children: [
+  //                                 // featureRow(widget.carModelList),
+  //                                 // startingAt(lowestPrice!),
+  //                               ],
+  //                             ),
+  //                             Row(
+  //                               mainAxisAlignment: MainAxisAlignment.start,
+  //                               //crossAxisAlignment: CrossAxisAlignment.start,
+  //                               children: [
+  //                                 Column(
+  //                                   crossAxisAlignment: CrossAxisAlignment.start,
+  //                                   children: [
+  //                                     VendorImages(vendorImages: vendorImages),
+  //                                     SizedBox(height: 8),
+  //                                                                           Text(
+  //                                       '${widget.carModelList.first.pickups?.first.distanceFromUser != null ? widget.carModelList.first.pickups?.first.distanceFromUser : 0.0} KMs away',
+  //                                       style: itleStyle,
+  //                                     ),
+
+  //                                   ],
+  //                                 ),
+
+  //                                 // Distance
+  //                                 // Text(
+  //                                 //   '${widget.carModelList.first.pickups?.first.distanceFromUser != null ? widget.carModelList.first.pickups?.first.distanceFromUser : 0.0} KMs away',
+  //                                 //   style: itleStyle,
+  //                                 // ),
+
+  //                                 // Booking Fast Widget
+  //                                 // if (bookingFastList
+  //                                 //     .where((element) =>
+  //                                 //     element.startsWith(widget.carModelList.first.name))
+  //                                 //     .isNotEmpty)
+  //                                 //   bookingFastWidget(),
+                                  
+  //                                 FloatingActionButton(
+  //                       backgroundColor: Colors.black,
+  //                       onPressed: () => openCarPopup(widget.carModelList, context),
+  //                       child: const Icon(Icons.arrow_forward, color: Colors.white,),
+  //                     ),
+
+  //                               ],
+  //                             )
+  //                           ],
+  //                         ),
+  //                       ),
+  //                     ),
+  //                   ),
+
+  //                 // Floating action button for popup (shown when expanded)
+  //                 // if (_isExpanded)
+  //                   // Positioned(
+  //                   //   bottom: 12,
+  //                   //   right: 12,
+  //                   //   child: FloatingActionButton(
+  //                   //     backgroundColor: Colors.black,
+  //                   //     onPressed: () => openCarPopup(widget.carModelList, context),
+  //                   //     child: const Icon(Icons.arrow_forward, color: Colors.white,),
+  //                   //   ),
+  //                   // ),
+  //               ],
+  //             ),
+  //           ),
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
   Widget build(BuildContext context) {
-    final double? lowestPrice = widget.carModelList.first.finalPrice != null
+        final double? lowestPrice = widget.carModelList.first.finalPrice != null
         ? widget.carModelList.first.finalPrice
         : 0.0;
     final List<String> vendorImages = widget.carModelList
@@ -918,192 +1113,129 @@ class _CarTileState extends State<CarTile> with SingleTickerProviderStateMixin {
         .toSet()
         .toList();
 
-    return AnimatedBuilder(
-      animation: _controller,
-      builder: (context, child) {
-        return Card(
-          margin: const EdgeInsets.only(top: 12, left: 12, right: 12),
-          elevation: 15,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-          child: InkWell(
-            // onTap: _toggleExpand,
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                color: const Color.fromARGB(255, 32, 32, 32),
-              ),
-              // height: _heightAnimation.value,
-              height: 450,
 
-              child: Column(
-                children: [
-                  // Always visible elements
 
-                  // Car Image
+    // final double lowestPrice = widget.carModelList.first.finalPrice!;
+    // final List<String?> vendorImages = widget.carModelList
+    //     .map((element) => element.vendor!.imageUrl)
+    //     .toSet()
+    //     .toList();
 
-                   Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  carName(context, widget.carModelList.first.name),
-                                    featureRow(widget.carModelList),
-                              
-                                  // Features and Price
-                                  // Row(
-                                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  //   children: [
-                                  //   ],
-                                  // ),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    //crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      // VendorImages(vendorImages: vendorImages),
-                              
-                                      // Distance
-                                      // Text(
-                                      //   '${widget.carModelList.first.pickups?.first.distanceFromUser != null ? widget.carModelList.first.pickups?.first.distanceFromUser : 0.0} KMs away',
-                                      //   style: itleStyle,
-                                      // ),
-                              
-                                      // Booking Fast Widget
-                                      if (bookingFastList
-                                          .where((element) =>
-                                          element.startsWith(widget.carModelList.first.name))
-                                          .isNotEmpty)
-                                        bookingFastWidget()
-                              
-                                    ],
-                                  )
-                                ],
-                              ),
-                                                                    startingAt(lowestPrice!),
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.grey[900],
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: InkWell(
+        onTap: () => openCarPopup(widget.carModelList, context),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Rating Row
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.end,
+            //   children: [
+            //     const Icon(Icons.star, color: Colors.yellow, size: 16),
+            //     Text(
+            //       '4.5',  // You can replace with actual rating if available in your model
+            //       style: const TextStyle(color: Colors.yellow),
+            //     ),
+            //   ],
+            // ),
 
-                            ],
-                          ),
-                        ),
-                  Positioned(
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    child: Center(
-                      child: Container(
-                        margin: const EdgeInsets.all(22),
-                        height:190,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: const Color.fromARGB(0, 247, 248, 162),
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(style: BorderStyle.solid, width: 10, color: Colors.transparent),
-                        ),
-                        child: carImage(widget.carModelList.first.imageUrl, context),
-                      ),
-                    ),
-                  ),
+            // Car Name and Features Row
+            Row(
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    carName(context, widget.carModelList!.first.name!),
+                    const SizedBox(height: 4),
+                    featureRow(widget.carModelList!),
+                  ],
+                ),
+                const Spacer(),
+                startingAt(lowestPrice!),
+              ],
+            ),
 
-                  // Car Name (always visible)
-                  // Column(
-                  //   mainAxisAlignment: MainAxisAlignment.end,
-                  //   children: [
-                  //     carName(context, widget.carModelList.first.name),
-                  //   ],
-                  // ),
-                  // Positioned(
-                  //   top: 225,
-                  //   left: 12,
-                  //   right: 12,
-                  //   child: carName(context, widget.carModelList.first.name),
-                  // ),
+            const SizedBox(height: 20),
 
-                  // Details that appear on expansion
-                  // if (_heightAnimation.value > 300) // Only show when expanded enough
-                    Positioned(
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      child: Opacity(
-                        // opacity: _opacityAnimation.value,
-                                                opacity: 1,
-
-                        child: Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: Column(
-                            children: [
-                              // Features and Price
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  // featureRow(widget.carModelList),
-                                  // startingAt(lowestPrice!),
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                //crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      VendorImages(vendorImages: vendorImages),
-                                      SizedBox(height: 8),
-                                                                            Text(
-                                        '${widget.carModelList.first.pickups?.first.distanceFromUser != null ? widget.carModelList.first.pickups?.first.distanceFromUser : 0.0} KMs away',
-                                        style: itleStyle,
-                                      ),
-
-                                    ],
-                                  ),
-
-                                  // Distance
-                                  // Text(
-                                  //   '${widget.carModelList.first.pickups?.first.distanceFromUser != null ? widget.carModelList.first.pickups?.first.distanceFromUser : 0.0} KMs away',
-                                  //   style: itleStyle,
-                                  // ),
-
-                                  // Booking Fast Widget
-                                  // if (bookingFastList
-                                  //     .where((element) =>
-                                  //     element.startsWith(widget.carModelList.first.name))
-                                  //     .isNotEmpty)
-                                  //   bookingFastWidget(),
-                                  
-                                  FloatingActionButton(
-                        backgroundColor: Colors.black,
-                        onPressed: () => openCarPopup(widget.carModelList, context),
-                        child: const Icon(Icons.arrow_forward, color: Colors.white,),
-                      ),
-
-                                ],
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-
-                  // Floating action button for popup (shown when expanded)
-                  // if (_isExpanded)
-                    // Positioned(
-                    //   bottom: 12,
-                    //   right: 12,
-                    //   child: FloatingActionButton(
-                    //     backgroundColor: Colors.black,
-                    //     onPressed: () => openCarPopup(widget.carModelList, context),
-                    //     child: const Icon(Icons.arrow_forward, color: Colors.white,),
-                    //   ),
-                    // ),
-                ],
+            // Car Image in Yellow Container
+            Center(
+              child: Container(
+                height: 180,
+                decoration: BoxDecoration(
+                  color: const Color(0xFFFFFA8D),
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(15),
+                  child: carImage(widget.carModelList!.first.imageUrl, context),
+                ),
               ),
             ),
-          ),
-        );
-      },
+
+            const SizedBox(height: 20),
+
+            // Bottom Section with Vendor Images and Distance
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                // Vendor Images Section
+                Expanded(
+                  child: VendorImages(vendorImages: vendorImages),
+                ),
+
+                // Action Buttons
+                Row(
+                  children: [
+                    // _buildActionButton(Icons.close),
+                    // const SizedBox(width: 10),
+                    // _buildActionButton(Icons.favorite_border),
+                    const SizedBox(width: 10),
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFFFFA8D),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: const Icon(
+                        Icons.arrow_forward,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+
+            // Distance Information
+            if (widget.carModelList!.first.pickups?.first.distanceFromUser != null)
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Text(
+                  '${widget.carModelList!.first.pickups!.first.distanceFromUser} KMs away',
+                  style: itleStyle,
+                ),
+              ),
+
+            // Booking Fast Badge
+            if (bookingFastList
+                .where(
+                    (element) => element.startsWith(widget.carModelList!.first.name!))
+                .isNotEmpty)
+              bookingFastWidget(),
+          ],
+        ),
+      ),
     );
   }
+
+
+  
   Row bookingFastWidget() {
     return Row(
       children: [
@@ -1174,7 +1306,7 @@ class _CarTileState extends State<CarTile> with SingleTickerProviderStateMixin {
         Container(
           padding: EdgeInsets.all(5),
           decoration: BoxDecoration(
-              color: Colors.grey,
+              color: const Color.fromARGB(0, 158, 158, 158),
               shape: BoxShape.rectangle,
               borderRadius: BorderRadius.circular(12)),
           child: Row(
@@ -1223,7 +1355,7 @@ class _CarTileState extends State<CarTile> with SingleTickerProviderStateMixin {
               padding: const EdgeInsets.all(8.0),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
-                  color: Colors.black54),
+                  color: const Color.fromARGB(0, 0, 0, 0)),
               child: Text(name,
                   style: const TextStyle(
                       fontSize: 18, fontWeight: FontWeight.w900, color: Colors.white),

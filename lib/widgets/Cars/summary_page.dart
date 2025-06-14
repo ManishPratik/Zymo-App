@@ -113,7 +113,7 @@ class _SummaryPageState extends State<SummaryPage> {
           properties: {'data': data, 'error': error.toString()});
     }
     final int rewardAmount = CarServices.getRewardVoucherAmountCars(
-        (double.parse(data['price']) - securityDeposit).toInt());
+        (double.parse(data['price']) - securityDeposit!).toInt());
     postPaymentFunction(now, data, promoprovider, rewardAmount);
     Navigator.of(context).pushNamedAndRemoveUntil(
         SuccessPage.routeName, (r) => false,
@@ -168,10 +168,10 @@ class _SummaryPageState extends State<SummaryPage> {
           widget.carModel, widget.userModel, widget.model);
     } else if (widget.carModel.vendor!.name == zoomCar) {
         final bool res = await CarServices.zoomPaymentApiCallsV6(
-            bookingId,
+            bookingId!,
             '${widget.userModel.name}',
             '${widget.userModel.phoneNumber}',
-            ((widget.carModel.actualPrice!) + (deliveryCharges)).toInt());
+            ((widget.carModel.actualPrice!) + (deliveryCharges!)).toInt());
         if (!res) {
           mixpanel.track('Zoom payment api failed (V6)', properties: {});
         }
@@ -179,7 +179,7 @@ class _SummaryPageState extends State<SummaryPage> {
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {
-    print("payment has error00000000000000000000000000000000000000");
+    print("payment has error000000000");
     // Do something when payment fails
     final CarProvider promoprovider =
         Provider.of<CarProvider>(context, listen: false);
@@ -202,9 +202,9 @@ class _SummaryPageState extends State<SummaryPage> {
     if (widget.carModel.vendor!.name != zoomCar) trackEvent();
   }
 
-  late String bookingId;
-  late double securityDeposit;
-  late int deliveryCharges;
+  String? bookingId;
+  double? securityDeposit;
+   int? deliveryCharges;
   bool promoLoading = false;
 
   @override
@@ -227,6 +227,7 @@ class _SummaryPageState extends State<SummaryPage> {
           // If didPop is true, the pop action has already occurred.
         },
         child: Scaffold(
+          backgroundColor: Colors.white,
           appBar: AppBar(
             title: const Text('Confirm Booking'),
             flexibleSpace: appBarGradient, // Make sure this is defined somewhere
@@ -244,7 +245,7 @@ class _SummaryPageState extends State<SummaryPage> {
       children: [
         spinkit,
         SizedBox(height: .01.sh),
-        Text('Please wait. Do not close this page.', style: largeStyle)
+        Text('Please wait. Do not close this page.', style: whiteTitleStyle)
       ],
     );
   }
@@ -265,7 +266,7 @@ class _SummaryPageState extends State<SummaryPage> {
           }
           final rewardVoucherAmountCars =
               CarServices.getRewardVoucherAmountCars(
-                  promoprovider.initialPrice.toInt() - securityDeposit.toInt());
+                  promoprovider.initialPrice.toInt() - securityDeposit!.toInt());
           if (!promoprovider.codeApplied) {
             Future.delayed(Duration(milliseconds: 500), () {
               if (widget.carModel.vendor!.promoCode!.isTrulyNotEmpty())
@@ -290,7 +291,7 @@ class _SummaryPageState extends State<SummaryPage> {
                         horizontal: 8.0, vertical: 12),
                     child: Column(children: <Widget>[
                       CarDetailsWidget(
-                        bookingId: bookingId,
+                        bookingId: bookingId!,
                         carModel: widget.carModel,
                       ),
                       SizedBox(height: .01.sh),
@@ -362,7 +363,7 @@ class _SummaryPageState extends State<SummaryPage> {
                         ),
                       ],
                       FareWidget(
-                        securityDeposit: securityDeposit,
+                        securityDeposit: securityDeposit!,
                         deliveryCharges:deliveryCharges ?? widget.carModel.deliveryCharges ?? 0,
                         carModel: widget.carModel,
                         promoprovider: promoprovider,
@@ -498,8 +499,8 @@ class _SummaryPageState extends State<SummaryPage> {
     bookingId = snapshot.data?['booking_id'];
     widget.carModel.pickUpAndDrop = snapshot.data?['location'];
     widget.carModel.actualPrice = snapshot.data?['actualPrice'];
-    promoprovider.setInitialPrice(deliveryCharges +
-        securityDeposit +
+    promoprovider.setInitialPrice(deliveryCharges! +
+        securityDeposit! +
         widget.carModel.finalPrice! -
         (promoprovider.discountPrice ?? 0));
     trackEvent();
@@ -507,7 +508,7 @@ class _SummaryPageState extends State<SummaryPage> {
 
   Future<Map<String, dynamic>>? getZoomCharges(
       bool isZoomCar, BuildContext contex) {
-    if (isZoomCar && bookingId == null) {
+    if (isZoomCar ) {
      // return ZoomCarServicesV6.getSecurityDeposit(
          // context,
           widget.model.city;

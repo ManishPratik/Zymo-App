@@ -691,22 +691,206 @@ class DocumentsUploader extends StatelessWidget {
   }
 }
 
+// class DocumentWidget extends StatelessWidget {
+//   const DocumentWidget(
+//       {super.key,
+//       required this.link,
+//       required this.image,
+//       required this.function,
+//       required this.clearImage,
+//       required this.title,
+//       required this.description});
+
+//   final String title;
+//   final String description;
+//   final String link;
+//   final File? image;
+//   final Future<void> Function(ImageSource) function;
+
+//   final VoidCallback clearImage;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Column(
+//       crossAxisAlignment: CrossAxisAlignment.center,
+//       children: [
+//       // Row(children: <Widget>[
+//       //   Checkbox(
+//       //     onChanged: null /*(val) {}*/,
+//       //     checkColor: Colors.white,
+//       //     hoverColor: Colors.transparent,
+//       //     // value: link?.isNotEmpty ?? false,
+//       //     value: link.isNotEmpty,
+//       //     //onChanged: (_){},
+//       //   ),
+//       //   Text(description, style: whiteTitleStyle,)
+//       // ]),
+//       // Row(
+//       //   mainAxisAlignment: MainAxisAlignment.center,
+//       //   children: <Widget>[
+//       //     IconButton(
+//       //       icon: const Icon(Icons.photo_camera),
+//       //       onPressed: () => function(ImageSource.camera),
+//       //     ),
+//       //     IconButton(
+//       //       icon: const Icon(Icons.photo_library),
+//       //       onPressed: () => function(ImageSource.gallery),
+//       //     ),
+//       //   ],
+//       // ),
+//       // if (image != null && image!.path.isNotEmpty && image!.existsSync())
+//       // // if (image != null)
+//       //  ...[
+//       //   Container(
+//       //     margin: const EdgeInsets.all(4),
+//       //     child: Image.file(
+//       //       image!,
+//       //       height: 200,
+//       //     ),
+//       //   ),
+//       //   Row(
+//       //     mainAxisAlignment: MainAxisAlignment.center,
+//       //     children: <Widget>[
+//       //       TextButton(
+//       //         onPressed: clearImage,
+//       //         child: const Icon(Icons.refresh),
+//       //       ),
+//       //     ],
+//       //   ),
+//       //   Uploader(file: image!, cat: title),
+//       // ],
+
+//       Stack(
+//         children:[ 
+//           Row(
+//           mainAxisAlignment: MainAxisAlignment.start,
+//           children: <Widget>[
+//             Checkbox(
+//               onChanged: null,
+//               checkColor: Colors.white,
+//               hoverColor: Colors.transparent,
+//               value: link.isNotEmpty,
+//             ),
+//           ],
+//         ),
+//                     Row(
+//               mainAxisAlignment: MainAxisAlignment.center,
+//               children: [
+//                 Text(description, style: whiteTitleStyle),
+//               ],
+//             ),
+
+        
+        
+//         ]
+//       ),
+//       Row(
+//         mainAxisAlignment: MainAxisAlignment.center,
+//         children: <Widget>[
+//           IconButton(
+//             icon: const Icon(Icons.photo_camera),
+//             onPressed: () => function(ImageSource.camera),
+//           ),
+//           IconButton(
+//             icon: const Icon(Icons.photo_library),
+//             onPressed: () => function(ImageSource.gallery),
+//           ),
+//         ],
+//       ),
+//       if (link.isNotEmpty) ...[
+//         // Display uploaded document (image)
+//         Container(
+//           margin: const EdgeInsets.all(4),
+//           child: Image.network(
+//             link,
+//             height: 200,
+//             errorBuilder: (context, error, stackTrace) => const Text('Could not load image'),
+//           ),
+//         ),
+//         Row(
+//           mainAxisAlignment: MainAxisAlignment.center,
+//           children: <Widget>[
+//             TextButton(
+//               onPressed: clearImage,
+//               child: const Icon(Icons.refresh),
+//             ),
+//           ],
+//         ),
+//         ] 
+//         // else if (image != null && image!.path.isNotEmpty) ...[
+//         // // Show local image preview and uploader if not uploaded yet
+//         // Container(
+//         //   margin: const EdgeInsets.all(4),
+//         //   child: Image.file(
+//         //     image!,
+//         //     height: 200,
+//         //   ),
+//         // ),
+//         // Row(
+//         //   mainAxisAlignment: MainAxisAlignment.center,
+//         //   children: <Widget>[
+//         //     TextButton(
+//         //       onPressed: clearImage,
+//         //       child: const Icon(Icons.refresh),
+//         //     ),
+//         //   ],
+//         // ),
+//         // Uploader(file: image!, cat: title),
+//         // ] 
+//          else if (image != null && image!.path.isNotEmpty && image!.existsSync()) ...[
+//   Container(
+//     margin: const EdgeInsets.all(4),
+//     child: Image.file(
+//       image!,
+//       height: 200,
+//     ),
+//   ),
+//   Row(
+//     mainAxisAlignment: MainAxisAlignment.center,
+//     children: <Widget>[
+//       TextButton(
+//         onPressed: clearImage,
+//         child: const Icon(Icons.refresh),
+//       ),
+//     ],
+//   ),
+//   Uploader(file: image!, cat: title),
+// ]
+
+//         else ...[
+//         // Default message if nothing is uploaded or selected
+//         const Padding(
+//           padding: EdgeInsets.all(8.0),
+//           child: Text(
+//             'No document uploaded yet.',
+//             style: TextStyle(color: Colors.grey),
+//           ),
+//         ),
+//       ],
+
+
+//     ],
+//     );
+//   }
+// }
+
+
 class DocumentWidget extends StatelessWidget {
-  const DocumentWidget(
-      {super.key,
-      required this.link,
-      required this.image,
-      required this.function,
-      required this.clearImage,
-      required this.title,
-      required this.description});
+  const DocumentWidget({
+    super.key,
+    required this.link,
+    required this.image,
+    required this.function,
+    required this.clearImage,
+    required this.title,
+    required this.description,
+  });
 
   final String title;
   final String description;
   final String link;
   final File? image;
   final Future<void> Function(ImageSource) function;
-
   final VoidCallback clearImage;
 
   @override
@@ -714,140 +898,94 @@ class DocumentWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-      // Row(children: <Widget>[
-      //   Checkbox(
-      //     onChanged: null /*(val) {}*/,
-      //     checkColor: Colors.white,
-      //     hoverColor: Colors.transparent,
-      //     // value: link?.isNotEmpty ?? false,
-      //     value: link.isNotEmpty,
-      //     //onChanged: (_){},
-      //   ),
-      //   Text(description, style: whiteTitleStyle,)
-      // ]),
-      // Row(
-      //   mainAxisAlignment: MainAxisAlignment.center,
-      //   children: <Widget>[
-      //     IconButton(
-      //       icon: const Icon(Icons.photo_camera),
-      //       onPressed: () => function(ImageSource.camera),
-      //     ),
-      //     IconButton(
-      //       icon: const Icon(Icons.photo_library),
-      //       onPressed: () => function(ImageSource.gallery),
-      //     ),
-      //   ],
-      // ),
-      // if (image != null && image!.path.isNotEmpty && image!.existsSync())
-      // // if (image != null)
-      //  ...[
-      //   Container(
-      //     margin: const EdgeInsets.all(4),
-      //     child: Image.file(
-      //       image!,
-      //       height: 200,
-      //     ),
-      //   ),
-      //   Row(
-      //     mainAxisAlignment: MainAxisAlignment.center,
-      //     children: <Widget>[
-      //       TextButton(
-      //         onPressed: clearImage,
-      //         child: const Icon(Icons.refresh),
-      //       ),
-      //     ],
-      //   ),
-      //   Uploader(file: image!, cat: title),
-      // ],
-
-      Stack(
-        children:[ 
-          Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Checkbox(
-              onChanged: null,
-              checkColor: Colors.white,
-              hoverColor: Colors.transparent,
-              value: link.isNotEmpty,
+        Stack(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Checkbox(
+                  onChanged: null,
+                  checkColor: Colors.white,
+                  hoverColor: Colors.transparent,
+                  value: link.isNotEmpty,
+                ),
+              ],
             ),
-          ],
-        ),
-                    Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(description, style: whiteTitleStyle),
               ],
             ),
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            IconButton(
+              icon: const Icon(Icons.photo_camera),
+              onPressed: () => function(ImageSource.camera),
+            ),
+            IconButton(
+              icon: const Icon(Icons.photo_library),
+              onPressed: () => function(ImageSource.gallery),
+            ),
+          ],
+        ),
 
-        
-        
-        ]
-      ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.photo_camera),
-            onPressed: () => function(ImageSource.camera),
+        // Show network image if uploaded
+        if (link.isNotEmpty) ...[
+          Container(
+            margin: const EdgeInsets.all(4),
+            child: Image.network(
+              link,
+              height: 200,
+              errorBuilder: (context, error, stackTrace) => const Text('Could not load image'),
+            ),
           ),
-          IconButton(
-            icon: const Icon(Icons.photo_library),
-            onPressed: () => function(ImageSource.gallery),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              TextButton(
+                onPressed: clearImage,
+                child: const Icon(Icons.refresh),
+              ),
+            ],
+          ),
+        ]
+
+        // Show local image if picked but not uploaded
+        else if (image != null && image!.path.isNotEmpty && image!.existsSync()) ...[
+          Container(
+            margin: const EdgeInsets.all(4),
+            child: Image.file(
+              image!,
+              height: 200,
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              TextButton(
+                onPressed: clearImage,
+                child: const Icon(Icons.refresh),
+              ),
+            ],
+          ),
+          Uploader(file: image!, cat: title),
+        ]
+
+        // Show placeholder if no image
+        else ...[
+          const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Text(
+              'No document uploaded yet.',
+              style: TextStyle(color: Colors.grey),
+            ),
           ),
         ],
-      ),
-      if (link.isNotEmpty) ...[
-        // Display uploaded document (image)
-        Container(
-          margin: const EdgeInsets.all(4),
-          child: Image.network(
-            link,
-            height: 200,
-            errorBuilder: (context, error, stackTrace) => const Text('Could not load image'),
-          ),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            TextButton(
-              onPressed: clearImage,
-              child: const Icon(Icons.refresh),
-            ),
-          ],
-        ),
-        ] else if (image != null && image!.path.isNotEmpty) ...[
-        // Show local image preview and uploader if not uploaded yet
-        Container(
-          margin: const EdgeInsets.all(4),
-          child: Image.file(
-            image!,
-            height: 200,
-          ),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            TextButton(
-              onPressed: clearImage,
-              child: const Icon(Icons.refresh),
-            ),
-          ],
-        ),
-        Uploader(file: image!, cat: title),
-        ] else ...[
-        // Default message if nothing is uploaded or selected
-        const Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Text(
-            'No document uploaded yet.',
-            style: TextStyle(color: Colors.grey),
-          ),
-        ),
       ],
-
-
-    ],
     );
   }
 }

@@ -107,7 +107,7 @@ class CarServices {
     getSelfDriveApis(model, vendors);
     final List<List<CarModel>> response =
     await Future.wait(apiCalls.map((e) => e));
-    return response.expand((element) => element).toList() ?? [];
+    return response.expand((element) => element).toList() ;
   }
 
   List<Future<List<CarModel>>> getMonthlyApis(
@@ -207,7 +207,9 @@ class CarServices {
     }
     if (vendors[myChoize]!.api!.pu! &&
         tripDurationInHours >= 24 &&
-        hoursTillBooking >= vendors[myChoize]!.minHrsTillBooking!.sd!) {
+        hoursTillBooking >= vendors[myChoize]!.minHrsTillBooking!.sd!) 
+        {
+          print("In the myChoizeeeeeeeeeeeeee");
       apiCalls.add(MyChoizeServices.selfDrive(
           model, vendors[myChoize]!, tripDurationInHours));
     }

@@ -648,7 +648,7 @@ class _UserBookingScreenState extends State<UserBookingScreen> {
                         keyboardType: TextInputType.text,
                         smallCase: true,
                         function: (newValue) {
-                          null;
+                          '';
                         },
                       ),
                       Row(
@@ -669,7 +669,7 @@ class _UserBookingScreenState extends State<UserBookingScreen> {
                               keyboardType: TextInputType.text,
                               smallCase: true,
                               function: (newValue) {
-                                null;
+                                '';
                               },
                             ),
                           ),
@@ -688,7 +688,7 @@ class _UserBookingScreenState extends State<UserBookingScreen> {
                               title: 'Pin Code',
                               smallCase: false,
                               function: (newValue) {
-                                null;
+                                '';
                               },
                             ),
                           ),
@@ -715,7 +715,7 @@ class _UserBookingScreenState extends State<UserBookingScreen> {
                       title: 'Name',
                       smallCase: true,
                       function: (newValue) {
-                        null;
+                        '';
                       },
                     ),
                     TextFieldBooking(
@@ -732,14 +732,14 @@ class _UserBookingScreenState extends State<UserBookingScreen> {
                       },
                       title: 'Email',
                       function: (newValue) {
-                        null;
+                        '';
                       },
                     ),
                     TextFieldBooking(
                       controller: phoneNumberController,
                       keyboardType: TextInputType.number,
                       validatorFunction: (value) {
-                        if (value.length != 10) {
+                        if ((value).length != 10) {
                           return 'Invalid phone number';
                         }
                         return '';
@@ -747,18 +747,22 @@ class _UserBookingScreenState extends State<UserBookingScreen> {
                       title: 'Phone +91',
                       smallCase: false,
                       function: (newValue) {
-                        null;
+                        '';
                       },
                     ),
-                    // if (carModel.vendor.name == myChoize)
+                    // if (carModel.vendor?.name == myChoize)
                     //   TextFieldBooking(
                     //     controller: panNumberController,
-                    //     //      keyboardType: TextInputType.number,
+                    //          keyboardType: TextInputType.number,
+                    //     smallCase: false,
+                    //     function: (newValue) {
+                    //       '';
+                    //     },
                     //     validatorFunction: (value) {
                     //       if (value.length != 10) {
                     //         return 'Invalid pan number';
                     //       }
-                    //       return null;
+                    //       return '';
                     //     },
                     //     title: 'Pan Number',
                     //   ),
@@ -843,6 +847,7 @@ class _UserBookingScreenState extends State<UserBookingScreen> {
               Radius.circular(10.0),
             )),
             labelText: 'Date Of Birth',
+            labelStyle: whiteTitleStyle
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

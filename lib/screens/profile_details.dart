@@ -48,7 +48,7 @@ class ProfileDetails extends StatelessWidget {
       children: [
         Text(
           title,
-          style: bigHeadingStyle,
+          style:whiteTitleStyle,
         ),
         TextFormField(
           enabled: false,
